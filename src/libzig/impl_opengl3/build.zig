@@ -6,24 +6,37 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     const mod_name = "impl_opengl3";
+    var mod: *std.Build.Module = undefined;
+
+    const gen_option = b.option(bool, "gen", "Generate I/O definition file from C header") orelse false;
 
     // -------
     // module
     // -------
-    const step = b.addTranslateC(.{
-        .root_source_file = b.path("src/impl_opengl3.h"),
-        .target = target,
-        .optimize = optimize,
-        .link_libc = true,
-    });
+    if (!gen_option) {
+        mod = b.addModule(mod_name, .{
+            .root_source_file = b.path("src/impl_opengl3.zig"),
+            .target = target,
+            .optimize = optimize,
+            .link_libc = true,
+        });
+    } else {
+        const step = b.addTranslateC(.{
+            .root_source_file = b.path("src/impl_opengl3.h"),
+            .target = target,
+            .optimize = optimize,
+            .link_libc = true,
+        });
 
-    step.addIncludePath(b.path("../../libc/imgui"));
-    step.addIncludePath(b.path("../../libc/imgui/backends"));
-    step.addIncludePath(b.path("../../libc/dcimgui"));
-    step.addIncludePath(b.path("../../libc/dcimgui/backends"));
+        step.defineCMacro("IMGUI_DISABLE_SSE", "");
 
-    const mod = step.addModule(mod_name);
-    mod.addImport(mod_name, mod);
+        step.addIncludePath(b.path("../../libc/imgui"));
+        step.addIncludePath(b.path("../../libc/imgui/backends"));
+        step.addIncludePath(b.path("../../libc/dcimgui"));
+        step.addIncludePath(b.path("../../libc/dcimgui/backends"));
+
+        mod = step.addModule(mod_name);
+    }
     switch (builtin.target.os.tag) {
         .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw-3.4.bin.WIN64/include")),
         .linux => mod.addIncludePath(.{ .cwd_relative = "/usr/include" }),

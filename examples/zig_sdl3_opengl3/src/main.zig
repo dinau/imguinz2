@@ -92,7 +92,7 @@ pub fn main() !void {
     // Back ground color
     var clearColor = [_]f32{ 0.25, 0.55, 0.9, 1.0 };
     // Input text buffer
-    var sTextInuputBuf = [_:0]u8{0} ** 200;
+    var sTextInputBuf: [200:0]u8 = std.mem.zeroes([200:0]u8);
     var showWindowDelay: i32 = 2; // TODO: Avoid flickering of window at startup
 
     _ = stf.setupFonts();
@@ -146,10 +146,10 @@ pub fn main() !void {
             ig.ImGui_Text(builtin.zig_version_string);
 
             ig.ImGui_Spacing();
-            _ = ig.ImGui_InputTextWithHint("InputText", "Input text here", &sTextInuputBuf, sTextInuputBuf.len, 0);
+            _ = ig.ImGui_InputTextWithHint("InputText", "Input text here", &sTextInputBuf, sTextInputBuf.len, 0);
             ig.ImGui_Text("Input result:");
             ig.ImGui_SameLine();
-            ig.ImGui_Text(&sTextInuputBuf);
+            ig.ImGui_Text(&sTextInputBuf);
 
             ig.ImGui_Spacing();
             _ = ig.ImGui_Checkbox("Demo Window", &showDemoWindow);

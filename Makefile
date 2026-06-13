@@ -1,17 +1,17 @@
 # All example are built at a time.
-EXAMPLE_DIRS =\
+EXAMPLE_DIRS =                                     \
 							examples/glfw_opengl3                \
 	            examples/glfw_opengl3_image          \
 	            examples/glfw_opengl3_jp
 
-EXAMPLE_DIRS_ZIG =\
+EXAMPLE_DIRS_ZIG =                                 \
 							examples/zig_glfw_opengl3            \
 							examples/zig_glfw_opengl3_image_load \
 							examples/zig_iconfontviewer          \
 							examples/zig_imcolortextedit         \
 							examples/zig_imfileopendialog        \
+							examples/zig_imgui_zoomable_image    \
 							examples/zig_imguizmo                \
-							examples/zig_imgui_zoomable_image   \
 							examples/zig_imknobs                 \
 							examples/zig_imnodes                 \
 							examples/zig_implot                  \
@@ -20,21 +20,23 @@ EXAMPLE_DIRS_ZIG =\
 							examples/zig_imspinner               \
 							examples/zig_imtoggle
 
-EXAMPLE_DIRS_ZIG_RAYLIB =\
+EXAMPLE_DIRS_ZIG_RAYLIB =                          \
 							examples/zig_raylib_basic            \
 							examples/zig_raylib_cjk              \
 							examples/zig_rlimgui_basic
 
 ifeq ($(OS),Windows_NT)
-   EXAMPLE_DIRS_ZIG	+= examples/zig_sdl3_opengl3
-   EXAMPLE_DIRS_ZIG	+= examples/zig_sdl3_sdlgpu3
-   EXAMPLE_DIRS	    += examples/sdl3_opengl3
 	 EXAMPLE_DIRS     += examples/win32_dx11
 endif
 
-.PHONY: test clean gen cc
+EXAMPLE_DIRS_SDL =                                 \
+			        examples/zig_sdl3_opengl3            \
+			        examples/zig_sdl3_sdlgpu3            \
+			        examples/sdl3_opengl3
 
-all: zig cc zig_raylib
+.PHONY: test clean gen cc zig zig_raylib sdl fmt cleanall
+
+all: zig cc sdl zig_raylib
 
 cc:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir)))
@@ -45,9 +47,11 @@ zig:
 zig_raylib:
 	$(foreach exdir,$(EXAMPLE_DIRS_ZIG_RAYLIB), $(call def_make,$(exdir)))
 
+sdl:
+	$(foreach exdir,$(EXAMPLE_DIRS_SDL), $(call def_make,$(exdir)))
+
 fmt:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),$@ ))
-
 
 test:
 	@echo $(notdir $(EXAMPLE_DIRS))
@@ -66,8 +70,8 @@ DB_DIR             = $(WORK_DIR)/dear_bindings
 DCIMGUI_DIR        = src/libc/dcimgui
 IMGUI_DIR          = src/libc/imgui
 IMGUI_EXTERNAL_DIR = ../000imguin_dev/imguin_git/libs/cimgui/imgui
-DB_VER             = 0.19
-IMGUI_VER          = 1.92.7
+DB_VER             = 0.21
+IMGUI_VER          = 1.92.8
 ZIP_NAME           = DearBindings_v$(DB_VER)_ImGui_v$(IMGUI_VER)-docking
 
 update:

@@ -51,14 +51,14 @@ Alternatively, you can simply perform a fresh clone of the new URL:
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) examples with **C** and **Zig** using [Dear_Bindings](https://github.com/dearimgui/dear_bindings) as first step.
 And one can use many other libaries and examples with less external dependencies[^except_raylib].
 
-[DearBindings](https://github.com/dearimgui/dear_bindings): dear_bindings_v0.18_ImGui_v1.92.7-docking  
-[Dear ImGui](https://github.com/ocornut/imgui): 1.92.7 dock (2026/04)
+[DearBindings](https://github.com/dearimgui/dear_bindings): dear_bindings_v0.18_ImGui_v1.92.8-docking  
+[Dear ImGui](https://github.com/ocornut/imgui): 1.92.8 dock (2026/06)
 
 #### Zig fetch
 
 ---
 
-Use zig-0.16.0 or later
+Use zig-0.16.0
 
 1. Zig fetch `imguinz2`
 
@@ -192,8 +192,8 @@ Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/
     - [x] zig-0.16.0  
        Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)  
        Linux:   [  zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
-    - [x] zig-0.17.0-dev.135 
-    - [x] \(zig-0.15.2\): Deprecated 
+    - [x] ~~zig-0.17.0-dev.813~~ (2026/06/07)
+    - [x] ~~zig-0.15.2~~ Deprecated 
 
 - Windows11  
    - Optional: MSys2/MinGW basic commands (make, rm, cp ...)

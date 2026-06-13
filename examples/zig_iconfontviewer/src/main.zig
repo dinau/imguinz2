@@ -54,7 +54,7 @@ pub fn gui_main(window: *app.Window) !void {
             const listBoxWidth = 340; //# The value must be 2^n
             ig.ImGui_Text("No.[%4d]", item_current);
             ig.ImGui_SameLine();
-            var sBuf = [_:0]u8{0} ** 100;
+            var sBuf: [100:0]u8 = std.mem.zeroes([100:0]u8);
             _ = try std.fmt.bufPrint(&sBuf, "{s}", .{ift.iconFontsTbl[item_current]});
             if (ig.ImGui_Button(ifa.ICON_FA_COPY ++ " Copy to")) {
                 var it = std.mem.tokenizeAny(u8, &sBuf, " ");

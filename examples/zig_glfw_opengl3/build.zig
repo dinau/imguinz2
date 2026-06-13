@@ -2,9 +2,26 @@ const std = @import("std");
 const builtin = @import("builtin");
 
 pub fn build(b: *std.Build) void {
-    const target = b.standardTargetOptions(.{});
-    const optimize = b.standardOptimizeOption(.{});
+    //    const target = b.standardTargetOptions(.{});
+    var target = b.standardTargetOptions(.{});
 
+    const optimize = b.standardOptimizeOption(.{});
+if (target.result.cpu.arch == .x86_64) {
+    // x86_64専用のFeature Enumを取得
+    const x86_features = @import("std").Target.x86.Feature;
+
+    // 確実に「u9 (Index)」に型変換して配列を作る
+    const features_to_disable = &[_]u9{
+        @intFromEnum(x86_features.avx512f),
+        @intFromEnum(x86_features.avx512vl),
+        @intFromEnum(x86_features.avx512cd),
+        @intFromEnum(x86_features.avx512vbmi2),
+    };
+
+    for (features_to_disable) |feature| {
+        target.query.cpu_features_sub.addFeature(feature);
+    }
+}
     const exe_name = "zig_glfw_opengl3";
 
     const main_mod = b.createModule(.{
@@ -74,9 +91,12 @@ pub fn build(b: *std.Build) void {
     // run
     const run_cmd = b.addRunArtifact(exe);
     run_cmd.step.dependOn(b.getInstallStep());
-    run_cmd.setCwd(.{ .cwd_relative = b.getInstallPath(.bin, "") });
-    if (b.args) |args| {
-        run_cmd.addArgs(args);
+    if (builtin.zig_version.minor >= 17) {
+        run_cmd.addPassthruArgs();
+    } else {
+        if (b.args) |args| {
+            run_cmd.addArgs(args);
+        }
     }
     const run_step = b.step("run", "Run the app");
     run_step.dependOn(&run_cmd.step);

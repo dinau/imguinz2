@@ -82,12 +82,16 @@ pub fn build(b: *std.Build) void {
         b.getInstallStep().dependOn(&res.step);
     }
 
-    const run_step = b.step("run", "Run the app");
+    // run
     const run_cmd = b.addRunArtifact(exe);
-    run_step.dependOn(&run_cmd.step);
-    run_cmd.setCwd(.{ .cwd_relative = b.getInstallPath(.bin, "") });
     run_cmd.step.dependOn(b.getInstallStep());
+    if (builtin.zig_version.minor >= 17) {
+        run_cmd.addPassthruArgs();
+    } else {
     if (b.args) |args| {
         run_cmd.addArgs(args);
     }
+    }
+    const run_step = b.step("run", "Run the app");
+    run_step.dependOn(&run_cmd.step);
 }

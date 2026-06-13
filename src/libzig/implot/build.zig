@@ -15,6 +15,9 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+
+    step.defineCMacro("IMGUI_DISABLE_SSE","");
+
     step.addIncludePath(b.path("./src"));
     step.addIncludePath(b.path("../../libc/dcimgui"));
     step.addIncludePath(b.path("../../libc/imgui"));

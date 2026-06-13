@@ -1,4 +1,5 @@
 const std = @import("std");
+const builtin = @import("builtin");
 const app = @import("appimgui");
 const ig = app.ig;
 const glfw = app.glfw;
@@ -28,7 +29,7 @@ pub fn gui_main(window: *app.Window) !void {
     var showDemoWindow = true;
     var counter: i32 = 0;
     // Input text buffer
-    var sTextInuputBuf = [_:0]u8{0} ** 200;
+    var sTextInputBuf: [200:0]u8 = std.mem.zeroes([200:0]u8);
 
     //------------
     // Load image
@@ -74,10 +75,10 @@ pub fn gui_main(window: *app.Window) !void {
             _ = ig.ImGui_Begin(ifa.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0);
             defer ig.ImGui_End();
 
-            _ = ig.ImGui_InputTextWithHint("InputText", "Input text here", &sTextInuputBuf, sTextInuputBuf.len, 0);
+            _ = ig.ImGui_InputTextWithHint("InputText", "Input text here", &sTextInputBuf, sTextInputBuf.len, 0);
             ig.ImGui_Text("Input result:");
             ig.ImGui_SameLine();
-            ig.ImGui_Text(&sTextInuputBuf);
+            ig.ImGui_Text(&sTextInputBuf);
 
             ig.ImGui_Spacing();
             _ = ig.ImGui_Checkbox("Demo Window", &showDemoWindow);
@@ -92,7 +93,14 @@ pub fn gui_main(window: *app.Window) !void {
             const imageExt = ImgFormatTbl[cbItemIndex].ext;
             var svNameBuf: [2048]u8 = undefined;
             var svBuf: [2048]u8 = undefined;
-            const slszName = try std.fmt.bufPrintZ(&svNameBuf, "{s}_{}{s}", .{ SaveImageName, counter, imageExt });
+
+            var slszName: [:0]u8 = undefined;
+            if (builtin.zig_version.minor >= 17) {
+                slszName = try std.fmt.bufPrintSentinel(&svNameBuf, "{s}_{}{s}", .{ SaveImageName, counter, imageExt }, 0);
+            } else {
+                slszName = try std.fmt.bufPrintZ(&svNameBuf, "{s}_{}{s}", .{ SaveImageName, counter, imageExt });
+            }
+
             if (ig.ImGui_Button("Save Image")) {
                 const wkSize = ig.ImGui_GetMainViewport().*.WorkSize;
                 const sx: c_int = @intFromFloat(wkSize.x);
@@ -104,7 +112,14 @@ pub fn gui_main(window: *app.Window) !void {
             ig.ImGui_PopID();
 
             // Show tooltip help
-            const slszBuf = try std.fmt.bufPrintZ(&svBuf, "Save to {s}", .{slszName});
+            //
+            var slszBuf: [:0]u8 = undefined;
+            if (builtin.zig_version.minor >= 17) {
+                slszBuf = try std.fmt.bufPrintSentinel(&svBuf, "Save to {s}", .{slszName}, 0);
+            } else {
+                slszBuf = try std.fmt.bufPrintZ(&svBuf, "Save to {s}", .{slszName});
+            }
+
             const green = utils.vec4(0.0, 1.0, 0.0, 1.0);
             utils.setTooltipEx(slszBuf, ig.ImGuiHoveredFlags_DelayNone, green);
             counter += 1;
@@ -146,7 +161,7 @@ pub fn gui_main(window: *app.Window) !void {
             const imageBoxPosTop = ig.ImGui_GetCursorScreenPos(); // # Get absolute pos.
 
             ig.ImGui_Image(ig.ImTextureRef{ ._TexData = null, ._TexID = textureId }, size);
-            const  imageBoxPosEnd = ig.ImGui_GetCursorScreenPos(); // # Get absolute pos.
+            const imageBoxPosEnd = ig.ImGui_GetCursorScreenPos(); // # Get absolute pos.
             if (ig.ImGui_IsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
                 utils.zoomGlass(&textureId, textureWidth, imageBoxPosTop, imageBoxPosEnd, false);
             }
