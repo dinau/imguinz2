@@ -140,7 +140,7 @@ pub fn main() !void {
             ig.ImGui_Text(impl_opengl3.glGetString(impl_opengl3.GL_VERSION));
             ig.ImGui_Text(ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v");
             ig.ImGui_SameLine();
-            ig.ImGui_Text(ig.IMGUI_VERSION);
+            ig.ImGui_Text(ig.ImGui_GetVersion());
             ig.ImGui_Text(ifa.ICON_FA_CIRCLE_INFO ++ " Zig v");
             ig.ImGui_SameLine();
             ig.ImGui_Text(builtin.zig_version_string);

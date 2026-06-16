@@ -26,7 +26,7 @@ EXAMPLE_DIRS_ZIG_RAYLIB =                          \
 							examples/zig_rlimgui_basic
 
 ifeq ($(OS),Windows_NT)
-	 EXAMPLE_DIRS     += examples/win32_dx11
+	 EXAMPLE_DIRS_WIN32     += examples/win32_dx11
 endif
 
 EXAMPLE_DIRS_SDL =                                 \
@@ -36,7 +36,7 @@ EXAMPLE_DIRS_SDL =                                 \
 
 .PHONY: test clean gen cc zig zig_raylib sdl fmt cleanall
 
-all: zig cc sdl zig_raylib
+all: zig cc sdl win32 zig_raylib
 
 cc:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir)))
@@ -49,6 +49,9 @@ zig_raylib:
 
 sdl:
 	$(foreach exdir,$(EXAMPLE_DIRS_SDL), $(call def_make,$(exdir)))
+
+win32:
+	$(foreach exdir,$(EXAMPLE_DIRS_WIN32), $(call def_make,$(exdir)))
 
 fmt:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),$@ ))
