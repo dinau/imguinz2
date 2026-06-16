@@ -276,6 +276,12 @@ zig build run --release=fast                # or make run
 
 ---
 
+First fetch raylib,
+
+```sh
+zig fetch --save git+https://github.com/raysan5/raylib
+```
+
 [raylib_basic](examples/zig_raylib_basic/src/main.zig)  
 
 
@@ -289,8 +295,13 @@ zig build run --release=fast                # or make run
 
 ---
 
-[main.zig](examples/zig_rlimgui_basic/src/main.zig)  
+First fetch raylib,
 
+```sh
+zig fetch --save git+https://github.com/raysan5/raylib
+```
+
+[main.zig](examples/zig_rlimgui_basic/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguin_examples/raw/main/img/rlimgui.gif)
 
