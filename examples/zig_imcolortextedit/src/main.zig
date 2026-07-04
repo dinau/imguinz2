@@ -16,7 +16,7 @@ fn point2px(point: f32) f32 {
 // gui_main()
 //-----------
 pub fn gui_main(window: *app.Window) !void {
-    _ = app.stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = app.stf.setupFonts(null); // null: Setup default CJK fonts and Icon fonts
 
     //-- This is a programing font. https://github.com/yuru7/NOTONOTO
     const fontFullPath = "resources/fonts/NOTONOTO-Regular.ttf";

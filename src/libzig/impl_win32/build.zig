@@ -16,6 +16,7 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
         .link_libc = true,
     });
+    step.defineCMacro("__INTRIN_H_",null);
     step.addIncludePath(b.path("../../libc/dcimgui"));
     step.addIncludePath(b.path("../../libc/dcimgui/backends"));
     step.addIncludePath(b.path("../../libc/imgui"));

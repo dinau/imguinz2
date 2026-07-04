@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-ImFont* setupFonts(void);
+ImFont* setupFonts(const char* theFontPath);
 
 #ifdef __cplusplus
 }

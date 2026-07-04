@@ -19,7 +19,7 @@ int main(void) {
   char sBuf[200];
   memset(sBuf, '\0', sizeof(sBuf));
 
-  setupFonts();
+  setupFonts(NULL); // NULL: Setup default CJK fonts and Icon fonts
   setTheme_c(THEME_DARK);
 
   while (!shouldClose_c(win)) {

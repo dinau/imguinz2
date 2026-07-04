@@ -98,7 +98,7 @@ int main(int argc, char **argv) {
   bool show_another_window = false;
   ImVec4 clear_color = {0.45f, 0.55f, 0.60f, 1.00f};
 
-  setupFonts();
+  setupFonts(NULL); // NULL: Setup default CJK fonts and Icon fonts
 
   int showWindowDelay = 2; // TODO: Avoid flickering of window at startup
 

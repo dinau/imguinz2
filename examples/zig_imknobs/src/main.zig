@@ -8,7 +8,7 @@ const knobs = @import("imknobs");
 // gui_main()
 //-----------
 pub fn gui_main(window: *app.Window) void {
-    _ = app.stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = app.stf.setupFonts(null); // null: Setup default CJK fonts and Icon fonts
 
     //---------------
     // main loop GUI

@@ -1,5 +1,3 @@
-SDL3_DIR = ../../src/libc/sdl/SDL3/x86_64-w64-mingw32
-
 # Add backend driver in imgui
 BACKEND_SRCS_CPP += dcimgui_impl_opengl3.cpp
 BACKEND_SRCS_CPP += dcimgui_impl_sdl3.cpp
@@ -12,17 +10,17 @@ CFLAGS += -DCIMGUI_USE_OPENGL3
 CFLAGS += -DSDL_ENABLE_OLD_NAMES
 LIBS   += -L.
 
-# SDL3 settings
-#CFLAGS += $(shell pkg-config --cflags sdl3)
-CFLAGS += -I$(SDL3_DIR)/include -I$(SDL3_DIR)/include/SDL3
-LIBS   += -L$(SDL3_DIR)/lib
-
-# Use SDL3 Static lib
-ifeq ($(STATIC_SDL3),true)
-LIBS += -lSDL3
+# SDL3 library settings
+ifeq ($(OS),Windows_NT)
+  SDL3_DIR = ../../src/libc/sdl/SDL3/x86_64-w64-mingw32
+  CFLAGS += -I$(SDL3_DIR)/include -I$(SDL3_DIR)/include/SDL3
+  LIBS   += -L$(SDL3_DIR)/lib
+	ifeq ($(STATIC_SDL3),true)
+		LIBS += -lSDL3
+	else
+		LIBS += -lSDL3.dll
+	endif
 else
-# Use SDL3 dll lib
-LIBS += -lSDL3.dll
-#LIBS += -lSDL3
-
+	CFLAGS += $(shell pkg-config --cflags sdl3)
+	LIBS += -lSDL3
 endif

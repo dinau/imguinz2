@@ -51,7 +51,7 @@ int main(void) {
   int textureHeight = 0;
   LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
 
-  setupFonts();
+  setupFonts(NULL); // NULL: Setup default CJK fonts and Icon fonts
   setTheme_c(THEME_DARK);
 
   while (!shouldClose_c(win)) {

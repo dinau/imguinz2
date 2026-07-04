@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
     sBuf[i] = '\0';
   }
 
-  setupFonts();
+  setupFonts(NULL); // NULL: Setup default CJK fonts and Icon fonts
 
   int showWindowDelay = 2;
 

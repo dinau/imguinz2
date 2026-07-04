@@ -192,8 +192,7 @@ Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/
     - [x] zig-0.16.0  
        Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)  
        Linux:   [  zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
-    - [x] zig-0.17.0-dev.864[^except_raylib] (2026/06/16)
-    - [x] ~~zig-0.15.2~~ Deprecated 
+    - [x] zig-0.17.0-dev.1158[^except_raylib] (2026/06/30)
 
 - Windows11  
    - Optional: MSys2/MinGW basic commands (make, rm, cp ...)
@@ -373,12 +372,12 @@ zig fetch --save git+https://github.com/raysan5/raylib
 
 ---
 
-| Language |                                                                                                                    GLFW | Magnifing glass | Image load /save | Note |
-|:--------:|------------------------------------------------------------------------------------------------------------------------:|:---------------:|:----------------:|------|
-|     C    |                                                             [glfw_opengl3_image_load](examples/glfw_opengl3_image_load) |        -        |         Y        |      |
-|     C    |                                                             [glfw_opengl3_image_save](examples/glfw_opengl3_image_save) |        -        |         Y        |      |
-|    Zig   |                                        [zig_glfw_opengl3_image_load](examples/zig_glfw_opengl3_image_load/src/main.zig) |        Y        |         Y        |      |
-|    Zig   | [zig_sdl3_sdlgup3](examples/zig_sdl3_sdlgpu3/src/main.zig) / [zig_sdl3_opengl3](examples/zig_sdl3_opengl3/src/main.zig) |        -        |       load       |Download [SDL3.dll](https://github.com/libsdl-org/SDL/releases) on Windows      |
+| Language |                                                                                                                    GLFW | Magnifing glass | Image load /save | Note                                                                                                      |
+|:--------:|------------------------------------------------------------------------------------------------------------------------:|:---------------:|:----------------:|-----------------------------------------------------------------------------------------------------------|
+|     C    |                                                             [glfw_opengl3_image_load](examples/glfw_opengl3_image_load) |        -        |         Y        |                                                                                                           |
+|     C    |                                                             [glfw_opengl3_image_save](examples/glfw_opengl3_image_save) |        -        |         Y        |                                                                                                           |
+|    Zig   |                                        [zig_glfw_opengl3_image_load](examples/zig_glfw_opengl3_image_load/src/main.zig) |        Y        |         Y        |                                                                                                           |
+|    Zig   | [zig_sdl3_sdlgup3](examples/zig_sdl3_sdlgpu3/src/main.zig) / [zig_sdl3_opengl3](examples/zig_sdl3_opengl3/src/main.zig) |        -        |       load       | Download [SDL3.dll](https://github.com/libsdl-org/SDL/releases) on Windows and copy to zig-out/bin folder |
 
 - [x] Image file captured will be saved in current folder.  
 - [x] Image format can be selected from `JPEG / PNG / BMP / TGA`.
