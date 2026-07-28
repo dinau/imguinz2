@@ -36,9 +36,6 @@ pub fn build(b: *std.Build) void {
     // Load Icon
     exe.root_module.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
 
-    // std.Build: Deprecate Step.Compile APIs that mutate the root module #22587
-    // See. https://github.com/ziglang/zig/pull/22587
-
     //---------------
     //---------------
     // Libs
@@ -74,7 +71,11 @@ pub fn build(b: *std.Build) void {
         // Static link
         //exe.addObjectFile(b.path(b.pathJoin(&.{sdl3_path, "lib","SDL3.lib"})));
         // Dynamic link
-        exe.root_module.addObjectFile(.{ .cwd_relative = b.pathJoin(&.{ sdl_path, "lib", "libSDL3.dll.a", }) });
+        exe.root_module.addObjectFile(.{ .cwd_relative = b.pathJoin(&.{
+            sdl_path,
+            "lib",
+            "libSDL3.dll.a",
+        }) });
         //exe.linkSystemLibrary("sdl3dll"); // For dynamic link
         // System
     } else if (builtin.target.os.tag == .linux) {
@@ -85,31 +86,35 @@ pub fn build(b: *std.Build) void {
     exe.root_module.link_libc = true;
     exe.root_module.link_libcpp = true;
 
-    exe.subsystem = .Windows; // Hide console window
+    // Hide console window
+    exe.subsystem = if (builtin.zig_version.minor >= 17) .windows else .windows;
 
     b.installArtifact(exe);
 
     const install_resources = b.addInstallDirectory(.{
-        .source_dir = b.path("resources"),        // base: assets folder
-        .install_dir = .bin,                      // bin folder
-        .install_subdir = "resources",            // destination: bin/resources/
+        .source_dir = b.path("resources"), // base: assets folder
+        .install_dir = .bin, // bin folder
+        .install_subdir = "resources", // destination: bin/resources/
     });
     exe.step.dependOn(&install_resources.step);
 
-    const resBin = [_][]const u8{ "imgui.ini"};
+    const resBin = [_][]const u8{"imgui.ini"};
     inline for (resBin) |file| {
         const res = b.addInstallFile(b.path(file), "bin/" ++ file);
         b.getInstallStep().dependOn(&res.step);
     }
 
     const fonticon_dir = "../../src/libc/fonticon/fa6/";
-    const res_fonticon = [_][]const u8{ "fa-solid-900.ttf", "LICENSE.txt" ,};
+    const res_fonticon = [_][]const u8{
+        "fa-solid-900.ttf",
+        "LICENSE.txt",
+    };
     inline for (res_fonticon) |file| {
         const res = b.addInstallFile(b.path(fonticon_dir ++ file), "bin/resources/fonticon/fa6/" ++ file);
         b.getInstallStep().dependOn(&res.step);
     }
 
-    // SDL3.dll
+    //// SDL3.dll
     //if (builtin.target.os.tag == .windows) {
     //    const sdl3dll = "SDL3.dll";
     //    const resSDL3Dll = b.addInstallFile(.{.cwd_relative = b.fmt("{s}/{s}/{s}", .{sdl_path, "bin", sdl3dll})}, "bin/" ++ sdl3dll);
@@ -127,8 +132,8 @@ pub fn build(b: *std.Build) void {
     if (builtin.zig_version.minor >= 17) {
         run_cmd.addPassthruArgs();
     } else {
-    if (b.args) |args| {
-        run_cmd.addArgs(args);
+        if (b.args) |args| {
+            run_cmd.addArgs(args);
         }
     }
     const run_step = b.step("run", "Run the app");

@@ -1,7 +1,7 @@
 .{
-    .name = .win32_dx11,
+    .name = .win32_dx11_c,
     .version = "0.1.0",
-    .fingerprint = 0xd1e16ca6db025221, // Changing this has security and trust implications.
+    .fingerprint = 0x1418847b91b1ed97, // Changing this has security and trust implications.
     .minimum_zig_version = "0.15.2",
     .dependencies = .{
         .dcimgui = .{ .path = "../../src/libzig/dcimgui" },

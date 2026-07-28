@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <GLFW/glfw3.h>
-
 #include "appimgui.h"
 
+COpts copts = {.docking = true, .viewport = false, .title_bar_icon_name = "./resources/z.png"};
 int main(void) {
-  Window* win = createImGui_c(1024, 900, "ImGui window");
+  Window* win = createImGui_c(1024, 900, "Dear ImGui window", &copts);
   if (win == NULL) {
-    fprintf(stderr, "Failed to create ImGui window\n");
+    fprintf(stderr, "Failed to create Dear ImGui window\n");
     return 1;
   }
 

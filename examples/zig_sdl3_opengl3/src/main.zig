@@ -8,7 +8,7 @@ pub const impl_opengl3 = @import("impl_opengl3");
 pub const stf = @import("setupfont");
 pub const ifa = @import("fonticon");
 
-const IMGUI_HAS_DOCK = false; // true: Can't compile at this time.
+const IMGUI_HAS_DOCK = true;
 
 const MainWinWidth: i32 = 1024;
 const MainWinHeight: i32 = 800;

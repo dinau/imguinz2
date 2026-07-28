@@ -35,7 +35,8 @@ pub fn build(b: *std.Build) void {
     // Load Icon
     exe.root_module.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
 
-    exe.subsystem = .Windows; // Hide console window
+    // Hide console window
+    exe.subsystem = if (builtin.zig_version.minor >= 17) .windows else .windows;
 
     b.installArtifact(exe);
 
@@ -55,7 +56,10 @@ pub fn build(b: *std.Build) void {
     }
 
     const fonticon_dir = "../../src/libc/fonticon/fa6/";
-    const res_fonticon = [_][]const u8{ "fa-solid-900.ttf", "LICENSE.txt" };
+    const res_fonticon = [_][]const u8{
+        "fa-solid-900.ttf",
+        "LICENSE.txt",
+    };
     inline for (res_fonticon) |file| {
         const res = b.addInstallFile(b.path(fonticon_dir ++ file), "bin/resources/fonticon/fa6/" ++ file);
         b.getInstallStep().dependOn(&res.step);
@@ -72,8 +76,8 @@ pub fn build(b: *std.Build) void {
     if (builtin.zig_version.minor >= 17) {
         run_cmd.addPassthruArgs();
     } else {
-    if (b.args) |args| {
-        run_cmd.addArgs(args);
+        if (b.args) |args| {
+            run_cmd.addArgs(args);
         }
     }
     const run_step = b.step("run", "Run the app");

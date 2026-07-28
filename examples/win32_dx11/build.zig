@@ -50,10 +50,9 @@ pub fn build(b: *std.Build) void {
     // Load Icon
     exe.root_module.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
 
-    // std.Build: Deprecate Step.Compile APIs that mutate the root module #22587
-    // See. https://github.com/ziglang/zig/pull/22587
+    // Hide console window
+    exe.subsystem = if (builtin.zig_version.minor >= 17) .windows else .windows;
 
-    exe.subsystem = .Windows; // Hide console window
     exe.root_module.link_libc = true;
     b.installArtifact(exe);
 
@@ -88,9 +87,9 @@ pub fn build(b: *std.Build) void {
     if (builtin.zig_version.minor >= 17) {
         run_cmd.addPassthruArgs();
     } else {
-    if (b.args) |args| {
-        run_cmd.addArgs(args);
-    }
+        if (b.args) |args| {
+            run_cmd.addArgs(args);
+        }
     }
     const run_step = b.step("run", "Run the app");
     run_step.dependOn(&run_cmd.step);

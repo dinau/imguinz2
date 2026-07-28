@@ -19,18 +19,18 @@ pub fn gui_main(window: *app.Window) !void {
 
     var item_current: usize = 0;
     var showIconFontsViewerWindow = true;
-    var wsZoom:f32 = 45;
+    var wsZoom: f32 = 45;
 
     var listBoxTextureID: glfw.GLuint = 0; //# Must be == 0 at first
     defer glfw.glDeleteTextures(1, &listBoxTextureID);
     //---------------
     // main loop GUI
     //---------------
-    while (!window.shouldClose ()) {
-        window.pollEvents ();
+    while (!window.shouldClose()) {
+        window.pollEvents();
 
         // Iconify sleep
-        if( window.isIconified()){
+        if (window.isIconified()) {
             continue;
         }
 
@@ -68,7 +68,7 @@ pub fn gui_main(window: *app.Window) !void {
 
             //# Show ListBox main
             ig.ImGui_NewLine();
-            const listBoxPosTop =  ig.ImGui_GetCursorScreenPos(); //# Get absolute pos.
+            const listBoxPosTop = ig.ImGui_GetCursorScreenPos(); //# Get absolute pos.
             ig.ImGui_SetNextItemWidth(listBoxWidth);
             _ = ig.ImGui_ListBox("##listbox1", @ptrCast(&item_current), &ift.iconFontsTbl, ift.iconFontsTbl.len, 34);
             // TODO
@@ -93,7 +93,7 @@ pub fn gui_main(window: *app.Window) !void {
             _ = ig.ImGui_SliderFloat("##Zoom1", &wsZoom, 30, 90);
             ig.ImGui_Separator();
 
-            _ = ig.ImGui_BeginChild("child2", .{.x = 0, .y = 0}, 0, 0);
+            _ = ig.ImGui_BeginChild("child2", .{ .x = 0, .y = 0 }, 0, 0);
             defer ig.ImGui_EndChild();
 
             const flags = ig.ImGuiTableFlags_RowBg | ig.ImGuiTableFlags_BordersOuter | ig.ImGuiTableFlags_BordersV | ig.ImGuiTableFlags_Resizable | ig.ImGuiTableFlags_Reorderable | ig.ImGuiTableFlags_Hideable;
@@ -139,8 +139,7 @@ pub fn gui_main(window: *app.Window) !void {
             _ = ig.ImGui_Begin("Icon Font filter", null, 0);
             defer ig.ImGui_End();
             ig.ImGui_Text("(Copy)");
-            if (ig.ImGui_IsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
-            }
+            if (ig.ImGui_IsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {}
             //filterAry = {}
             utils.setTooltip("Copied first line to clipboard !", ig.ImGuiHoveredFlags_DelayNone); //-- Show tooltip help
             ig.ImGui_SameLine();
@@ -167,7 +166,12 @@ pub fn gui_main(window: *app.Window) !void {
 // main()
 //--------
 pub fn main() !void {
-    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig lang.");
+    var window = try app.Window.createImGui(
+        MainWinWidth,
+        MainWinHeight,
+        "Dear ImGui window in Zig",
+        .{},
+    );
     defer window.destroyImGui();
 
     //_ = app.setTheme(light); // Theme: dark, classic, light, microsoft

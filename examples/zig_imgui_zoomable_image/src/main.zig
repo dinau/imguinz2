@@ -4,7 +4,6 @@ const zmi = @import("imguizoomableimage");
 
 // gui_main()
 pub fn gui_main(win: *app.Window) void {
-
     win.eventLoadStandard(); // See ../../../src/libzig/appimgui/src/appImGui.zig
 
     var zoomState: zmi.ImGuiImageState = undefined;
@@ -18,7 +17,7 @@ pub fn gui_main(win: *app.Window) void {
 
     _ = app.utils.LoadTextureFromFile(imageName, &textureId, &textureWidth, &textureHeight);
 
-    const textureRef: zmi.ImTextureRef= .{ ._TexID = textureId };
+    const textureRef: zmi.ImTextureRef = .{ ._TexID = textureId };
 
     const pio = ig.ImGui_GetIO();
 
@@ -53,7 +52,7 @@ pub fn gui_main(win: *app.Window) void {
 
         zoomState.textureSize = .{ .x = @as(f32, @floatFromInt(textureWidth)), .y = @as(f32, @floatFromInt(textureHeight)) };
 
-        _ = ig.ImGui_Begin("ImGui Zoomable Image demo in Zig " ++ app.ifa.ICON_FA_DOG, null, 0);
+        _ = ig.ImGui_Begin("Daer ImGui Zoomable Image demo " ++ app.ifa.ICON_FA_DOG, null, 0);
         const displaySize = ig.ImGui_GetContentRegionAvail();
         zmi.ImGuiImage_Zoomable(textureRef, @ptrCast(&displaySize), &zoomState);
         ig.ImGui_End();
@@ -92,7 +91,12 @@ const MainWinWidth: i32 = 1024;
 const MainWinHeight: i32 = 900;
 
 pub fn main() !void {
-    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig");
+    var window = try app.Window.createImGui(
+        MainWinWidth,
+        MainWinHeight,
+        "ImGui window in Zig",
+        .{},
+    );
     defer window.destroyImGui();
 
     _ = app.stf.setupFonts(null); // null: Setup default CJK fonts and Icon fonts

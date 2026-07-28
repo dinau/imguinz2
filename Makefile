@@ -1,8 +1,10 @@
 # All example are built at a time.
-EXAMPLE_DIRS =                                     \
+
+EXAMPLE_DIRS_C =                                   \
 							examples/glfw_opengl3                \
 	            examples/glfw_opengl3_image          \
 	            examples/glfw_opengl3_jp
+
 
 EXAMPLE_DIRS_ZIG =                                 \
 							examples/zig_glfw_opengl3            \
@@ -34,17 +36,19 @@ EXAMPLE_DIRS_SDL =                                 \
 			        examples/zig_sdl3_sdlgpu3            \
 			        examples/sdl3_opengl3
 
-.PHONY: test clean gen cc zig zig_raylib sdl fmt cleanall
+EXAMPLE_DIRS_ALL += $(EXAMPLE_DIRS_C) $(EXAMPLE_DIRS_ZIG) $(EXAMPLE_DIRS_ZIG_RAYLIB) $(EXAMPLE_DIRS_SDL) $(EXAMPLE_DIRS_WIN32)
 
-all: zig cc sdl win32 zig_raylib
+.PHONY: test clean gen cc zig raylib sdl fmt cleanall
+
+all: zig cc sdl win32 raylib
 
 cc:
-	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir)))
+	$(foreach exdir,$(EXAMPLE_DIRS_C), $(call def_make,$(exdir)))
 
 zig:
 	$(foreach exdir,$(EXAMPLE_DIRS_ZIG), $(call def_make,$(exdir)))
 
-zig_raylib:
+raylib:
 	$(foreach exdir,$(EXAMPLE_DIRS_ZIG_RAYLIB), $(call def_make,$(exdir)))
 
 sdl:
@@ -54,36 +58,31 @@ win32:
 	$(foreach exdir,$(EXAMPLE_DIRS_WIN32), $(call def_make,$(exdir)))
 
 fmt:
-	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),$@ ))
-
-test:
-	@echo $(notdir $(EXAMPLE_DIRS))
+	$(foreach exdir,$(EXAMPLE_DIRS_ALL), $(call def_make,$(exdir),$@ ))
 
 clean: cleanall
 	@-rm -fr .zig-cache
 
 cleanall:
-	@-$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),$@ ))
-	@-$(foreach exdir,$(EXAMPLE_DIRS_ZIG), $(call def_make,$(exdir),$@ ))
-	@-$(foreach exdir,$(EXAMPLE_DIRS_ZIG_RAYLIB), $(call def_make,$(exdir),$@ ))
+	@-$(foreach exdir,$(EXAMPLE_DIRS_ALL), $(call def_make,$(exdir),$@ ))
 	@-$(MAKE) -C src/libzig clean
 
+DB_VER             = 0.21
+IMGUI_VER          = 1.92.9
 WORK_DIR           = ../imguinz2_work
+IMGUI_EXT_DIR      = $(WORK_DIR)/imgui
 DB_DIR             = $(WORK_DIR)/dear_bindings
 DCIMGUI_DIR        = src/libc/dcimgui
 IMGUI_DIR          = src/libc/imgui
-IMGUI_EXTERNAL_DIR = ../000imguin_dev/imguin_git/libs/cimgui/imgui
-DB_VER             = 0.21
-IMGUI_VER          = 1.92.8
 ZIP_NAME           = DearBindings_v$(DB_VER)_ImGui_v$(IMGUI_VER)-docking
 
 update:
-	-mkdir -p $(IMGUI_DIR)
-	@# Copy new ImGui sources
-	cp -fr $(IMGUI_EXTERNAL_DIR)/* $(IMGUI_DIR)/
+	@-rm -fr   $(IMGUI_DIR)
+	@-mkdir -p $(IMGUI_DIR)
+	@cp -fr $(IMGUI_EXT_DIR)/* $(IMGUI_DIR)/
 	@# Download load generated Dear bindings sources
 	curl -L https://github.com/dearimgui/dear_bindings/releases/download/$(ZIP_NAME)/$(ZIP_NAME).zip --output-dir $(WORK_DIR) -O
-	@# Delete dcimgui/
+	@# Delete old dcimgui/
 	-rm -fr src/dcimgui/{*,backends/*}
 	@# Unzip
 	unzip -o $(WORK_DIR)/$(ZIP_NAME) -d $(DCIMGUI_DIR)

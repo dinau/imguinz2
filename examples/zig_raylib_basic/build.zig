@@ -23,21 +23,25 @@ pub fn build(b: *std.Build) void {
         // "another_lib",
     };
     inline for (dependencies) |dep_name| {
-        const dep = imguinz.builder.dependency(dep_name, .{ .target = target, .optimize = optimize, });
+        const dep = imguinz.builder.dependency(dep_name, .{
+            .target = target,
+            .optimize = optimize,
+        });
         exe.root_module.addImport(dep_name, dep.module(dep_name));
     }
 
     // Load Icon
     exe.root_module.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
 
-    exe.subsystem = .Windows; // Hide console window
+    // Hide console window
+    exe.subsystem = if (builtin.zig_version.minor >= 17) .windows else .windows;
 
     b.installArtifact(exe);
 
     const install_resources = b.addInstallDirectory(.{
-        .source_dir = b.path("resources"),        // base: assets folder
-        .install_dir = .bin,                      // bin folder
-        .install_subdir = "resources",            // destination: bin/resources/
+        .source_dir = b.path("resources"), // base: assets folder
+        .install_dir = .bin, // bin folder
+        .install_subdir = "resources", // destination: bin/resources/
     });
     exe.step.dependOn(&install_resources.step);
 
@@ -64,8 +68,8 @@ pub fn build(b: *std.Build) void {
     if (builtin.zig_version.minor >= 17) {
         run_cmd.addPassthruArgs();
     } else {
-    if (b.args) |args| {
-        run_cmd.addArgs(args);
+        if (b.args) |args| {
+            run_cmd.addArgs(args);
         }
     }
     const run_step = b.step("run", "Run the app");

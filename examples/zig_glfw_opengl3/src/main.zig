@@ -45,7 +45,15 @@ const MainWinWidth: i32 = 1024;
 const MainWinHeight: i32 = 900;
 
 pub fn main() !void {
-    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig lang.");
+    var window = try app.Window.createImGui(
+        MainWinWidth,
+        MainWinHeight,
+        "Dear ImGui window in Zig",
+        .{
+            .docking = true,
+            .title_bar_icon_name = "./resources/z.png",
+        },
+    );
     defer window.destroyImGui();
 
     _ = app.setTheme(.dark); // Theme: dark, classic, light, microsoft

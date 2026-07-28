@@ -2,26 +2,9 @@ const std = @import("std");
 const builtin = @import("builtin");
 
 pub fn build(b: *std.Build) void {
-    //    const target = b.standardTargetOptions(.{});
-    var target = b.standardTargetOptions(.{});
-
+    const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
-if (target.result.cpu.arch == .x86_64) {
-    // x86_64専用のFeature Enumを取得
-    const x86_features = @import("std").Target.x86.Feature;
 
-    // 確実に「u9 (Index)」に型変換して配列を作る
-    const features_to_disable = &[_]u9{
-        @intFromEnum(x86_features.avx512f),
-        @intFromEnum(x86_features.avx512vl),
-        @intFromEnum(x86_features.avx512cd),
-        @intFromEnum(x86_features.avx512vbmi2),
-    };
-
-    for (features_to_disable) |feature| {
-        target.query.cpu_features_sub.addFeature(feature);
-    }
-}
     const exe_name = "zig_glfw_opengl3";
 
     const main_mod = b.createModule(.{
@@ -51,10 +34,8 @@ if (target.result.cpu.arch == .x86_64) {
     // Load Icon
     exe.root_module.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
 
-    // std.Build: Deprecate Step.Compile APIs that mutate the root module #22587
-    // See. https://github.com/ziglang/zig/pull/22587
-
-    exe.subsystem = .Windows; // Hide console window
+    // Hide console window
+    exe.subsystem = if (builtin.zig_version.minor >= 17) .windows else .windows;
 
     b.installArtifact(exe);
 

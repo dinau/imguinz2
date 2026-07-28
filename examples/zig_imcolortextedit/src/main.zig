@@ -48,7 +48,7 @@ pub fn gui_main(window: *app.Window) !void {
     const sBuffer = try allocator.alloc(u8, file_size);
     defer allocator.free(sBuffer);
 
-    if (is_devel_api)  {
+    if (is_devel_api) {
         _ = try file.readStreaming(io, &.{sBuffer});
     } else {
         _ = try file.readAll(sBuffer);
@@ -203,7 +203,12 @@ const MainWinWidth: i32 = 1024;
 const MainWinHeight: i32 = 900;
 
 pub fn main() !void {
-    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig lang.");
+    var window = try app.Window.createImGui(
+        MainWinWidth,
+        MainWinHeight,
+        "Dear ImGui window in Zig",
+        .{},
+    );
     defer window.destroyImGui();
 
     _ = app.setTheme(.dark); // Theme: dark, classic, light, microsoft

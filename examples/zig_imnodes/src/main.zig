@@ -341,7 +341,12 @@ fn loadObj(alloc: std.mem.Allocator, this: *recObj) !void {
 // main()
 //--------
 pub fn main() !void {
-    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig lang.");
+    var window = try app.Window.createImGui(
+        MainWinWidth,
+        MainWinHeight,
+        "Dear ImGui window in Zig",
+        .{},
+    );
     defer window.destroyImGui();
 
     //_ = app.setTheme(app.Theme.light); // Theme: dark, classic, light, microsoft

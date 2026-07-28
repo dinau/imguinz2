@@ -11,7 +11,7 @@ const impl_sdlgpu3 = @import("impl_sdlgpu3");
 const img_load = @import("loadimage_sdlgpu3");
 const zmg = @import("./zoomGlass.zig");
 
-const IMGUI_HAS_DOCK = false; // Docking feature
+const IMGUI_HAS_DOCK = true; // Docking feature
 
 const MainWinWidth: c_int = 1024;
 const MainWinHeight: c_int = 900;
@@ -183,18 +183,18 @@ pub fn main() !void {
         // Show image load window
         //------------------------
         {
-          _ = ig.ImGui_Begin("Image load test", null, 0);
-          defer ig.ImGui_End();
-          var imageBoxPosTop:ig.ImVec2 = undefined;
-          var imageBoxPosEnd:ig.ImVec2 = undefined;
-          // Load image
-          const size       = ig.ImVec2 {.x = @floatFromInt(textureWidth), .y = @floatFromInt(textureHeight)};
-          imageBoxPosTop   = ig.ImGui_GetCursorScreenPos();// # Get absolute pos.
-          ig.ImGui_Image(ig.ImTextureRef{._TexData = null, ._TexID = @intFromPtr(pTextureId)}, size);
-          imageBoxPosEnd   = ig.ImGui_GetCursorScreenPos();// # Get absolute pos.
-          if(ig.ImGui_IsItemHovered(ig.ImGuiHoveredFlags_DelayNone)){
-            zmg.zoomGlass(@alignCast(@ptrCast(pTextureId)), textureWidth, imageBoxPosTop, imageBoxPosEnd, false);
-          }
+            _ = ig.ImGui_Begin("Image load test", null, 0);
+            defer ig.ImGui_End();
+            var imageBoxPosTop: ig.ImVec2 = undefined;
+            var imageBoxPosEnd: ig.ImVec2 = undefined;
+            // Load image
+            const size = ig.ImVec2{ .x = @floatFromInt(textureWidth), .y = @floatFromInt(textureHeight) };
+            imageBoxPosTop = ig.ImGui_GetCursorScreenPos(); // # Get absolute pos.
+            ig.ImGui_Image(ig.ImTextureRef{ ._TexData = null, ._TexID = @intFromPtr(pTextureId) }, size);
+            imageBoxPosEnd = ig.ImGui_GetCursorScreenPos(); // # Get absolute pos.
+            if (ig.ImGui_IsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
+                zmg.zoomGlass(@ptrCast(@alignCast(pTextureId)), textureWidth, imageBoxPosTop, imageBoxPosEnd, false);
+            }
         }
         //-----------
         // Rendering
@@ -233,7 +233,7 @@ pub fn main() !void {
             // Update and Render additional Platform Windows
 
             if (IMGUI_HAS_DOCK) {
-                if (pio.*.ConfigFlags & ig.ImGuiConfigFlags_ViewportsEnable) {
+                if (0 != (pio.*.ConfigFlags & ig.ImGuiConfigFlags_ViewportsEnable)) {
                     ig.ImGui_UpdatePlatformWindows();
                     ig.ImGui_RenderPlatformWindowsDefault();
                 }

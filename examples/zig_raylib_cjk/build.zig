@@ -23,14 +23,18 @@ pub fn build(b: *std.Build) void {
         // "another_lib",
     };
     inline for (dependencies) |dep_name| {
-        const dep = imguinz.builder.dependency(dep_name, .{ .target = target, .optimize = optimize, });
+        const dep = imguinz.builder.dependency(dep_name, .{
+            .target = target,
+            .optimize = optimize,
+        });
         exe.root_module.addImport(dep_name, dep.module(dep_name));
     }
 
     // Load Icon
     exe.root_module.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
 
-    exe.subsystem = .Windows; // Hide console window
+    // Hide console window
+    exe.subsystem = if (builtin.zig_version.minor >= 17) .windows else .windows;
 
     b.installArtifact(exe);
 
@@ -55,7 +59,11 @@ pub fn build(b: *std.Build) void {
     //exe.root_module.addImport("raygui", raygui);
 
     const cjk_font_dir = "../../src/libc/notonoto_v0.0.3/";
-    const cjk_font_files = [_][]const u8{ "LICENSE", "NOTONOTO-Regular.ttf", "README.md" ,};
+    const cjk_font_files = [_][]const u8{
+        "LICENSE",
+        "NOTONOTO-Regular.ttf",
+        "README.md",
+    };
     inline for (cjk_font_files) |file| {
         const res = b.addInstallFile(b.path(cjk_font_dir ++ file), "bin/resources/fonts/" ++ file);
         b.getInstallStep().dependOn(&res.step);
@@ -80,8 +88,8 @@ pub fn build(b: *std.Build) void {
     if (builtin.zig_version.minor >= 17) {
         run_cmd.addPassthruArgs();
     } else {
-    if (b.args) |args| {
-        run_cmd.addArgs(args);
+        if (b.args) |args| {
+            run_cmd.addArgs(args);
         }
     }
     const run_step = b.step("run", "Run the app");

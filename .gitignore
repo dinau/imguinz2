@@ -1,3 +1,4 @@
+zig_imguizmo1/
 *.lib
 .gitx/
 src/libc/imgui/examples/

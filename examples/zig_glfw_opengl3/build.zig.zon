@@ -1,7 +1,7 @@
 .{
-    .name = .app_glfw_opegl3,
+    .name = .app_glfw_opengl3,
     .version = "0.0.1",
-    .fingerprint = 0xebafcb8547c4927f, // Changing this has security and trust implications.
+    .fingerprint = 0xbc95b70f8642d509, // Changing this has security and trust implications.
     .minimum_zig_version = "0.15.1",
     .dependencies = .{
         .imguinz = .{ .path = "../../" },

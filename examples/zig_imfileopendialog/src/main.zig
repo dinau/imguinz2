@@ -198,7 +198,12 @@ fn copyToString(sBuff: []u8, cstr: [*:0]const u8) void {
 }
 
 pub fn main() !void {
-    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig lang.");
+    var window = try app.Window.createImGui(
+        MainWinWidth,
+        MainWinHeight,
+        "Dear ImGui window in Zig",
+        .{},
+    );
     defer window.destroyImGui();
 
     //_ = app.setTheme(light); // Theme: dark, classic, light, microsoft

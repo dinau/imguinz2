@@ -1,58 +1,44 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Caution: Due to certain reasons, this repository will be renamed to imguinz2 in a few days.](#caution-due-to-certain-reasons-this-repository-will-be-renamed-to-imguinz2-in-a-few-days)
-  - [ImGuinz2](#imguinz2)
-    - [Zig fetch](#zig-fetch)
-    - [Try Wasm demo in your browser](#try-wasm-demo-in-your-browser)
-    - [Frontends and Backends](#frontends-and-backends)
-    - [Prerequisites](#prerequisites)
-    - [Available libraries list at this moment](#available-libraries-list-at-this-moment)
-    - [Build and run](#build-and-run)
-    - [Examples screen shots](#examples-screen-shots)
-      - [zig_imknobs](#zig_imknobs)
-      - [zig_imtoggle](#zig_imtoggle)
-      - [zig_imspinner](#zig_imspinner)
-      - [Raylib example](#raylib-example)
-      - [Raylib + ImGui + rlImGui](#raylib--imgui--rlimgui)
-      - [zig_imfiledialog](#zig_imfiledialog)
-      - [zig_imgui_markdown](#zig_imgui_markdown)
-      - [zig_iconfontviewer](#zig_iconfontviewer)
-      - [zig_imcolortextedit](#zig_imcolortextedit)
-      - [zig_imguizmo](#zig_imguizmo)
-      - [zig_imnodes](#zig_imnodes)
-      - [zig_implot / zig_implot3d](#zig_implot--zig_implot3d)
-      - [Image load / save (OpenGL, SDL3, SDL3GPU)](#image-load--save-opengl-sdl3-sdl3gpu)
-      - [zig_glfw_opengl3](#zig_glfw_opengl3)
-      - [zig_imgui_zoomable_image](#zig_imgui_zoomable_image)
-    - [Hiding console window](#hiding-console-window)
-    - [SDL libraries](#sdl-libraries)
-    - [My tools version](#my-tools-version)
-    - [Similar project ImGui / CImGui](#similar-project-imgui--cimgui)
-    - [SDL game tutorial Platfromer](#sdl-game-tutorial-platfromer)
+- [ImGuinz2](#imguinz2)
+  - [Zig fetch](#zig-fetch)
+  - [Try Wasm demo in your browser](#try-wasm-demo-in-your-browser)
+  - [Frontends and Backends](#frontends-and-backends)
+  - [Prerequisites](#prerequisites)
+  - [Available libraries list at this moment](#available-libraries-list-at-this-moment)
+  - [Build and run](#build-and-run)
+  - [Examples screen shots](#examples-screen-shots)
+    - [zig_imknobs](#zig_imknobs)
+    - [zig_imtoggle](#zig_imtoggle)
+    - [zig_imspinner](#zig_imspinner)
+    - [Raylib example](#raylib-example)
+    - [Raylib + ImGui + rlImGui](#raylib--imgui--rlimgui)
+    - [zig_imfiledialog](#zig_imfiledialog)
+    - [zig_imgui_markdown](#zig_imgui_markdown)
+    - [zig_iconfontviewer](#zig_iconfontviewer)
+    - [zig_imcolortextedit](#zig_imcolortextedit)
+    - [zig_imguizmo](#zig_imguizmo)
+    - [zig_imnodes](#zig_imnodes)
+    - [zig_implot / zig_implot3d](#zig_implot--zig_implot3d)
+    - [Image load / save (OpenGL, SDL3, SDL3GPU)](#image-load--save-opengl-sdl3-sdl3gpu)
+    - [zig_glfw_opengl3](#zig_glfw_opengl3)
+    - [zig_imgui_zoomable_image](#zig_imgui_zoomable_image)
+  - [Hiding console window](#hiding-console-window)
+  - [SDL libraries](#sdl-libraries)
+  - [My tools version](#my-tools-version)
+  - [Similar project ImGui / CImGui](#similar-project-imgui--cimgui)
+  - [SDL game tutorial Platfromer](#sdl-game-tutorial-platfromer)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-## Caution: Due to certain reasons, this repository will be renamed to imguinz2 in a few days.
-
-After the repository is renamed to `imguinz2`, navigate to your `dear_bindings_build` project folder in the terminal or command prompt and run the following command once:
-
-```sh
-git remote set-url origin https://github.com/dinau/imguinz2.git
-```
-
-Alternatively, you can simply perform a fresh clone of the new URL:
-
-`https://github.com/dinau/imguinz2.git`
-
 
 ### ImGuinz2
 
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) examples with **C** and **Zig** using [Dear_Bindings](https://github.com/dearimgui/dear_bindings) as first step.
 And one can use many other libaries and examples with less external dependencies (Except Raylib library).
 
-[DearBindings](https://github.com/dearimgui/dear_bindings): dear_bindings_v0.18_ImGui_v1.92.8-docking  
-[Dear ImGui](https://github.com/ocornut/imgui): 1.92.8 dock (2026/06)
+[DearBindings](https://github.com/dearimgui/dear_bindings): v1.92.9-docking  
+[Dear ImGui](https://github.com/ocornut/imgui): 1.92.9 dock (2026/07)
 
 #### Zig fetch
 
@@ -89,7 +75,7 @@ Please insert the following lines above `b.installArtifact(exe);`.
        });
        exe.root_module.addImport(dep_name, dep.module(dep_name));
    }
-   exe.subsystem = .Windows; // Hide console window
+   //exe.subsystem = .Windows; // Hide console window
    ```
 
    You can set `dependencies` (additional libraries), see [imguinz2/build.zig.zon](https://github.com/dinau/imguinz2/blob/main/build.zig.zon)
@@ -144,7 +130,7 @@ Please insert the following lines above `b.installArtifact(exe);`.
    }
    
    pub fn main() !void {
-       var window = try app.Window.createImGui(1024, 900, "ImGui window in Zig");
+       var window = try app.Window.createImGui(1024, 900, "ImGui window in Zig", .{});
        defer window.destroyImGui();
    
        _ = app.setTheme(.dark); // Theme: dark, classic, light, microsoft
@@ -192,7 +178,7 @@ Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/
     - [x] zig-0.16.0  
        Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)  
        Linux:   [  zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
-    - [x] zig-0.17.0-dev.1158[^except_raylib] (2026/06/30)
+    - [x] zig-0.17.0-dev.1471+ff10b90bc [^except_raylib] (2026/07/26)
 
 - Windows11  
    - Optional: MSys2/MinGW basic commands (make, rm, cp ...)

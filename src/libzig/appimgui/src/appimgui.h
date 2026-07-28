@@ -21,7 +21,13 @@ typedef enum {
     THEME_MICROSOFT = 3
 } Theme;
 
-Window* createImGui_c(int32_t w, int32_t h, const char* title);
+typedef struct {
+  bool docking;
+  bool viewport;
+  char* title_bar_icon_name;
+} COpts;
+
+Window* createImGui_c(int32_t w, int32_t h, const char* title, COpts* opts);
 
 void destroyImGui_c(Window* win);
 void render_c(Window* win);

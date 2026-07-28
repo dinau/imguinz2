@@ -3,12 +3,12 @@ const ig = app.ig;
 const ifa = app.ifa;
 
 const ip = @import("implot");
-const demo = @import ("demoAll.zig");
+const demo = @import("demoAll.zig");
 
-const IMGUI_HAS_DOCK = false;    // Docking feature
+const IMGUI_HAS_DOCK = false; // Docking feature
 
-const MainWinWidth :i32 = 1200;
-const MainWinHeight:i32 = 800;
+const MainWinWidth: i32 = 1200;
+const MainWinHeight: i32 = 800;
 
 //-----------
 // gui_main()
@@ -16,30 +16,30 @@ const MainWinHeight:i32 = 800;
 pub fn gui_main(window: *app.Window) !void {
     _ = app.stf.setupFonts(null); // null: Setup default CJK fonts and Icon fonts
 
-  const imPlotContext = ip.ImPlot_CreateContext();
-  defer  ip.ImPlot_DestroyContext(imPlotContext);
+    const imPlotContext = ip.ImPlot_CreateContext();
+    defer ip.ImPlot_DestroyContext(imPlotContext);
 
-  //-------------
-  // Global vars
-  //-------------
-  var showDemoWindow = true;
-  var showImPlotDemoWindow = true;
+    //-------------
+    // Global vars
+    //-------------
+    var showDemoWindow = true;
+    var showImPlotDemoWindow = true;
 
-  //------------------------
-  // Select Dear ImGui style
-  //------------------------
-  ig.ImGui_StyleColorsClassic(null);
-  //ig.ImGui_StyleColorsDark (null);
-  //ig.ImGui_StyleColorsLight (null);
+    //------------------------
+    // Select Dear ImGui style
+    //------------------------
+    ig.ImGui_StyleColorsClassic(null);
+    //ig.ImGui_StyleColorsDark (null);
+    //ig.ImGui_StyleColorsLight (null);
 
-  //---------------
-  // main loop GUI
-  //---------------
-    while (!window.shouldClose ()) {
-        window.pollEvents ();
+    //---------------
+    // main loop GUI
+    //---------------
+    while (!window.shouldClose()) {
+        window.pollEvents();
 
         // Iconify sleep
-        if( window.isIconified()){
+        if (window.isIconified()) {
             continue;
         }
 
@@ -49,9 +49,9 @@ pub fn gui_main(window: *app.Window) !void {
         //------------------
         // Show demo window
         //------------------
-        ig.ImGui_ShowDemoWindow (&showDemoWindow);
+        ig.ImGui_ShowDemoWindow(&showDemoWindow);
         if (showImPlotDemoWindow) {
-            ip.ImPlot_ShowDemoWindow (&showImPlotDemoWindow);
+            ip.ImPlot_ShowDemoWindow(&showImPlotDemoWindow);
         }
         window.showInfoWindow();
 
@@ -64,23 +64,27 @@ pub fn gui_main(window: *app.Window) !void {
     } // while end
 } // main end
 
-
 //------------------
 // imPlotDemoWindow
 //-------------------
 fn imPlotDemoWindow() !void {
-  {
-    _ = ig.ImGui_Begin(ifa.ICON_FA_SIGNAL ++ " ImPlot demo: All demos have been written in Zig lang.", null, 0);
-    defer ig.ImGui_End();
-    try demo.imPlotDemoTabs();
-  }
+    {
+        _ = ig.ImGui_Begin(ifa.ICON_FA_SIGNAL ++ " ImPlot demo: All demos have been written in Zig", null, 0);
+        defer ig.ImGui_End();
+        try demo.imPlotDemoTabs();
+    }
 }
 
 //--------
 // main()
 //--------
 pub fn main() !void {
-    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig lang.");
+    var window = try app.Window.createImGui(
+        MainWinWidth,
+        MainWinHeight,
+        "Dear ImGui window in Zig",
+        .{},
+    );
     defer window.destroyImGui();
 
     //_ = app.setTheme(app.Theme.light); // Theme: dark, classic, light, microsoft

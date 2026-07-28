@@ -35,7 +35,7 @@ fn testDrawText() !void {
 // gui_main()
 //-----------
 pub fn gui_main() !void {
-    rl.setConfigFlags(.{ .vsync_hint = true, .window_resizable = true, .window_hidden = true}); //  Enable VSYNC
+    rl.setConfigFlags(.{ .vsync_hint = true, .window_resizable = true, .window_hidden = true }); //  Enable VSYNC
     rl.initWindow(MainWinWidth, MainWinHeight, "Zig: Dear ImGui + Raylib + rlImGui");
     defer rl.closeWindow();
 
@@ -127,11 +127,10 @@ pub fn gui_main() !void {
             rl.drawText(str, 10, 10, 20, .gray);
 
             rl.drawText("ImGui + Raylib + rlImGui", 50, 250, 20, .ray_white);
-
         }
 
         if (delayShowWindow == 0) {
-            rl.clearWindowState(rl.ConfigFlags { .window_hidden = true });
+            rl.clearWindowState(rl.ConfigFlags{ .window_hidden = true });
         }
         if (delayShowWindow >= 0) {
             delayShowWindow -= 1;

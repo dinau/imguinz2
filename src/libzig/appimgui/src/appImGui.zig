@@ -46,12 +46,20 @@ pub const TIni = struct {
     image: TImage,
 };
 
+/// Main window options
+pub const Opts = struct {
+    /// Docking feature
+    docking: bool = true,
+    viewport: bool = false,
+    /// Title bar Icon name of Main window
+    title_bar_icon_name: []const u8 = "./resources/z.png",
+};
+
 //--------------
 // Window class
 //--------------
 pub const Window = struct {
     const Self = @This();
-    const IMGUI_HAS_DOCK = false; // Docking feature
     pub const eventLoad = enum {
         low,
         standard,
@@ -61,15 +69,15 @@ pub const Window = struct {
     showWindowDelay: i32, // TODO: Avoid flickering of window at startup
     ini: TIni,
     clearColor: [4]f32,
+    opts: Opts = .{.docking = true},
 
     //-------------
     // createImGui
     //-------------
     var versions = [_][2]u16{ [_]u16{ 4, 6 }, [_]u16{ 4, 5 }, [_]u16{ 4, 4 }, [_]u16{ 4, 3 }, [_]u16{ 4, 2 }, [_]u16{ 4, 1 }, [_]u16{ 4, 0 }, [_]u16{ 3, 3 } };
-    pub fn createImGui(w: i32, h: i32, title: [*c]const u8) !Window {
-        _ = w;
-        _ = h;
+    pub fn createImGui(width: i32, height: i32, title: [*c]const u8, opts: Opts) !Window {
         var win: Self = undefined;
+        win.opts = opts;
 
         //-------------------
         // GLFW initializing
@@ -106,12 +114,12 @@ pub const Window = struct {
             //---------------------------------------------
             // Create GLFW window and activate OpenGL libs
             //---------------------------------------------
-            if (glfw.glfwCreateWindow(800, 600, title, null, null)) |pointer| {
+            if (glfw.glfwCreateWindow(width, height, title, null, null)) |pointer| {
                 win.handle = pointer;
-                if (builtin.zig_version.minor >= 17){
+                if (builtin.zig_version.minor >= 17) {
                     glsl_version = try std.fmt.bufPrintSentinel(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10}, 0);
-                }else{
-                glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10});
+                } else {
+                    glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10});
                 }
                 std.debug.print("{s} \n", .{glsl_version});
                 break;
@@ -136,8 +144,7 @@ pub const Window = struct {
         //---------------------
         // Load title bar icon
         //---------------------
-        const TitleBarIconName = "./resources/z.png";
-        if (utils.existsFile(TitleBarIconName)) {
+        if (utils.existsFile(opts.title_bar_icon_name.ptr)) {
             //--------------
             // Get exe path  Refered to: https://stackoverflow.com/questions/77718355/how-do-i-build-a-path-relative-to-the-exe-in-zig
             //--------------
@@ -163,7 +170,7 @@ pub const Window = struct {
 
             const option_exe_dir = std.fs.path.dirname(exe_path);
             if (option_exe_dir) |exe_dir| {
-                var paths = [_][]const u8{ exe_dir, TitleBarIconName };
+                var paths = [_][]const u8{ exe_dir, opts.title_bar_icon_name };
                 const icon_path = try std.fs.path.join(allocator, &paths);
                 defer allocator.free(icon_path);
                 // Load icon
@@ -184,7 +191,7 @@ pub const Window = struct {
         pio.*.ConfigFlags |= ig.ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
         // pio.*.ConfigFlags |= ig.ImGuiConfigFlags_NavEnableGamepad;    // Enable Gamepad Controls
         // Setup doncking feature --- can't compile well at this moment.
-        if (IMGUI_HAS_DOCK) {
+        if (win.opts.docking) {
             pio.*.ConfigFlags |= ig.ImGuiConfigFlags_DockingEnable; // Enable Docking
             pio.*.ConfigFlags |= ig.ImGuiConfigFlags_ViewportsEnable; // Enable Multi-Viewport / Platform Windows
         }
@@ -215,11 +222,11 @@ pub const Window = struct {
         glfw.glClear(glfw.GL_COLOR_BUFFER_BIT);
         impl_gl.cImGui_ImplOpenGL3_RenderDrawData(@ptrCast(ig.ImGui_GetDrawData()));
         // Docking featrue --- N/A
-        if (IMGUI_HAS_DOCK) {
+        if (win.opts.docking) {
             if (0 != (pio.*.ConfigFlags & ig.ImGuiConfigFlags_ViewportsEnable)) {
                 const backup_current_window = glfw.glfwGetCurrentContext();
                 ig.ImGui_UpdatePlatformWindows();
-                ig.ImGui_RenderPlatformWindowsDefault(null, null);
+                ig.ImGui_RenderPlatformWindowsDefault();
                 glfw.glfwMakeContextCurrent(backup_current_window);
             }
         }
@@ -285,7 +292,7 @@ pub const Window = struct {
             },
             // https://www.glfw.org/docs/3.3/group__window.html#ga37bd57223967b4211d60ca1a0bf3c832
             Window.eventLoad.standard => {
-        glfw.glfwPollEvents();
+                glfw.glfwPollEvents();
             }, // Depends on glfw.glfwSwapInterval(1); // Enable VSync --- Lower CPU load
         }
     }
@@ -564,10 +571,22 @@ pub fn saveIni(win: *Window) !void {
 //==============================================
 // C Export Functions
 //==============================================
-export fn createImGui_c(w: i32, h: i32, title: [*c]const u8) ?*Window {
+pub const COpts = extern struct {
+    /// Docking feature
+    docking: bool,
+    viewport: bool,
+    title_bar_icon_name: [*c]const u8,
+};
+
+export fn createImGui_c(width: i32, height: i32, title: [*c]const u8, copts: *COpts ) ?*Window {
     const allocator = std.heap.c_allocator;
     const win_ptr = allocator.create(Window) catch return null;
-    win_ptr.* = Window.createImGui(w, h, title) catch {
+    const opts: Opts = .{
+        .docking = copts.docking,
+        .viewport= copts.viewport,
+        .title_bar_icon_name = std.mem.span(copts.title_bar_icon_name),
+    };
+    win_ptr.* = Window.createImGui(width, height, title, opts) catch {
         allocator.destroy(win_ptr);
         return null;
     };

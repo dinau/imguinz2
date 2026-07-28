@@ -1,7 +1,7 @@
 .{
-    .name = .glfw_opengl3,
+    .name = .app_glfw_opengl3_c,
     .version = "0.1.0",
-    .fingerprint = 0x7e1bad8eaf12e584, // Changing this has security and trust implications.
+    .fingerprint = 0x7adce5f309fc4d87, // Changing this has security and trust implications.
     .minimum_zig_version = "0.15.2",
     .dependencies = .{
         .appimgui = .{ .path = "../../src/libzig/appimgui" },

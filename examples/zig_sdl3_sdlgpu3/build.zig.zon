@@ -1,7 +1,7 @@
 .{
     .name = .zig_sdl3_sdlgpu3,
     .version = "0.0.1",
-    .fingerprint =0xdacfce8552f17914, // Changing this has security and trust implications.
+    .fingerprint = 0xdacfce8552f17914, // Changing this has security and trust implications.
     .minimum_zig_version = "0.15.1",
     .dependencies = .{
         .imguinz = .{ .path = "../../" },
