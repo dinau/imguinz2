@@ -2,7 +2,7 @@
     "defines": [
         {
             "name": "IMGUI_VERSION",
-            "content": "\"1.92.9\"",
+            "content": "\"1.92.9b\"",
             "conditionals": [
                 {
                     "condition": "ifndef",
@@ -17,7 +17,7 @@
         },
         {
             "name": "IMGUI_VERSION_NUM",
-            "content": "19290",
+            "content": "19291",
             "conditionals": [
                 {
                     "condition": "ifndef",

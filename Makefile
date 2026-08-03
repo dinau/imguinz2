@@ -68,27 +68,36 @@ cleanall:
 	@-$(MAKE) -C src/libzig clean
 
 DB_VER             = 0.21
-IMGUI_VER          = 1.92.9
-WORK_DIR           = ../imguinz2_work
+IMGUI_VER          = 1.92.9b
+WORK_DIR           = 00work
 IMGUI_EXT_DIR      = $(WORK_DIR)/imgui
 DB_DIR             = $(WORK_DIR)/dear_bindings
 DCIMGUI_DIR        = src/libc/dcimgui
 IMGUI_DIR          = src/libc/imgui
-ZIP_NAME           = DearBindings_v$(DB_VER)_ImGui_v$(IMGUI_VER)-docking
+LIBC_DIR           = src/libc
+ZIP_NAME_DB        = DearBindings_v$(DB_VER)_ImGui_v$(IMGUI_VER)-docking
+ZIP_NAME_IMGUI     = v$(IMGUI_VER)-docking
 
 update:
-	@-rm -fr   $(IMGUI_DIR)
+	@-mkdir -p $(WORK_DIR)
 	@-mkdir -p $(IMGUI_DIR)
-	@cp -fr $(IMGUI_EXT_DIR)/* $(IMGUI_DIR)/
+	@# Download load Dear ImGui sources
+	curl -L https://github.com/ocornut/imgui/archive/refs/tags/$(ZIP_NAME_IMGUI).zip --output-dir $(WORK_DIR) -O
+	@-rm -fr   $(IMGUI_DIR)
+	unzip -o -q $(WORK_DIR)/$(ZIP_NAME_IMGUI) -d $(LIBC_DIR)
+	mv  -f $(LIBC_DIR)/imgui-$(IMGUI_VER)-docking  $(LIBC_DIR)/imgui
+
 	@# Download load generated Dear bindings sources
-	curl -L https://github.com/dearimgui/dear_bindings/releases/download/$(ZIP_NAME)/$(ZIP_NAME).zip --output-dir $(WORK_DIR) -O
-	@# Delete old dcimgui/
-	-rm -fr src/dcimgui/{*,backends/*}
+	curl -L https://github.com/dearimgui/dear_bindings/releases/download/$(ZIP_NAME_DB)/$(ZIP_NAME_DB).zip --output-dir $(WORK_DIR) -O
 	@# Unzip
-	unzip -o $(WORK_DIR)/$(ZIP_NAME) -d $(DCIMGUI_DIR)
+	unzip -o -q $(WORK_DIR)/$(ZIP_NAME_DB) -d $(DCIMGUI_DIR)
+
+	@# Delete old dcimgui/
+	git clean -fd -q
+
 	@echo =====================================
 	@echo OK: updated done: "$(DCIMGUI_DIR)/*"
-	@echo $(ZIP_NAME)
+	@echo $(ZIP_NAME_DB)
 	@echo =====================================
 
 #
