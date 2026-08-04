@@ -109,5 +109,7 @@ define def_make
 
 endef
 
+copylibs:
+	$(MAKE) -C src/libc $@
 
 MAKEFLAGS += --no-print-directory

@@ -34,15 +34,19 @@ pub fn build(b: *std.Build) void {
     //
     mod.addIncludePath(b.path("../../libc/cimCTE"));
     mod.addIncludePath(b.path("../../libc/cimCTE/ImGuiColorTextEdit"));
+    mod.addIncludePath(b.path("../../libc/cimCTE/ImGuiColorTextEdit/example"));
+    mod.addIncludePath(b.path("../../libc/cimCTE/ImGuiColorTextEdit/extras"));
     mod.addIncludePath(b.path("../../libc/cimCTE/ImGuiColorTextEdit/vendor/regex/include"));
     mod.addIncludePath(b.path("./src"));
     mod.addCSourceFiles(.{
         .files = &.{
             "../../libc/cimCTE/cimCTE.cpp",
-            "../../libc/cimCTE/ImGuiColorTextEdit/ImGuiDebugPanel.cpp",
-            "../../libc/cimCTE/ImGuiColorTextEdit/LanguageDefinitions.cpp",
+          //  "../../libc/cimCTE/ImGuiColorTextEdit/ImGuiDebugPanel.cpp",
+          //  "../../libc/cimCTE/ImGuiColorTextEdit/LanguageDefinitions.cpp",
             "../../libc/cimCTE/ImGuiColorTextEdit/TextEditor.cpp",
-            "../../libc/cimCTE/ImGuiColorTextEdit/UnitTests.cpp",
+            "../../libc/cimCTE/ImGuiColorTextEdit/TextDiff.cpp",
+            "../../libc/cimCTE/ImGuiColorTextEdit/extras/TrieAutoComplete.cpp",
+            "../../libc/cimCTE/ImGuiColorTextEdit/example/dejavu.cpp",
         },
     });
 

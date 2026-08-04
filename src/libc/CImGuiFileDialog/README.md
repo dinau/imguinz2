@@ -14,7 +14,7 @@
 
 ### CImGuiFileDialog
 
-ImGuiFileDialog example program with **C language**.
+ImGuiFileDialog example program with **C**.
 
 #### Document 
 
@@ -38,7 +38,7 @@ Very basic example
 
 ---
 
-Added color, theme, IconFont
+Added color, IconFont
 
 ![alt](img/glfw_opengl3_color.png)
 
@@ -46,15 +46,14 @@ Added color, theme, IconFont
 
 ---
 
-- ImGuiFileDialog  v0.6.8-dev (2024/12/05)  
-git hash: c66089f509bbfbc0d8852d54106b1af88a104822
-- CImGui / ImGui 1.91.6 (2024/12)
+- ImGuiFileDialog  v0.6.9-WIP (2026/03/12)  
+git hash: d0e97b2adc3d3452d72c750c7305dc0291acd052
 
 #### Prerequisites
 
 ---
 - OS
-   - Windows10 OS or later
+   - Windows11 
       - MSys/MinGW tools installed
    - Linux Ubuntu / Debian families 
 - CMake installed 
@@ -66,7 +65,7 @@ git hash: c66089f509bbfbc0d8852d54106b1af88a104822
 ---
 
 ```sh
-git clone --recursive https://github.com/dinau/CImGuiFileDialog
+git clone -b main --single-branch --depth 1 --recursive --shallow-submodules https://github.com/dinau/CImGuiFileDialog
 ```
 
 For example,

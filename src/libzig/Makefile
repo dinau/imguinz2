@@ -14,6 +14,7 @@ DIRS = \
 	impl_glfw \
 	impl_opengl3 \
 	impl_sdlgpu3 \
+	impl_win32 \
 	imspinner \
 	imtoggle \
 	loadicon \
@@ -35,6 +36,10 @@ clean:
 
 fmt:
 	$(foreach exdir,$(DIRS), $(call def_make,$(exdir),$@))
+
+gen:
+	@-$(foreach exdir,$(DIRS), $(call def_make,$(exdir),$@))
+
 
 #
 define def_make

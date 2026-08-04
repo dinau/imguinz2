@@ -55,12 +55,12 @@ pub fn gui_main(window: *app.Window) !void {
     }
 
     const editor = cte.TextEditor_TextEditor();
-    cte.TextEditor_SetLanguageDefinition(editor, cte.Cpp);
+    cte.TextEditor_SetLanguage(editor, cte.Language_Cpp());
     cte.TextEditor_SetText(editor, sBuffer.ptr);
 
-    cte.TextEditor_SetPalette(editor, cte.Dark); // Dark, Light, etc
-    var mLine: c_int = undefined;
-    var mColumn: c_int = undefined;
+    cte.TextEditor_SetPalette(editor, cte.TextEditor_GetDarkPalette()); // Dark, Light, etc
+    //var mLine: c_int = undefined;
+    //var mColumn: c_int = undefined;
     var fQuit = false;
 
     const pio = ig.ImGui_GetIO();
@@ -95,10 +95,11 @@ pub fn gui_main(window: *app.Window) !void {
         //---------------------------------
         //--- Show ImGuiColorTextEdit demo
         //---------------------------------
+        const curPos = cte.TextEditor_GetCurrentCursorPosition(editor);
         {
             _ = ig.ImGui_Begin("ImGui_ColorTextedit Dear ImGui: Dear bindings " ++ ifa.ICON_FA_DOG, null, ig.ImGuiWindowFlags_HorizontalScrollbar | ig.ImGuiWindowFlags_MenuBar);
             defer ig.ImGui_End();
-            cte.TextEditor_GetCursorPosition(editor, &mLine, &mColumn);
+            //cte.TextEditor_GetCursorPosition(editor, &mLine, &mColumn);
 
             ig.ImGui_SetWindowSize(.{ .x = 800, .y = 600 }, ig.ImGuiCond_FirstUseEver);
             if (ig.ImGui_BeginMenuBar()) {
@@ -130,10 +131,10 @@ pub fn gui_main(window: *app.Window) !void {
                     ig.ImGui_Separator();
                     //
                     if (ig.ImGui_MenuItemBoolPtr("Undo", "ALT-Backspace", null, !ro and cte.TextEditor_CanUndo(editor))) {
-                        cte.TextEditor_Undo(editor, 1);
+                        cte.TextEditor_Undo(editor);
                     }
                     if (ig.ImGui_MenuItemBoolPtr("Redo", "Ctrl-Y", null, !ro and cte.TextEditor_CanRedo(editor))) {
-                        cte.TextEditor_Redo(editor, 1);
+                        cte.TextEditor_Redo(editor);
                     }
                     ig.ImGui_Separator();
                     //
@@ -157,21 +158,21 @@ pub fn gui_main(window: *app.Window) !void {
                 if (ig.ImGui_BeginMenu("Theme")) {
                     defer ig.ImGui_EndMenu();
                     if (ig.ImGui_MenuItemEx("Dark palette", null, false, true)) {
-                        cte.TextEditor_SetPalette(editor, cte.Dark);
+                        cte.TextEditor_SetPalette(editor, cte.TextEditor_GetDarkPalette());
                     }
                     if (ig.ImGui_MenuItemEx("Light palette", null, false, true)) {
-                        cte.TextEditor_SetPalette(editor, cte.Light);
+                        cte.TextEditor_SetPalette(editor, cte.TextEditor_GetLightPalette());
                     }
-                    if (ig.ImGui_MenuItemEx("Mariana palette", null, false, true)) {
-                        cte.TextEditor_SetPalette(editor, cte.Mariana);
-                    }
-                    if (ig.ImGui_MenuItemEx("Retro blue palette", "Ctrl-B", false, true)) {
-                        cte.TextEditor_SetPalette(editor, cte.RetroBlue);
-                    }
+                    //if (ig.ImGui_MenuItemEx("Mariana palette", null, false, true)) {
+                    //    cte.TextEditor_SetPalette(editor, cte.Mariana);
+                    //}
+                    //if (ig.ImGui_MenuItemEx("Retro blue palette", "Ctrl-B", false, true)) {
+                    //    cte.TextEditor_SetPalette(editor, cte.RetroBlue);
+                    //}
                 }
             } //-- menubar end
 
-            const langNames = [_][*c]const u8{ "None", "Cpp", "C", "Cs", "Python", "Lua", "Json", "Sql", "AngelScript", "Glsl", "Hlsl" };
+            //const langNames = [_][*c]const u8{ "None", "Cpp", "C", "Cs", "Python", "Lua", "Json", "Sql", "AngelScript", "Glsl", "Hlsl" };
             var str1: [10]u8 = undefined;
             copyStringToCstr(&str1, "Ins");
             if (cte.TextEditor_IsOverwriteEnabled(editor)) {
@@ -183,10 +184,11 @@ pub fn gui_main(window: *app.Window) !void {
             if (cte.TextEditor_CanUndo(editor)) {
                 copyStringToCstr(&str2, "*");
             }
-            ig.ImGui_Text("%6d/%-6d %6d lines  | %s | %s | %s | %s", mLine + 1, mColumn + 1, cte.TextEditor_GetLineCount(editor), &str1, &str2, langNames[cte.TextEditor_GetLanguageDefinition(editor)], fileName);
+            ig.ImGui_Text("%6d/%-6d %6d lines  | %s | %s | %s | %s", curPos.line + 1, curPos.index + 1, cte.TextEditor_GetLineCount(editor),
+                &str1, &str2, cte.TextEditor_GetLanguageName(editor), fileName);
 
             ig.ImGui_PushFont(textFont);
-            _ = cte.TextEditor_Render(editor, "texteditor", false, .{ .x = 0, .y = 0 }, false);
+            _ = cte.TextEditor_Render(editor, "texteditor", .{ .x = 0, .y = 0 }, 0, cte.ImGuiWindowFlags_NoMove | cte.ImGuiWindowFlags_HorizontalScrollbar);
             ig.ImGui_PopFont();
         } // end igBegin
         //--------
