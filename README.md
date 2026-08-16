@@ -437,7 +437,9 @@ Click link for live demo: [Click here](https://dinau.github.io/cimgui_zoomable_i
 
 ---
 
-Same as WebGL example
+WebGPU wasm example
+
+Basically same as WebGL example
 
 for WebGPU
 
