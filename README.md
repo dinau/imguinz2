@@ -404,7 +404,13 @@ Click link for live demo: [Click here](https://dinau.github.io/cimgui_zoomable_i
    emsdk activate 6.0.6
    ```
 
-- Go to `examples/zig_webgl_wasm` folder
+   for WebGL
+
+   ```sh
+   embuilder build contrib.glfw3
+   ```
+
+1. Go to `examples/zig_webgl_wasm` folder
 1. Run `emsdk_env.bat`(Windows) or `emsdk_env.sh`(Linux) in your console
    > [!IMPORTANT]
 
@@ -433,8 +439,15 @@ Click link for live demo: [Click here](https://dinau.github.io/cimgui_zoomable_i
 
 Same as WebGL example
 
+for WebGPU
+
 ```sh
-emsdk_env.bat  
+embuilder build emdawnwebgpu
+
+```
+
+```sh
+emsdk_env.bat  # Run this once in every new console
 ```
 
 ```
