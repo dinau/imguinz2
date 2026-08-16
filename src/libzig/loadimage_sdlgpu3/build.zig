@@ -1,5 +1,4 @@
 const std = @import("std");
-const builtin = @import("builtin");
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -19,7 +18,7 @@ pub fn build(b: *std.Build) void {
         .link_libc = true,
     });
     step.addIncludePath(b.path("./src"));
-    switch (builtin.target.os.tag) {
+    switch (target.result.os.tag) {
         .windows => {
             step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include/SDL3" })));
             step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include" })));
@@ -30,7 +29,7 @@ pub fn build(b: *std.Build) void {
 
     const mod = step.addModule(mod_name);
     mod.addIncludePath(b.path("../../libc/stb"));
-    switch (builtin.target.os.tag) {
+    switch (target.result.os.tag) {
         .windows => {
             mod.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include/SDL3" })));
             mod.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include" })));
@@ -38,7 +37,7 @@ pub fn build(b: *std.Build) void {
         .linux => mod.addIncludePath(.{ .cwd_relative = "/usr/include/SDL3" }),
         else => {},
     }
-    switch (builtin.target.os.tag) {
+    switch (target.result.os.tag) {
         .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw-3.4.bin.WIN64/include")),
         .linux => mod.addIncludePath(.{ .cwd_relative = "/usr/include" }),
         else => {},
@@ -48,7 +47,6 @@ pub fn build(b: *std.Build) void {
             "src/loadImage_sdlgpu3.c",
         },
     });
-    //mod.addImport(mod_name, mod);
 
     const lib = b.addLibrary(.{
         .linkage = .static,

@@ -2,6 +2,7 @@ const std = @import("std");
 const builtin = @import("builtin");
 
 pub fn build(b: *std.Build) void {
+    _ = b.option([]const u8, "emscripten_sysroot", "Path to <emsdk>/upstream/emscripten");
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
@@ -14,10 +15,8 @@ pub fn build(b: *std.Build) void {
         .root_source_file = b.path("../../libc/fonticon/IconsFontAwesome6.h"),
         .target = target,
         .optimize = optimize,
-        //.link_libc = true,
     });
     const mod = step.addModule(mod_name);
-    mod.addImport(mod_name, mod);
 
     const lib = b.addLibrary(.{
         .linkage = .static,

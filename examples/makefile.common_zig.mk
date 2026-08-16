@@ -21,6 +21,11 @@ endif
 clean:
 	@-rm -fr zig-out .zig-cache zig-pkg
 
+cleanpdb:
+ifeq ($(OS),Windows_NT)
+	@-rm  zig-out/bin/$(TARGET).pdb
+endif
+
 cleancache: all
 	@-rm -fr .zig-cache
 

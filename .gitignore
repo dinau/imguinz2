@@ -1,10 +1,15 @@
+README.html
+org.html
+examples/glfw_wgpu_wasm/src/licenses/
+examples/glfw_wgpu_wasm/src/demo/
+examples/zig_wgpu_wasm/src/licenses/
+examples/zig_wgpu_wasm/src/demo/
 00work/
 zig_imguizmo1/
 *.lib
 .gitx/
 src/libc/imgui/examples/
 imgui_impl_null.*
-examples/zig_webgl_wasm/
 example_null/
 examples/sdl3_opengl3/SDL3.dll
 zig-pkg/
@@ -46,7 +51,7 @@ libs/glfw/glfw-3.3.9.bin.WIN32/docs
 libs/glfw/glfw-3.3.9.bin.WIN32/*.md
 libs/glfw/glfw-3.3.9.bin.WIN64/docs
 libs/glfw/glfw-3.3.9.bin.WIN64/*.md
-*.html
+#*.html
 *.js
 # Prerequisites
 *.d

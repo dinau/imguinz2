@@ -19,8 +19,8 @@ pub fn build(b: *std.Build) void {
     step.addIncludePath(b.path("../../libc/dcimgui"));
     step.addIncludePath(b.path("../../libc/imgui"));
     step.addIncludePath(b.path("../../libc/CImGuiFileDialog/libs/ImGuiFileDialog"));
+
     const mod = step.addModule(mod_name);
-    mod.addImport(mod_name, mod);
     mod.addIncludePath(b.path("../../libc/imgui/imgui"));
     mod.addIncludePath(b.path("../../libc/imgui"));
     mod.addIncludePath(b.path("../../libc/CImGuiFileDialog"));
@@ -30,6 +30,7 @@ pub fn build(b: *std.Build) void {
     mod.addCMacro("CIMGUI_API", "extern \"C\"  ");
     // for fileopendialog
     mod.addCMacro("CUSTOM_IMGUIFILEDIALOG_CONFIG", "\"customIconFont.h\"");
+    mod.link_libcpp = true;
     mod.addCSourceFiles(.{
         .files = &.{
             "../../libc/CImGuiFileDialog/libs/ImGuiFileDialog/ImGuiFileDialog.cpp",

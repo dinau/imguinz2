@@ -60,7 +60,7 @@ ImFont* setupFonts(const char* theFontPath) {
 
   // Use theFontPath with priority if specified and it exists
   if (theFontPath != NULL && existsFile(theFontPath)) {
-    font = pio.Fonts->AddFontFromFileTTF(theFontPath, point2px(15.0)
+    font = pio.Fonts->AddFontFromFileTTF(theFontPath, point2px(13.0)
         , config
         , NULL);
     printf("Found FontPath(priority): [%s]\n", theFontPath);
@@ -71,7 +71,7 @@ ImFont* setupFonts(const char* theFontPath) {
     for(int i=0; i<tableLen; i++){
       fontPath = getWinFontPath(sBufFontPath, sizeof(sBufFontPath), WinFontNameTbl[i]);
       if (existsFile(fontPath)) {
-        font = pio.Fonts->AddFontFromFileTTF(fontPath, point2px(15.0)
+        font = pio.Fonts->AddFontFromFileTTF(fontPath, point2px(13.0)
             , config
             , NULL);
         printf("Found FontPath: [%s]\n",fontPath);

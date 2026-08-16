@@ -24,7 +24,6 @@ pub fn build(b: *std.Build) void {
     step.addIncludePath(b.path("src"));
 
     const mod = step.addModule(mod_name);
-    mod.addImport(mod_name, mod);
     // Macro
     mod.addCMacro("CIMGUI_API", "extern \"C\"  ");
     mod.addCMacro("IMNODES_NAMESPACE", "imnodes"); // for imnodes

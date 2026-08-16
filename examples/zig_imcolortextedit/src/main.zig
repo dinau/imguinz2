@@ -12,15 +12,15 @@ fn point2px(point: f32) f32 {
     return (point * 96) / 72;
 }
 
-//-----------
+//------------
 // gui_main()
-//-----------
+//------------
 pub fn gui_main(window: *app.Window) !void {
     _ = app.stf.setupFonts(null); // null: Setup default CJK fonts and Icon fonts
 
     //-- This is a programing font. https://github.com/yuru7/NOTONOTO
-    const fontFullPath = "resources/fonts/NOTONOTO-Regular.ttf";
-    const fileName = "resources/main.cpp";
+    const fontFullPath = "./resources/fonts/NOTONOTO-Regular.ttf";
+    const fileName = "./resources/main.cpp";
 
     const allocator = std.heap.page_allocator;
 
@@ -67,6 +67,8 @@ pub fn gui_main(window: *app.Window) !void {
     //-- Setup programing fonts
     const textPoint = 14.5;
     const textFont = ig.ImFontAtlas_AddFontFromFileTTF(pio.*.Fonts, fontFullPath, point2px(textPoint), null, null);
+
+    //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
 
     //---------------
     // main loop GUI
@@ -184,8 +186,7 @@ pub fn gui_main(window: *app.Window) !void {
             if (cte.TextEditor_CanUndo(editor)) {
                 copyStringToCstr(&str2, "*");
             }
-            ig.ImGui_Text("%6d/%-6d %6d lines  | %s | %s | %s | %s", curPos.line + 1, curPos.index + 1, cte.TextEditor_GetLineCount(editor),
-                &str1, &str2, cte.TextEditor_GetLanguageName(editor), fileName);
+            ig.ImGui_Text("%6d/%-6d %6d lines  | %s | %s | %s | %s", curPos.line + 1, curPos.index + 1, cte.TextEditor_GetLineCount(editor), &str1, &str2, cte.TextEditor_GetLanguageName(editor), fileName);
 
             ig.ImGui_PushFont(textFont);
             _ = cte.TextEditor_Render(editor, "texteditor", .{ .x = 0, .y = 0 }, 0, cte.ImGuiWindowFlags_NoMove | cte.ImGuiWindowFlags_HorizontalScrollbar);
@@ -213,7 +214,7 @@ pub fn main() !void {
     );
     defer window.destroyImGui();
 
-    _ = app.setTheme(.dark); // Theme: dark, classic, light, microsoft
+    _ = window.setTheme(.dark); // Theme: dark, classic, light, microsoft
 
     //---------------
     // GUI main proc

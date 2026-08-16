@@ -14,13 +14,22 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+
+    const emscripten_sysroot = b.option([]const u8, "emscripten_sysroot", "Path to <emsdk>/upstream/emscripten");
+    if (emscripten_sysroot) |es| {
+        step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+    }
+
     step.addIncludePath(b.path("../../libc/dcimgui"));
     step.addIncludePath(b.path("../../libc/imgui"));
     step.addIncludePath(b.path("../../libc/fonticon"));
+
     const mod = step.addModule(mod_name);
-    mod.addImport(mod_name, mod);
     mod.addIncludePath(b.path("../../libc/imgui"));
     mod.addIncludePath(b.path("../../libc/fonticon"));
+    if (emscripten_sysroot) |es| {
+        mod.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+    }
     mod.addCSourceFiles(.{
         .files = &.{
             "src/setupFonts.cpp",

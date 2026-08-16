@@ -4,6 +4,9 @@ const builtin = @import("builtin");
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
+
+    const exe_name = "win32_dx11";
+
     const mod = b.createModule(.{
         .target = target,
         .optimize = optimize,
@@ -80,6 +83,11 @@ pub fn build(b: *std.Build) void {
         const res = b.addInstallFile(b.path(fonticon_dir ++ file), "bin/resources/fonticon/fa6/" ++ file);
         b.getInstallStep().dependOn(&res.step);
     }
+
+    // save [Executable name].ini
+    const sExeIni = b.fmt("{s}.ini", .{exe_name});
+    const resExeIni = b.addInstallFile(b.path(sExeIni), b.pathJoin(&.{ "bin", sExeIni }));
+    b.getInstallStep().dependOn(&resExeIni.step);
 
     // run
     const run_cmd = b.addRunArtifact(exe);

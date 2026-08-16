@@ -1,5 +1,4 @@
 const std = @import("std");
-const builtin = @import("builtin");
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -16,10 +15,19 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
         .link_libc = true,
     });
+
+    const emscripten_sysroot = b.option([]const u8, "emscripten_sysroot", "Path to <emsdk>/upstream/emscripten");
+    if (emscripten_sysroot) |es| {
+        step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+    }
+
     const mod = step.addModule(mod_name);
     mod.addIncludePath(b.path("../../libc/stb"));
+    if (emscripten_sysroot) |es| {
+        mod.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+    }
 
-    switch (builtin.target.os.tag) {
+    switch (target.result.os.tag) {
         .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw-3.4.bin.WIN64/include")),
         .linux => mod.addIncludePath(.{ .cwd_relative = "/usr/include" }),
         else => {},
@@ -30,7 +38,6 @@ pub fn build(b: *std.Build) void {
             "src/saveImage.c",
         },
     });
-    //mod.addImport(mod_name, mod);
 
     const lib = b.addLibrary(.{
         .linkage = .static,

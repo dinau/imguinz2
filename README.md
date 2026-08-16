@@ -4,7 +4,7 @@
 - [ImGuinz2](#imguinz2)
   - [Zig fetch](#zig-fetch)
   - [Try Wasm demo in your browser](#try-wasm-demo-in-your-browser)
-  - [Frontends and Backends](#frontends-and-backends)
+- [Frontends and Backends](#frontends-and-backends)
   - [Prerequisites](#prerequisites)
   - [Available libraries list at this moment](#available-libraries-list-at-this-moment)
   - [Build and run](#build-and-run)
@@ -13,7 +13,6 @@
     - [zig_imtoggle](#zig_imtoggle)
     - [zig_imspinner](#zig_imspinner)
     - [Raylib example](#raylib-example)
-    - [Raylib + ImGui + rlImGui](#raylib--imgui--rlimgui)
     - [zig_imfiledialog](#zig_imfiledialog)
     - [zig_imgui_markdown](#zig_imgui_markdown)
     - [zig_iconfontviewer](#zig_iconfontviewer)
@@ -24,6 +23,8 @@
     - [Image load / save (OpenGL, SDL3, SDL3GPU)](#image-load--save-opengl-sdl3-sdl3gpu)
     - [zig_glfw_opengl3](#zig_glfw_opengl3)
     - [zig_imgui_zoomable_image](#zig_imgui_zoomable_image)
+    - [zig_webgl_wasm](#zig_webgl_wasm)
+    - [zig_wgpu_wasm](#zig_wgpu_wasm)
   - [Hiding console window](#hiding-console-window)
   - [SDL libraries](#sdl-libraries)
   - [My tools version](#my-tools-version)
@@ -34,11 +35,11 @@
 
 ### ImGuinz2
 
-This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) examples with **C** and **Zig** using [Dear_Bindings](https://github.com/dearimgui/dear_bindings) as first step.
-And one can use many other libaries and examples with less external dependencies (Except Raylib library).
+This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) examples with **C** and **Zig** using [Dear_Bindings](https://github.com/dearimgui/dear_bindings) as first step  
+and one can use many other libaries and examples with less external dependencies (except Raylib library).
 
-[DearBindings](https://github.com/dearimgui/dear_bindings): v1.92.9-docking  
-[Dear ImGui](https://github.com/ocornut/imgui): 1.92.9 dock (2026/07)
+[DearBindings](https://github.com/dearimgui/dear_bindings): v1.92.9b-docking  
+[Dear ImGui](https://github.com/ocornut/imgui): 1.92.9b dock (2026/08)
 
 #### Zig fetch
 
@@ -158,17 +159,21 @@ Please insert the following lines above `b.installArtifact(exe);`.
 Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/glfw_opengl3_wasm_base.html)  
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/wasm_demo_small.gif)
 
-#### Frontends and Backends  
+See [zig_webgl_wasm](#zig_webgl_wasm) / [zig_wgpu_wasm](#zig_wgpu_wasm) examples
+
+
+### Frontends and Backends  
 
 ---
 
-| Frontends |      Backends     |
-|-----------|:-----------------:|
-| GLFW3     |      OpenGL3      |
-| SDL3      |  OpenGL3, SDL3GPU |
-| Win32     | DirectX 11(D3D11) |
+| Frontends |            Backends            |
+|-----------|:------------------------------:|
+| GLFW3     | OpenGL3 / WASM(WebGL / WebGPU) |
+| SDL3      |        OpenGL3, SDL3GPU        |
+| Win32     |        DirectX 11(D3D11)       |
   
-[^except_raylib]: Except Raylib and win32_dx11 examples
+[^except_raylib]: Except Raylib examples
+[^wip]: WIP
 
 #### Prerequisites
 
@@ -178,10 +183,10 @@ Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/
     - [x] zig-0.16.0  
        Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)  
        Linux:   [  zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
-    - [x] zig-0.17.0-dev.1471+ff10b90bc [^except_raylib] (2026/07/26)
+    - [x] 0.17.0-dev.1767  [^except_raylib] (2026/08/14)
 
 - Windows11  
-   - Optional: MSys2/MinGW basic commands (make, rm, cp ...)
+   - Install MSys2/MinGW basic commands (make, rm, cp ...)
 
       ```sh
       pacman -S make 
@@ -228,7 +233,7 @@ Additional examples
 git clone https://github.com/dinau/imguinz2
 
 cd imguinz2/examples/zig_glfw_opengl3       # for example
-zig build run --release=fast                # or make run
+make run       # or zig build run --release=fast 
 ```
 
 #### Examples screen shots 
@@ -261,6 +266,8 @@ zig build run --release=fast                # or make run
 
 ---
 
+Use zig-0.16.0 
+
 First fetch raylib,
 
 ```sh
@@ -276,17 +283,7 @@ zig fetch --save git+https://github.com/raysan5/raylib
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/raylib_cjk.gif)
 
-##### Raylib + ImGui + rlImGui 
-
----
-
-First fetch raylib,
-
-```sh
-zig fetch --save git+https://github.com/raysan5/raylib
-```
-
-[main.zig](examples/zig_rlimgui_basic/src/main.zig)  
+[Raylib + ImGui + rlImGui](examples/zig_rlimgui_basic/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguin_examples/raw/main/img/rlimgui.gif)
 
@@ -393,6 +390,59 @@ Click link for live demo: [Click here](https://dinau.github.io/cimgui_zoomable_i
 
 ![alt](https://github.com/dinau/cimgui_zoomable_image/raw/main/img/snapshot.png)
 
+[^emsdk_list]: `$ emsdk list`
+
+##### zig_webgl_wasm
+
+---
+
+- [Install emscripten](https://emscripten.org/docs/getting_started/downloads.html#installation-instructions-using-the-emsdk-recommended)
+-  Spicefy emsdk **6.0.6**[^emsdk_list]
+
+   ```sh
+   emsdk install  6.0.6 
+   emsdk activate 6.0.6
+   ```
+
+- Go to `examples/zig_webgl_wasm` folder
+1. Run `emsdk_env.bat`(Windows) or `emsdk_env.sh`(Linux) in your console
+   > [!IMPORTANT]
+
+   ```sh
+   emsdk_env.bat     # Run this once in every new console
+   ```
+
+1.  Build **WebGL/Wsam** example
+
+    ```sh
+    make run
+    ```
+    
+    See ./Makefile
+
+1. Open your brwoser at [http://localhost:8000](http://localhost:8000) and click **web** folder
+1. You can build native application too
+
+    ```sh
+    make app
+    ```
+
+##### zig_wgpu_wasm
+
+---
+
+Same as WebGL example
+
+```sh
+emsdk_env.bat  
+```
+
+```
+make run
+```
+
+This example can't build native applicaton.
+
 #### Hiding console window
 
 ---
@@ -445,8 +495,8 @@ https://github.com/libsdl-org/SDL/releases
 | **Nim**              | Compiler | [ImGuin](https://github.com/dinau/imguin), [Nimgl_test](https://github.com/dinau/nimgl_test), [Nim_implot](https://github.com/dinau/nim_implot) |
 | **Python**           | Script   | [DearPyGui for 32bit WindowsOS Binary](https://github.com/dinau/DearPyGui32/tree/win32)                                                         |
 | **Ruby**             | Script   | [igRuby_Examples](https://github.com/dinau/igruby_examples)                                                                                     |
-| **Zig**              | Compiler | [ImGuinZ](https://github.com/dinau/imguinz)     with CImGui                                                                                                |
-| **Zig**, C           | Compiler | [ImGuinZ2](https://github.com/dinau/imguinz2) with Dear Binindings                                                                             |
+| **Zig**              | Compiler | [ImGuinz](https://github.com/dinau/imguinz)     with CImGui                                                                                                |
+| **Zig**, C           | Compiler | [ImGuinz2](https://github.com/dinau/imguinz2) with Dear Binindings                                                                             |
 
 
 #### SDL game tutorial Platfromer

@@ -4,6 +4,7 @@ const builtin = @import("builtin");
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
+    const emscripten_sysroot = b.option([]const u8, "emscripten_sysroot", "Path to <emsdk>/upstream/emscripten");
 
     const mod_name = "implot";
 
@@ -16,17 +17,19 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    step.defineCMacro("IMGUI_DISABLE_SSE","");
+    step.defineCMacro("IMGUI_DISABLE_SSE", "");
+    step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
 
     step.addIncludePath(b.path("./src"));
     step.addIncludePath(b.path("../../libc/dcimgui"));
     step.addIncludePath(b.path("../../libc/imgui"));
     step.addIncludePath(b.path("../../libc/cimgui"));
     step.addIncludePath(b.path("../../libc/cimplot"));
-    step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
+    if (emscripten_sysroot) |es| {
+        step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+    }
 
     const mod = step.addModule(mod_name);
-    mod.addImport(mod_name, mod);
     mod.addIncludePath(b.path("../../libc/dcimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/dcimgui"));
     mod.addIncludePath(b.path("../../libc/imgui"));
@@ -34,6 +37,9 @@ pub fn build(b: *std.Build) void {
     mod.addIncludePath(b.path("../../libc/cimplot"));
     mod.addIncludePath(b.path("../../libc/cimplot/implot"));
     mod.addIncludePath(b.path("./src"));
+    if (emscripten_sysroot) |es| {
+        mod.addSystemIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+    }
     // Macro
     mod.addCMacro("CIMGUI_API", "extern \"C\"  ");
     mod.addCMacro("ImDrawIdx", "unsigned int");
@@ -46,7 +52,7 @@ pub fn build(b: *std.Build) void {
             "../../libc/cimplot/implot/implot_items.cpp",
         },
         .flags = &.{
-            // "-O2",
+            "-O2",
         },
     });
 

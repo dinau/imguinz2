@@ -24,7 +24,6 @@ pub fn build(b: *std.Build) void {
     step.addIncludePath(b.path("../../libc/cimgui"));
     //
     const mod = step.addModule(mod_name);
-    mod.addImport(mod_name, mod);
     mod.addIncludePath(b.path("../../libc/dcimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/dcimgui"));
     mod.addIncludePath(b.path("../../libc/imgui"));
@@ -41,8 +40,8 @@ pub fn build(b: *std.Build) void {
     mod.addCSourceFiles(.{
         .files = &.{
             "../../libc/cimCTE/cimCTE.cpp",
-          //  "../../libc/cimCTE/ImGuiColorTextEdit/ImGuiDebugPanel.cpp",
-          //  "../../libc/cimCTE/ImGuiColorTextEdit/LanguageDefinitions.cpp",
+            //  "../../libc/cimCTE/ImGuiColorTextEdit/ImGuiDebugPanel.cpp",
+            //  "../../libc/cimCTE/ImGuiColorTextEdit/LanguageDefinitions.cpp",
             "../../libc/cimCTE/ImGuiColorTextEdit/TextEditor.cpp",
             "../../libc/cimCTE/ImGuiColorTextEdit/TextDiff.cpp",
             "../../libc/cimCTE/ImGuiColorTextEdit/extras/TrieAutoComplete.cpp",

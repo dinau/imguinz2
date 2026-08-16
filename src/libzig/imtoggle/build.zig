@@ -20,7 +20,6 @@ pub fn build(b: *std.Build) void {
     step.addIncludePath(b.path("../../libc/cimgui_toggle"));
 
     const mod = step.addModule(mod_name);
-    mod.addImport(mod_name, mod);
     mod.addIncludePath(b.path("../../libc/dcimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/dcimgui"));
     mod.addIncludePath(b.path("../../libc/imgui"));

@@ -3,6 +3,7 @@ const std = @import("std");
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
+    const emscripten_sysroot = b.option([]const u8, "emscripten_sysroot", "Path to <emsdk>/upstream/emscripten");
 
     const mod_name = "zoomglass";
 
@@ -14,11 +15,20 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    mod.addImport(mod_name, mod);
+
     // import modules
-    const modules = [_][]const u8{ "dcimgui", "loadimage", "glfw", "fonticon" };
+    const modules = [_][]const u8{
+        "dcimgui",
+        "loadimage",
+        "glfw",
+        "fonticon",
+    };
     for (modules) |module| {
-        const mod_dep = b.dependency(module, .{});
+        const mod_dep = b.dependency(module, .{
+            .target = target,
+            .optimize = optimize,
+            .emscripten_sysroot = emscripten_sysroot,
+        });
         mod.addImport(module, mod_dep.module(module));
     }
 

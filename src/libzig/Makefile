@@ -1,5 +1,6 @@
 DIRS = \
 	appimgui \
+	appimguiwgpu \
 	dcimgui \
 	fonticon \
 	glfw \
@@ -11,8 +12,10 @@ DIRS = \
 	imnodes\
 	implot\
 	implot3d\
+	impl_dx11 \
 	impl_glfw \
 	impl_opengl3 \
+	impl_sdl3 \
 	impl_sdlgpu3 \
 	impl_win32 \
 	imspinner \
@@ -20,8 +23,8 @@ DIRS = \
 	loadicon \
 	loadimage \
 	loadimage_sdlgpu3 \
-	raylib \
 	rlimgui \
+	sdl3 \
 	saveimage \
 	setupfont \
 	utils \
@@ -43,7 +46,7 @@ gen:
 
 #
 define def_make
-	@echo ==== Enter: $(1) ====
+	@echo ==== Enter: $(1)
 	@-$(MAKE) -C  $(1) $(2)
 
 endef

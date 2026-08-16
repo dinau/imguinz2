@@ -1,8 +1,8 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
-
 pub fn build(b: *std.Build) void {
+    const emscripten_sysroot = b.option([]const u8, "emscripten_sysroot", "Path to <emsdk>/upstream/emscripten");
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
@@ -16,6 +16,9 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    if (emscripten_sysroot) |es| {
+        mod.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+    }
     mod.addCSourceFiles(.{
         .files = &.{
             "src/utils.c",
@@ -25,11 +28,19 @@ pub fn build(b: *std.Build) void {
         },
     });
 
-    mod.addImport(mod_name, mod);
     // import modules
-    const modules = [_][]const u8{ "dcimgui", "loadimage", "saveimage", "zoomglass" };
+    const modules = [_][]const u8{
+        "dcimgui",
+        "loadimage",
+        "saveimage",
+        "zoomglass",
+    };
     for (modules) |module| {
-        const mod_dep = b.dependency(module, .{});
+        const mod_dep = b.dependency(module, .{
+            .target = target,
+            .optimize = optimize,
+            .emscripten_sysroot = emscripten_sysroot,
+        });
         mod.addImport(module, mod_dep.module(module));
     }
 

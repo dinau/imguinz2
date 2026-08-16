@@ -20,7 +20,9 @@ EXAMPLE_DIRS_ZIG =                                 \
 							examples/zig_implot3d                \
               examples/zig_imPlotDemo              \
 							examples/zig_imspinner               \
-							examples/zig_imtoggle
+							examples/zig_imtoggle                \
+							examples/zig_webgl_wasm              \
+							examples/zig_wgpu_wasm
 
 EXAMPLE_DIRS_ZIG_RAYLIB =                          \
 							examples/zig_raylib_basic            \
@@ -38,7 +40,7 @@ EXAMPLE_DIRS_SDL =                                 \
 
 EXAMPLE_DIRS_ALL += $(EXAMPLE_DIRS_C) $(EXAMPLE_DIRS_ZIG) $(EXAMPLE_DIRS_ZIG_RAYLIB) $(EXAMPLE_DIRS_SDL) $(EXAMPLE_DIRS_WIN32)
 
-.PHONY: test clean gen cc zig raylib sdl fmt cleanall
+.PHONY: test clean gen cc zig raylib sdl fmt win32 cleanall update copylibs cjk
 
 all: zig cc sdl win32 raylib
 
@@ -92,8 +94,8 @@ update:
 	@# Unzip
 	unzip -o -q $(WORK_DIR)/$(ZIP_NAME_DB) -d $(DCIMGUI_DIR)
 
-	@# Delete old dcimgui/
-	git clean -fd -q
+	@# Delete none needed files
+	#git clean -fd -q
 
 	@echo =====================================
 	@echo OK: updated done: "$(DCIMGUI_DIR)/*"
@@ -101,11 +103,13 @@ update:
 	@echo =====================================
 
 #
+CALL_COUNT := 0
 define def_make
-	@echo ===============================
-	@echo $(1)
-	@echo ===============================
+$(eval CALL_COUNT := $(shell expr $(CALL_COUNT) + 1))
+	@echo [$(CALL_COUNT)]: $(1)
 	@$(MAKE) -C  $(1) $(2)
+	#@-$(MAKE) -C  $(1) cleanpdb
+	@echo
 
 endef
 
@@ -113,3 +117,7 @@ copylibs:
 	$(MAKE) -C src/libc $@
 
 MAKEFLAGS += --no-print-directory
+
+
+cjk:
+	rg -l '[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\u4e00-\u9fff\uff00-\uffef]' -g '*.{zig,nim,c,h,cpp}'
