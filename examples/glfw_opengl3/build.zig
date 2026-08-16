@@ -57,7 +57,7 @@ pub fn build(b: *std.Build) void {
         exe.root_module.linkLibrary(mod_dep.artifact(module));
     }
     const glfw_lib_path = "../../src/libc/glfw/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a";
-    switch (builtin.target.os.tag) {
+    switch (target.result.os.tag) {
         .windows => exe.root_module.addObjectFile(b.path(glfw_lib_path)),
         // .linux =>   mod.addIncludePath(.{.cwd_relative = "/usr/include"}),
         else => {},

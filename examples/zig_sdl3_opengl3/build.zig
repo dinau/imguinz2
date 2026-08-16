@@ -44,7 +44,7 @@ pub fn build(b: *std.Build) void {
     // Libs
     //---------------
     const sdl_path = "../../src/libc/sdl/SDL3/x86_64-w64-mingw32";
-    if (builtin.target.os.tag == .windows) {
+    if (target.result.os.tag == .windows) {
         exe.root_module.linkSystemLibrary("gdi32", .{});
         exe.root_module.linkSystemLibrary("imm32", .{});
         exe.root_module.linkSystemLibrary("advapi32", .{});
@@ -81,7 +81,7 @@ pub fn build(b: *std.Build) void {
         }) });
         //exe.linkSystemLibrary("sdl3dll"); // For dynamic link
         // System
-    } else if (builtin.target.os.tag == .linux) {
+    } else if (target.result.os.tag == .linux) {
         exe.root_module.linkSystemLibrary("sdl3", .{});
     }
 
@@ -118,7 +118,7 @@ pub fn build(b: *std.Build) void {
     }
 
     //// SDL3.dll
-    //if (builtin.target.os.tag == .windows) {
+    //if (target.result.os.tag == .windows) {
     //    const sdl3dll = "SDL3.dll";
     //    const resSDL3Dll = b.addInstallFile(.{.cwd_relative = b.fmt("{s}/{s}/{s}", .{sdl_path, "bin", sdl3dll})}, "bin/" ++ sdl3dll);
     //    b.getInstallStep().dependOn(&resSDL3Dll.step);

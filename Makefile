@@ -108,7 +108,7 @@ define def_make
 $(eval CALL_COUNT := $(shell expr $(CALL_COUNT) + 1))
 	@echo [$(CALL_COUNT)]: $(1)
 	@$(MAKE) -C  $(1) $(2)
-	#@-$(MAKE) -C  $(1) cleanpdb
+	@#-$(MAKE) -C  $(1) cleanpdb
 	@echo
 
 endef

@@ -5,8 +5,9 @@ ifeq ($(OS),Windows_NT)
 endif
 
 all:
-	zig version
+	@echo zig-$(shell zig version)
 	zig build $(OPT)
+	@-$(AFTER_BUILD_CMD)
 
 ZIG_BIN_DIR = zig-out/bin
 
