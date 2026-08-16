@@ -38,14 +38,20 @@ pub fn build(b: *std.Build) void {
     // Hide console window
     exe.subsystem = if (builtin.zig_version.minor >= 17) .windows else .windows;
 
+    switch (target.result.os.tag){
+        .windows => {},
+        else => exe.root_module.linkSystemLibrary("glfw3", .{}), // Linux
+    }
+
     b.installArtifact(exe);
 
-    const link_mode: std.builtin.LinkMode = if (target.result.os.tag == .windows) .dynamic else .static;
+    const link_mode: std.builtin.LinkMode = if (target.result.os.tag == .windows) .dynamic else .dynamic;
     const raylib_dep = b.dependency("raylib_zig", .{
         .target = target,
         .optimize = optimize,
         .linkage = link_mode,
     });
+
     const raylib = raylib_dep.module("raylib"); // main raylib module
     //const raygui = raylib_dep.module("raygui"); // raygui module
     const raylib_artifact = raylib_dep.artifact("raylib"); // raylib C library
