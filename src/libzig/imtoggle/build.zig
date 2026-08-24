@@ -16,6 +16,7 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     step.addIncludePath(b.path("../../libc/dcimgui"));
+    step.addIncludePath(b.path("../../libc/cimgui"));
     step.addIncludePath(b.path("../../libc/imgui"));
     step.addIncludePath(b.path("../../libc/cimgui_toggle"));
 

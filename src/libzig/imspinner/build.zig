@@ -19,6 +19,7 @@ pub fn build(b: *std.Build) void {
     step.addIncludePath(b.path("../../libc/dcimgui"));
     step.addIncludePath(b.path("../../libc/imgui"));
     step.addIncludePath(b.path("../../libc/imspinner"));
+    step.addIncludePath(b.path("../../libc/imspinner/cimspinner"));
     if (emscripten_sysroot) |es| {
         step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
     }
@@ -27,6 +28,7 @@ pub fn build(b: *std.Build) void {
     mod.addIncludePath(b.path("../../libc/imgui"));
     mod.addIncludePath(b.path("../../libc/dcimgui"));
     mod.addIncludePath(b.path("../../libc/imspinner"));
+    mod.addIncludePath(b.path("../../libc/imspinner/cimspinner"));
     if (emscripten_sysroot) |es| {
         mod.addSystemIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
     }
@@ -169,7 +171,12 @@ pub fn build(b: *std.Build) void {
 
     mod.addCSourceFiles(.{
         .files = &.{
-            "../../libc/imspinner/cimspinner.cpp",
+            "../../libc/imspinner/cimspinner/cimspinner.cpp",
+            "../../libc/imspinner/cimspinner/cimspinner_bars.cpp",
+            "../../libc/imspinner/cimspinner/cimspinner_demo.cpp",
+            "../../libc/imspinner/cimspinner/cimspinner_dots.cpp",
+            "../../libc/imspinner/cimspinner/cimspinner_shapes.cpp",
+            "../../libc/imspinner/cimspinner/cimspinner_text.cpp",
         },
     });
 

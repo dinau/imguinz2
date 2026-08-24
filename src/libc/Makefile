@@ -75,8 +75,9 @@ implot3d:
 
 copy_imspinner:
 	@echo copying [ $(EXT_LIB_DIR)/imspinner] to $(TARGET_DIR)/imspinner
-	@-mkdir -p $(TARGET_DIR)/imspinner
-	@cp -f $(EXT_LIB_DIR)/imspinner/{*.cpp,*.h,LICENSE.txt,*.md}         $(TARGET_DIR)/imspinner
+	@-mkdir -p $(TARGET_DIR)/imspinner/cimspinner
+	@cp -f $(EXT_LIB_DIR)/imspinner/{*.h,LICENSE.txt,*.md}         $(TARGET_DIR)/imspinner
+	@cp -f $(EXT_LIB_DIR)/imspinner/cimspinner/{*.cpp,*.h,*.md}           $(TARGET_DIR)/imspinner/cimspinner
 
 imgui-knobs:
 	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@

@@ -80,7 +80,7 @@ LIBC_DIR           = src/libc
 ZIP_NAME_DB        = DearBindings_v$(DB_VER)_ImGui_v$(IMGUI_VER)-docking
 ZIP_NAME_IMGUI     = v$(IMGUI_VER)-docking
 
-update:
+update: # Update Dear ImGui and Dear Bingings
 	@-mkdir -p $(WORK_DIR)
 	@-mkdir -p $(IMGUI_DIR)
 	@# Download load Dear ImGui sources
