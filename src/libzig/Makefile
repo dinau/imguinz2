@@ -17,6 +17,7 @@ DIRS = \
 	impl_opengl3 \
 	impl_sdl3 \
 	impl_sdlgpu3 \
+	impl_wgpu \
 	impl_win32 \
 	imspinner \
 	imtoggle \

@@ -2,11 +2,11 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [ImGuinz2](#imguinz2)
-  - [Zig fetch](#zig-fetch)
   - [Try Wasm demo in your browser](#try-wasm-demo-in-your-browser)
-- [Frontends and Backends](#frontends-and-backends)
+  - [Frontends and Backends](#frontends-and-backends)
+  - [Zig fetch](#zig-fetch)
   - [Prerequisites](#prerequisites)
-  - [Available libraries list at this moment](#available-libraries-list-at-this-moment)
+  - [Available libraries](#available-libraries)
   - [Build and run](#build-and-run)
   - [Examples screen shots](#examples-screen-shots)
     - [zig_imknobs](#zig_imknobs)
@@ -40,6 +40,29 @@ and one can use many other libaries and examples with less external dependencies
 
 [DearBindings](https://github.com/dearimgui/dear_bindings): v1.92.9b-docking  
 [Dear ImGui](https://github.com/ocornut/imgui): 1.92.9b dock (2026/08)
+
+#### Try Wasm demo in your browser
+
+---
+
+Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/glfw_opengl3_wasm_base.html)  
+![alt](https://github.com/dinau/imguin/raw/main/src/img/wasm_demo_small.gif)
+
+See [zig_webgl_wasm](#zig_webgl_wasm) / [zig_wgpu_wasm](#zig_wgpu_wasm) examples
+
+
+#### Frontends and Backends  
+
+---
+
+| Frontends |            Backends            |
+|-----------|:------------------------------:|
+| GLFW3     | OpenGL3 / WASM(WebGL / WebGPU) |
+| SDL3      |        OpenGL3, SDL3GPU        |
+| Win32     |        DirectX 11(D3D11)       |
+  
+[^except_raylib]: Except Raylib examples
+[^wip]: WIP
 
 #### Zig fetch
 
@@ -152,29 +175,6 @@ Please insert the following lines above `b.installArtifact(exe);`.
    
    ![myapp.png](https://github.com/dinau/imguinz/raw/main/img/myapp.gif)
 
-#### Try Wasm demo in your browser
-
----
-
-Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/glfw_opengl3_wasm_base.html)  
-![alt](https://github.com/dinau/imguin/raw/main/src/img/wasm_demo_small.gif)
-
-See [zig_webgl_wasm](#zig_webgl_wasm) / [zig_wgpu_wasm](#zig_wgpu_wasm) examples
-
-
-### Frontends and Backends  
-
----
-
-| Frontends |            Backends            |
-|-----------|:------------------------------:|
-| GLFW3     | OpenGL3 / WASM(WebGL / WebGPU) |
-| SDL3      |        OpenGL3, SDL3GPU        |
-| Win32     |        DirectX 11(D3D11)       |
-  
-[^except_raylib]: Except Raylib examples
-[^wip]: WIP
-
 #### Prerequisites
 
 ---
@@ -183,7 +183,7 @@ See [zig_webgl_wasm](#zig_webgl_wasm) / [zig_wgpu_wasm](#zig_wgpu_wasm) examples
     - [x] zig-0.16.0  
        Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)  
        Linux:   [  zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
-    - [x] 0.17.0-dev.1767  [^except_raylib] (2026/08/14)
+    - [x] 0.17.0-dev.1902  [^except_raylib] (2026/08/27)
 
 - Windows11  
    - Install MSys2/MinGW basic commands (make, rm, cp ...)
@@ -201,7 +201,7 @@ See [zig_webgl_wasm](#zig_webgl_wasm) / [zig_wgpu_wasm](#zig_wgpu_wasm) examples
    - SDL3  
       [Install SDL3 library](https://github.com/dinau/sdl3_nim#for-linux-os)
 
-#### Available libraries list at this moment
+#### Available libraries
 
 ---
 
