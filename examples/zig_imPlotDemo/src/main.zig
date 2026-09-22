@@ -25,6 +25,8 @@ pub fn gui_main(window: *app.Window) !void {
     var showDemoWindow = true;
     var showImPlotDemoWindow = true;
 
+    window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
+                                //
     //------------------------
     // Select Dear ImGui style
     //------------------------

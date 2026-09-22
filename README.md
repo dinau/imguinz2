@@ -4,7 +4,6 @@
 - [ImGuinz2](#imguinz2)
   - [Try Wasm demo in your browser](#try-wasm-demo-in-your-browser)
   - [Frontends and Backends](#frontends-and-backends)
-  - [Zig fetch](#zig-fetch)
   - [Prerequisites](#prerequisites)
   - [Available libraries](#available-libraries)
   - [Build and run](#build-and-run)
@@ -25,11 +24,13 @@
     - [zig_imgui_zoomable_image](#zig_imgui_zoomable_image)
     - [zig_webgl_wasm](#zig_webgl_wasm)
     - [zig_wgpu_wasm](#zig_wgpu_wasm)
+  - [Start your project](#start-your-project)
   - [Hiding console window](#hiding-console-window)
   - [SDL libraries](#sdl-libraries)
   - [My tools version](#my-tools-version)
   - [Similar project ImGui / CImGui](#similar-project-imgui--cimgui)
   - [SDL game tutorial Platfromer](#sdl-game-tutorial-platfromer)
+  - [Start your project](#start-your-project-1)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -57,123 +58,13 @@ See [zig_webgl_wasm](#zig_webgl_wasm) / [zig_wgpu_wasm](#zig_wgpu_wasm) examples
 
 | Frontends |            Backends            |
 |-----------|:------------------------------:|
-| GLFW3     | OpenGL3 / WASM(WebGL / WebGPU) |
+| GLFW3     | OpenGL3 / Wasm(WebGL / WebGPU) |
 | SDL3      |        OpenGL3, SDL3GPU        |
 | Win32     |        DirectX 11(D3D11)       |
   
 [^except_raylib]: Except Raylib examples
 [^wip]: WIP
 
-#### Zig fetch
-
----
-
-Use zig-0.16.0
-
-1. Zig fetch `imguinz2`
-
-   ```sh
-   mkdir myapp
-   cd myapp
-   zig init
-   
-   zig fetch --save git+https://github.com/dinau/imguinz2
-   ```
-
-1. Add dependencies to `build.zig`  
-Please insert the following lines above `b.installArtifact(exe);`.
-
-   ```zig
-   const imguinz2 = b.dependency("imguinz2", .{});
-   const dependencies = .{
-       "appimgui",      // Simple app framework
-       "imspinner",     // ImSpinner
-       "imknobs",       // ImKnobs
-       "imtoggle",      // ImToggle
-    // "another_lib",
-   };
-   inline for (dependencies) |dep_name| {
-       const dep = imguinz2.builder.dependency(dep_name, .{
-           .target = target, 
-           .optimize = optimize, 
-       });
-       exe.root_module.addImport(dep_name, dep.module(dep_name));
-   }
-   //exe.subsystem = .Windows; // Hide console window
-   ```
-
-   You can set `dependencies` (additional libraries), see [imguinz2/build.zig.zon](https://github.com/dinau/imguinz2/blob/main/build.zig.zon)
-
-   ```zig
-   "appimgui"     <- Simple app framework for GLFW and OpenGL backend
-   "imspinner"    <- ImSpinner
-   "imguizmo"     <- ImGuizmo
-   "imknobs"      <- ImKnobs 
-   "imnodes"      <- ImNodes
-   "implot"       <- ImPlots
-   "implot3d"     <- ImPlot3D
-   "imtoggle"     <- ImToggle
-   "rlimgui"      <- rlImgui
-   ... snip  ...
-   ```
-
-1. Edit src/main.zig
-
-   ```zig
-   const app = @import("appimgui");
-   const ig = app.ig;
-   const spinner = @import("imspinner"); // ImSpinner
-   const knobs = @import("imknobs"); // ImKnobs
-   const tgl = @import("imtoggle"); // ImToggle
-   
-   // gui_main()
-   pub fn gui_main(window: *app.Window) void {
-       var col: f32 = 1.0;
-       var fspd: bool = false;
-       var speed: f32 = 2.0;
-       var spn_col: spinner.ImColor = .{ .Value = .{ .x = col, .y = 1.0, .z = 1.0, .w = 1.0 } };
-       while (!window.shouldClose()) { // main loop
-           window.pollEvents();
-           window.frame(); // Start ImGui frame
-   
-           ig.ImGui_ShowDemoWindow(null); // Show ImGui demo window
-   
-           ig.ImGui_SetNextWindowSize(.{ .x = 0.0, .y = 0.0 }, 0); // Fit window size depending on the size of the widgets
-           _ = ig.ImGui_Begin("Demo", null, 0); // Show demo window
-           spinner.SpinnerAtomEx("atom", 16, 2, spn_col, speed, 3);
-           ig.ImGui_SameLine();
-           _ = tgl.Toggle("Speed", &fspd, .{ .x = 0.0, .y = 0.0 });
-           if (fspd) speed = 6.0 else speed = 2.0;
-           if (knobs.IgKnobFloat("Color", &col, 0.0, 1.0, 0.05, "%.2f", knobs.IgKnobVariant_Stepped, 0, 0, 10, -1, -1)) {
-               spn_col.Value.x = col;
-           }
-           ig.ImGui_End();
-   
-           window.render(); // render
-       } // end while loop
-   }
-   
-   pub fn main() !void {
-       var window = try app.Window.createImGui(1024, 900, "ImGui window in Zig", .{});
-       defer window.destroyImGui();
-   
-       _ = app.setTheme(.dark); // Theme: dark, classic, light, microsoft
-   
-       gui_main(&window); // GUI main proc
-   }
-   ```
-
-1. Build and run
-  
-   ```sh
-   pwd
-   myapp
-
-   zig build run     # or zig build --release=fast
-
-   ```
-   
-   ![myapp.png](https://github.com/dinau/imguinz/raw/main/img/myapp.gif)
 
 #### Prerequisites
 
@@ -183,7 +74,7 @@ Please insert the following lines above `b.installArtifact(exe);`.
     - [x] zig-0.16.0  
        Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)  
        Linux:   [  zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
-    - [x] 0.17.0-dev.1902  [^except_raylib] (2026/08/27)
+    - [x] 0.17.0-dev.2251  [^except_raylib] (2026/09/20)
 
 - Windows11  
    - Install MSys2/MinGW basic commands (make, rm, cp ...)
@@ -236,7 +127,12 @@ cd imguinz2/examples/zig_glfw_opengl3       # for example
 make run       # or zig build run --release=fast 
 ```
 
+See [Start your project](#start-your-project)
+
+
 #### Examples screen shots 
+
+---
 
 ##### zig_imknobs
 
@@ -457,6 +353,117 @@ make run
 ```
 
 This example can't build native applicaton.
+
+#### Start your project
+
+---
+
+Use zig-0.16.0
+
+1. Zig fetch `imguinz2`
+
+   ```sh
+   mkdir myapp
+   cd myapp
+   zig init
+   
+   zig fetch --save git+https://github.com/dinau/imguinz2
+   ```
+
+1. Add dependencies to `build.zig`  
+Please insert the following lines above `b.installArtifact(exe);`.
+
+   ```zig
+   const imguinz2 = b.dependency("imguinz2", .{});
+   const dependencies = .{
+       "appimgui",      // Simple app framework
+       "imspinner",     // ImSpinner
+       "imknobs",       // ImKnobs
+       "imtoggle",      // ImToggle
+    // "another_lib",
+   };
+   inline for (dependencies) |dep_name| {
+       const dep = imguinz2.builder.dependency(dep_name, .{
+           .target = target, 
+           .optimize = optimize, 
+       });
+       exe.root_module.addImport(dep_name, dep.module(dep_name));
+   }
+   //exe.subsystem = .Windows; // Hide console window
+   ```
+
+   You can set `dependencies` (additional libraries), see [imguinz2/build.zig.zon](https://github.com/dinau/imguinz2/blob/main/build.zig.zon)
+
+   ```zig
+   "appimgui"     <- Simple app framework for GLFW and OpenGL backend
+   "imspinner"    <- ImSpinner
+   "imguizmo"     <- ImGuizmo
+   "imknobs"      <- ImKnobs 
+   "imnodes"      <- ImNodes
+   "implot"       <- ImPlots
+   "implot3d"     <- ImPlot3D
+   "imtoggle"     <- ImToggle
+   "rlimgui"      <- rlImgui
+   ... snip  ...
+   ```
+
+1. Edit src/main.zig
+
+   ```zig
+   const app = @import("appimgui");
+   const ig = app.ig;
+   const spinner = @import("imspinner"); // ImSpinner
+   const knobs = @import("imknobs"); // ImKnobs
+   const tgl = @import("imtoggle"); // ImToggle
+   
+   // gui_main()
+   pub fn gui_main(window: *app.Window) void {
+       var col: f32 = 1.0;
+       var fspd: bool = false;
+       var speed: f32 = 2.0;
+       var spn_col: spinner.ImColor = .{ .Value = .{ .x = col, .y = 1.0, .z = 1.0, .w = 1.0 } };
+       while (!window.shouldClose()) { // main loop
+           window.pollEvents();
+           window.frame(); // Start ImGui frame
+   
+           ig.ImGui_ShowDemoWindow(null); // Show ImGui demo window
+   
+           ig.ImGui_SetNextWindowSize(.{ .x = 0.0, .y = 0.0 }, 0); // Fit window size depending on the size of the widgets
+           _ = ig.ImGui_Begin("Demo", null, 0); // Show demo window
+           spinner.SpinnerAtomEx("atom", 16, 2, spn_col, speed, 3);
+           ig.ImGui_SameLine();
+           _ = tgl.Toggle("Speed", &fspd, .{ .x = 0.0, .y = 0.0 });
+           if (fspd) speed = 6.0 else speed = 2.0;
+           if (knobs.IgKnobFloat("Color", &col, 0.0, 1.0, 0.05, "%.2f", knobs.IgKnobVariant_Stepped, 0, 0, 10, -1, -1)) {
+               spn_col.Value.x = col;
+           }
+           ig.ImGui_End();
+   
+           window.render(); // render
+       } // end while loop
+   }
+   
+   pub fn main() !void {
+       var window = try app.Window.createImGui(1024, 900, "ImGui window in Zig", .{});
+       defer window.destroyImGui();
+   
+       _ = app.setTheme(.dark); // Theme: dark, classic, light, microsoft
+   
+       gui_main(&window); // GUI main proc
+   }
+   ```
+
+1. Build and run
+  
+   ```sh
+   pwd
+   myapp
+
+   zig build run     # or zig build --release=fast
+
+   ```
+   
+   ![myapp.png](https://github.com/dinau/imguinz/raw/main/img/myapp.gif)
 
 #### Hiding console window
 

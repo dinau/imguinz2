@@ -42,7 +42,7 @@ EXAMPLE_DIRS_ALL += $(EXAMPLE_DIRS_C) $(EXAMPLE_DIRS_ZIG) $(EXAMPLE_DIRS_ZIG_RAY
 
 .PHONY: test clean gen cc zig raylib sdl fmt win32 cleanall update copylibs cjk
 
-all: zig cc sdl win32 raylib
+all: zig cc sdl win32 # raylib
 
 cc:
 	$(foreach exdir,$(EXAMPLE_DIRS_C), $(call def_make,$(exdir)))
