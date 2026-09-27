@@ -587,9 +587,7 @@ pub fn saveIni(win: *Window) !void {
     glfw.glfwGetWindowPos(win.handle, &win.ini.window.startupPosX, &win.ini.window.startupPosY);
 
     // Window size
-    const ws = ig.ImGui_GetMainViewport().*.WorkSize;
-    win.ini.window.viewportWidth = @intFromFloat(ws.x);
-    win.ini.window.viewportHeight = @intFromFloat(ws.y);
+    glfw.glfwGetWindowSize(win.handle, &win.ini.window.viewportWidth, &win.ini.window.viewportHeight);
     //dbgPrint("win.ini.window.viewportWidth = {d}\n", .{win.ini.window.viewportWidth});
     //dbgPrint("win.ini.window.viewportHeight = {d}\n", .{win.ini.window.viewportHeight});
 

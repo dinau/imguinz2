@@ -1,0 +1,14 @@
+.{
+    .name = .zig_webgl,
+    .version = "0.0.1",
+    .fingerprint = 0x9d08da8f5289cc4f, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.15.1",
+    .dependencies = .{
+        .imguinz = .{ .path = "../../../" },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}

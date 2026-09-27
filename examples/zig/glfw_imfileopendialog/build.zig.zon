@@ -1,0 +1,14 @@
+.{
+    .name = .app_glfw_imfiledialog,
+    .version = "0.0.1",
+    .fingerprint = 0xccc922e191c9b9a6, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.15.1",
+    .dependencies = .{
+        .imguinz = .{ .path = "../../../" },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}

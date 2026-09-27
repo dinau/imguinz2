@@ -1,0 +1,24 @@
+.{
+    .name = .raylib_basic,
+    .version = "0.0.1",
+    .fingerprint = 0xeafb922ebcef4055, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.15.2",
+    .dependencies = .{
+        .imguinz = .{
+            .path = "../../../",
+        },
+        .raylib_zig = .{
+            .url = "git+https://github.com/raylib-zig/raylib-zig?ref=devel#8758f4cd3a5ae0df6941c4715257223d34c5ad3e",
+            .hash = "raylib_zig-6.0.0-KE8RECZ8BQDm-txuospkpZHbJ6DNpacUF7D88RWQ_qAe",
+        },
+        .raylib = .{
+            .url = "git+https://github.com/raysan5/raylib#935f3da3ffd4b2e3eb4af1ee9826f45ae241a68c",
+            .hash = "raylib-6.0.0-whq8uHLbOwVT1ArFVrONca5sX7AICEVkYCoa6byD0Km-",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}

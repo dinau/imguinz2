@@ -1,0 +1,14 @@
+.{
+    .name = .app_glfw_opengl3,
+    .version = "0.0.1",
+    .fingerprint = 0xbc95b70f8642d509, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.15.1",
+    .dependencies = .{
+        .imguinz = .{ .path = "../../../" },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}

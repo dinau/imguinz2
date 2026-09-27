@@ -7,8 +7,8 @@
 
 -I../src/libc/dcimgui
 -I../src/libc/dcimgui/backends
--I../src/libc/glfw/glfw-3.4.bin.WIN64/include
--I../src/libc/glfw/glfw-3.4.bin.WIN64/include/GLFW
+-I../src/libc/glfw/glfw.bin.WIN64/include
+-I../src/libc/glfw/glfw.bin.WIN64/include/GLFW
 -I../src/libc/imgui
 -I../src/libc/imgui/backends
 -I../src/libc/stb

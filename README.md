@@ -8,29 +8,31 @@
   - [Available libraries](#available-libraries)
   - [Build and run](#build-and-run)
   - [Examples screen shots](#examples-screen-shots)
-    - [zig_imknobs](#zig_imknobs)
-    - [zig_imtoggle](#zig_imtoggle)
-    - [zig_imspinner](#zig_imspinner)
+    - [glfw_imknobs](#glfw_imknobs)
+    - [glfw_imtoggle](#glfw_imtoggle)
+    - [glfw_imspinner](#glfw_imspinner)
     - [Raylib example](#raylib-example)
-    - [zig_imfiledialog](#zig_imfiledialog)
-    - [zig_imgui_markdown](#zig_imgui_markdown)
-    - [zig_iconfontviewer](#zig_iconfontviewer)
-    - [zig_imcolortextedit](#zig_imcolortextedit)
-    - [zig_imguizmo](#zig_imguizmo)
-    - [zig_imnodes](#zig_imnodes)
-    - [zig_implot / zig_implot3d](#zig_implot--zig_implot3d)
+      - [raylib_basic](#raylib_basic)
+      - [raylib_cjk](#raylib_cjk)
+      - [rlImGui](#rlimgui)
+    - [glfw_imfileopendialog](#glfw_imfileopendialog)
+    - [glfw_imgui_markdown](#glfw_imgui_markdown)
+    - [glfw_iconfontviewer](#glfw_iconfontviewer)
+    - [glfw_imcolortextedit](#glfw_imcolortextedit)
+    - [glfw_imguizmo](#glfw_imguizmo)
+    - [glfw_imnodes](#glfw_imnodes)
+    - [glfw_implot / glfw_implot3d](#glfw_implot--glfw_implot3d)
     - [Image load / save (OpenGL, SDL3, SDL3GPU)](#image-load--save-opengl-sdl3-sdl3gpu)
-    - [zig_glfw_opengl3](#zig_glfw_opengl3)
-    - [zig_imgui_zoomable_image](#zig_imgui_zoomable_image)
-    - [zig_webgl_wasm](#zig_webgl_wasm)
-    - [zig_wgpu_wasm](#zig_wgpu_wasm)
+    - [glfw_opengl3](#glfw_opengl3)
+    - [glfw_imgui_zoomable_image](#glfw_imgui_zoomable_image)
+    - [zig_webgl](#zig_webgl)
+    - [zig_wgpu](#zig_wgpu)
   - [Start your project](#start-your-project)
   - [Hiding console window](#hiding-console-window)
   - [SDL libraries](#sdl-libraries)
   - [My tools version](#my-tools-version)
   - [Similar project ImGui / CImGui](#similar-project-imgui--cimgui)
   - [SDL game tutorial Platfromer](#sdl-game-tutorial-platfromer)
-  - [Start your project](#start-your-project-1)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -49,7 +51,7 @@ and one can use many other libaries and examples with less external dependencies
 Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/glfw_opengl3_wasm_base.html)  
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/wasm_demo_small.gif)
 
-See [zig_webgl_wasm](#zig_webgl_wasm) / [zig_wgpu_wasm](#zig_wgpu_wasm) examples
+See [zig_webgl](#zig_webgl) / [zig_wgpu](#zig_wgpu) examples
 
 
 #### Frontends and Backends  
@@ -71,10 +73,10 @@ See [zig_webgl_wasm](#zig_webgl_wasm) / [zig_wgpu_wasm](#zig_wgpu_wasm) examples
 ---
 
 - Zig Compiler 
-    - [x] zig-0.16.0  
+    - [x] 0.17.0-dev.2307  [^except_raylib] (2026/09/25) or later
+    - [x] zig-0.16.0 for Raylib examples  
        Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)  
        Linux:   [  zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
-    - [x] 0.17.0-dev.2251  [^except_raylib] (2026/09/20)
 
 - Windows11  
    - Install MSys2/MinGW basic commands (make, rm, cp ...)
@@ -123,7 +125,7 @@ Additional examples
 ```sh
 git clone https://github.com/dinau/imguinz2
 
-cd imguinz2/examples/zig_glfw_opengl3       # for example
+cd imguinz2/examples/zig/glfw_opengl3       # for example
 make run       # or zig build run --release=fast 
 ```
 
@@ -134,27 +136,27 @@ See [Start your project](#start-your-project)
 
 ---
 
-##### zig_imknobs
+##### glfw_imknobs
 
 ---
 
- [zig_imknobs](examples/zig_imknobs/src/main.zig) 
+ [glfw_imknobs](examples/zig/glfw_imknobs/src/main.zig) 
 
 ![alt](img/zig_imknobs.png)
 
-##### zig_imtoggle
+##### glfw_imtoggle
 
 ---
 
-[zig_imtoggle](examples/zig_imtoggle/src/main.zig) 
+[glfw_imtoggle](examples/zig/glfw_imtoggle/src/main.zig) 
 
 ![alt](img/zig_imtoggle.png)
 
-##### zig_imspinner
+##### glfw_imspinner
 
 ---
 
-[zig_imspinner](examples/zig_imspinner/src/main.zig) 
+[glfw_imspinner](examples/zig/glfw_imspinner/src/main.zig) 
 
 ![alt](img/zig_imspinner.gif)
 
@@ -170,79 +172,85 @@ First fetch raylib,
 zig fetch --save git+https://github.com/raysan5/raylib
 ```
 
-[raylib_basic](examples/zig_raylib_basic/src/main.zig)  
+###### raylib_basic
+
+[raylib_basic](examples/raylib/raylib_basic/src/main.zig)  
 
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/raylib_basic.gif)
 
-[raylib_cjk](examples/zig_raylib_cjk/src/main.zig): Showing multi byte(CJK) fonts
+###### raylib_cjk
+
+[raylib_cjk](examples/raylib/raylib_cjk/src/main.zig): Showing multi byte(CJK) fonts
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/raylib_cjk.gif)
 
-[Raylib + ImGui + rlImGui](examples/zig_rlimgui_basic/src/main.zig)  
+###### rlImGui
+
+[Raylib + ImGui + rlImGui](examples/raylib/rlimgui_basic/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguin_examples/raw/main/img/rlimgui.gif)
 
-##### zig_imfiledialog
+##### glfw_imfileopendialog
 
 ---
 
-[zig_imfiledialog](examples/zig_imfiledialog/src/main.zig) 
+[glfw_imfileopendialog](examples/zig/glfw_imfileopendialog/src/main.zig) 
 
 ![alt](img/zig_imfiledialog.png)
 
-##### zig_imgui_markdown
+##### glfw_imgui_markdown
 
 ---
 
-- [x] Work in progress
+- Work in progress
 
-[zig_imgui_markdown](examples/zig_imgui_markdown/src/main.zig) 
+   [glfw_imgui_markdown](examples/zig/glfw_imgui_markdown/src/main.zig) 
+   
+   ![alt](https://github.com/dinau/cimgui_markdown/raw/main/demo/img/cimgui_markdown.png)
 
-![alt](https://github.com/dinau/cimgui_markdown/raw/main/demo/img/cimgui_markdown.png)
-
-##### zig_iconfontviewer
+##### glfw_iconfontviewer
 
 ---
 
-[zig_iconfontviewer](examples/zig_iconfontviewer/src/main.zig) 
+[glfw_iconfontviewer](examples/zig/glfw_iconfontviewer/src/main.zig) 
 
 - [x] Incremantal search 
 - [x] Magnifing glass
 
 ![alt](img/zig_iconfontviewer.png)
 
-##### zig_imcolortextedit
+##### glfw_imcolortextedit
 
 ---
 
-[zig_imcolortextedit](examples/zig_imcolortextedit/src/main.zig) 
+[glfw_imcolortextedit](examples/zig/glfw_imcolortextedit/src/main.zig) 
 
 ![alt](img/zig_imcolortextedit.png)
 
-##### zig_imguizmo
+##### glfw_imguizmo
 
 ---
 
-[zig_imguizmo](examples/zig_imguizmo/src/main.zig) 
+[glfw_imguizmo](examples/zig/glfw_imguizmo/src/main.zig) 
 
 ![alt](img/zig_imguizmo.png)
 
-##### zig_imnodes
+##### glfw_imnodes
 
 ---
 
-[zig_imnodes](examples/zig_imnodes/src/main.zig) 
+[glfw_imnodes](examples/zig/glfw_imnodes/src/main.zig) 
 
 ![alt](img/zig_imnodes.png)
 
-##### zig_implot / zig_implot3d
+##### glfw_implot / glfw_implot3d
 
 ---
 
-[zig_implot](examples/zig_implot/src/main.zig) /  [zig_implot3d](examples/zig_implot3d/src/main.zig) 
+[glfw_implot](examples/zig/glfw_implot/src/main.zig) /  [glfw_implot3d](examples/zig/glfw_implot3d/src/main.zig) 
 
-[zig_imPlotDemo](examples/zig_imPlotDemo/src/demoAll.zig) written in Zig.
+[glfw_imPlotDemo](examples/zig/glfw_imPlotDemo/src/demoAll.zig) written in Zig.
 
 ![alt](img/zig_implot3d.gif)  
 ![alt](img/zig_implot.png)
@@ -251,62 +259,65 @@ zig fetch --save git+https://github.com/raysan5/raylib
 
 ---
 
-| Language |                                                                                                                    GLFW | Magnifing glass | Image load /save | Note                                                                                                      |
-|:--------:|------------------------------------------------------------------------------------------------------------------------:|:---------------:|:----------------:|-----------------------------------------------------------------------------------------------------------|
-|     C    |                                                             [glfw_opengl3_image_load](examples/glfw_opengl3_image_load) |        -        |         Y        |                                                                                                           |
-|     C    |                                                             [glfw_opengl3_image_save](examples/glfw_opengl3_image_save) |        -        |         Y        |                                                                                                           |
-|    Zig   |                                        [zig_glfw_opengl3_image_load](examples/zig_glfw_opengl3_image_load/src/main.zig) |        Y        |         Y        |                                                                                                           |
-|    Zig   | [zig_sdl3_sdlgup3](examples/zig_sdl3_sdlgpu3/src/main.zig) / [zig_sdl3_opengl3](examples/zig_sdl3_opengl3/src/main.zig) |        -        |       load       | Download [SDL3.dll](https://github.com/libsdl-org/SDL/releases) on Windows and copy to zig-out/bin folder |
+| Language |                                                                            GLFW | Magnifing glass | Image load /save | Note                                                                                                      |
+|:--------:|--------------------------------------------------------------------------------:|:---------------:|:----------------:|-----------------------------------------------------------------------------------------------------------|
+|     C    |                   [glfw_opengl3](examples/czig/glfw_opengl3/src/glfw_opengl3.c) |        -        |         Y        |                                                                                                           |
+|     C    | [glfw_opengl3_image](examples/czig/glfw_opengl3_image/src/glfw_opengl3_image.c) |        -        |         Y        |                                                                                                           |
+|    Zig   |    [glfw_opengl3_image_load](examples/zig/glfw_opengl3_image_load/src/main.zig) |        Y        |         Y        |                                                                                                           |
+|    Zig   |                    [sdl3_sdlgup3](examples/sdl3/sdl3_sdlgpu3/src/main.zig) |        -        |       load       | Download [SDL3.dll](https://github.com/libsdl-org/SDL/releases) on Windows and copy to zig-out/bin folder |
+|    Zig   |                    [sdl3_opengl3](examples/sdl3/sdl3_opengl3/src/main.zig) |        -        |       load       | Download [SDL3.dll](https://github.com/libsdl-org/SDL/releases) on Windows and copy to zig-out/bin folder |
 
 - [x] Image file captured will be saved in current folder.  
 - [x] Image format can be selected from `JPEG / PNG / BMP / TGA`.
 
-![alt](img/glfw_opengl3_image_load.png)
+   ![alt](img/glfw_opengl3_image_load.png)
 
-##### zig_glfw_opengl3
+##### glfw_opengl3
 
 ---
 
 - [x] Basic example
 
-| Language |                                                                               GLFW |                                                       SDL3 |
-|:--------:|-----------------------------------------------------------------------------------:|-----------------------------------------------------------:|
-|     C    | [glfw_opengl3](examples/glfw_opengl3), [glfw_opengl3_jp](examples/glfw_opengl3_jp) |                      [sdl3_opengl3](examples/sdl3_opengl3) |
-|    Zig   |                         [zig_glfw_opengl3](examples/zig_glfw_opengl3/src/main.zig) | [zig_sdl3_opengl3](examples/zig_sdl3_opengl3/src/main.zig) |
-
-
-![alt](img/glfw_opengl3.png) ![alt](img/glfw_opengl3_jp.png)
-
-##### zig_imgui_zoomable_image
+   | Language |                                                                                                                                    GLFW |                                                          SDL3 |
+   |:--------:|----------------------------------------------------------------------------------------------------------------------------------------:|--------------------------------------------------------------:|
+   |     C    | [glfw_opengl3](examples/czig/glfw_opengl3/src/glfw_opengl3.c) /  [glfw_opengl3_jp](examples/czig/glfw_opengl3_jp/src/glfw_opengl3_jp.c) | [sdl3_opengl3](examples/czig/sdl3_opengl3/src/sdl3_opengl3.c) |
+   |    Zig   |                                                                                  [glfw_opengl3](examples/zig/glfw_opengl3/src/main.zig) |       [sdl3_opengl3](examples/sdl3/sdl3_opengl3/src/main.zig) |
+   
+   
+   ![alt](img/glfw_opengl3.png) ![alt](img/glfw_opengl3_jp.png)
+   
+##### glfw_imgui_zoomable_image
 
 ---
 
 Try Wasm live demo in your browser  
 Click link for live demo: [Click here](https://dinau.github.io/cimgui_zoomable_image/wasm/)  
 
+[glfw_imgui_zoomable_image](examples/zig/glfw_imgui_zoomable_image/src/main.zig) 
+
 ![alt](https://github.com/dinau/cimgui_zoomable_image/raw/main/img/snapshot.png)
 
-[^emsdk_list]: `$ emsdk list`
+[^emsdk_list]: `$ emsdk list`  # Show version list
 
-##### zig_webgl_wasm
+##### zig_webgl
 
 ---
 
 - [Install emscripten](https://emscripten.org/docs/getting_started/downloads.html#installation-instructions-using-the-emsdk-recommended)
--  Specify emsdk **6.0.6**[^emsdk_list]
+-  Specify emsdk **6.0.9**[^emsdk_list]
 
    ```sh
-   emsdk install  6.0.6 
-   emsdk activate 6.0.6
+   emsdk install  6.0.9 
+   emsdk activate 6.0.9
    ```
 
    for WebGL
 
    ```sh
-   embuilder build contrib.glfw3
+   embuilder build contrib.glfw3   # Rerun after emsdk updated 
    ```
 
-1. Go to `examples/zig_webgl_wasm` folder
+1. Go to `examples/wasm/zig_webgl` folder
 1. Run `emsdk_env.bat`(Windows) or `emsdk_env.sh`(Linux) in your console
    > [!IMPORTANT]
 
@@ -329,7 +340,7 @@ Click link for live demo: [Click here](https://dinau.github.io/cimgui_zoomable_i
     make app
     ```
 
-##### zig_wgpu_wasm
+##### zig_wgpu
 
 ---
 
@@ -340,7 +351,7 @@ Basically same as WebGL example
 for WebGPU
 
 ```sh
-embuilder build emdawnwebgpu
+embuilder build emdawnwebgpu   # Rerun after emsdk updated 
 
 ```
 

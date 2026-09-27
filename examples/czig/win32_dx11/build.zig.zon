@@ -1,0 +1,21 @@
+.{
+    .name = .win32_dx11_c,
+    .version = "0.1.0",
+    .fingerprint = 0x1418847b91b1ed97, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.15.2",
+    .dependencies = .{
+        .dcimgui = .{ .path = "../../../src/libzig/dcimgui" },
+        .impl_dx11 = .{ .path = "../../../src/libzig/impl_dx11" },
+        .impl_win32 = .{ .path = "../../../src/libzig/impl_win32" },
+        .loadicon = .{ .path = "../../../src/libzig/loadicon" },
+        .setupfont = .{ .path = "../../../src/libzig/setupfont" },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        // For example...
+        //"LICENSE",
+        //"README.md",
+    },
+}

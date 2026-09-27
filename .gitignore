@@ -1,10 +1,8 @@
 .githubx
 README.html
 org.html
-examples/glfw_wgpu_wasm/src/licenses/
-examples/glfw_wgpu_wasm/src/demo/
-examples/zig_wgpu_wasm/src/licenses/
-examples/zig_wgpu_wasm/src/demo/
+examples/wasm/zig_wgpu/src/licenses/
+examples/wasm/zig_wgpu/src/demo/
 00work/
 zig_imguizmo1/
 *.lib

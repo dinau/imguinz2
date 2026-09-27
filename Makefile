@@ -1,48 +1,55 @@
 # All example are built at a time.
 
-EXAMPLE_DIRS_C =                                   \
-							examples/glfw_opengl3                \
-	            examples/glfw_opengl3_image          \
-	            examples/glfw_opengl3_jp
+EXAMPLE_DIRS_C =                                     \
+							examples/czig/glfw_opengl3             \
+	            examples/czig/glfw_opengl3_image       \
+	            examples/czig/glfw_opengl3_jp
 
 
-EXAMPLE_DIRS_ZIG =                                 \
-							examples/zig_glfw_opengl3            \
-							examples/zig_glfw_opengl3_image_load \
-							examples/zig_iconfontviewer          \
-							examples/zig_imcolortextedit         \
-							examples/zig_imfileopendialog        \
-							examples/zig_imgui_zoomable_image    \
-							examples/zig_imguizmo                \
-							examples/zig_imknobs                 \
-							examples/zig_imnodes                 \
-							examples/zig_implot                  \
-							examples/zig_implot3d                \
-              examples/zig_imPlotDemo              \
-							examples/zig_imspinner               \
-							examples/zig_imtoggle                \
-							examples/zig_webgl_wasm              \
-							examples/zig_wgpu_wasm
+EXAMPLE_DIRS_ZIG =                                   \
+							examples/zig/glfw_iconfontviewer       \
+							examples/zig/glfw_imcolortextedit      \
+							examples/zig/glfw_imfileopendialog     \
+							examples/zig/glfw_imgui_zoomable_image \
+							examples/zig/glfw_imguizmo             \
+							examples/zig/glfw_imknobs              \
+							examples/zig/glfw_imnodes              \
+							examples/zig/glfw_implot               \
+							examples/zig/glfw_implot3d             \
+							examples/zig/glfw_imspinner            \
+							examples/zig/glfw_imtoggle             \
+							examples/zig/glfw_opengl3              \
+							examples/zig/glfw_opengl3_image_load   \
+              examples/zig/glfw_imPlotDemo
+EXAMPLE_DIRS_WASM =                                  \
+							examples/wasm/zig_webgl                \
+							examples/wasm/zig_wgpu
 
-EXAMPLE_DIRS_ZIG_RAYLIB =                          \
-							examples/zig_raylib_basic            \
-							examples/zig_raylib_cjk              \
-							examples/zig_rlimgui_basic
+EXAMPLE_DIRS_ZIG_RAYLIB =                            \
+							examples/raylib/raylib_basic           \
+							examples/raylib/raylib_cjk             \
+							examples/raylib/rlimgui_basic
 
 ifeq ($(OS),Windows_NT)
-	 EXAMPLE_DIRS_WIN32     += examples/win32_dx11
+	 EXAMPLE_DIRS_WIN32     += examples/czig/win32_dx11
 endif
 
-EXAMPLE_DIRS_SDL =                                 \
-			        examples/zig_sdl3_opengl3            \
-			        examples/zig_sdl3_sdlgpu3            \
-			        examples/sdl3_opengl3
+EXAMPLE_DIRS_SDL =                                   \
+			        examples/sdl3/sdl3_opengl3             \
+			        examples/sdl3/sdl3_sdlgpu3             \
+			        examples/czig/sdl3_opengl3
 
-EXAMPLE_DIRS_ALL += $(EXAMPLE_DIRS_C) $(EXAMPLE_DIRS_ZIG) $(EXAMPLE_DIRS_ZIG_RAYLIB) $(EXAMPLE_DIRS_SDL) $(EXAMPLE_DIRS_WIN32)
+
+EXAMPLE_DIRS_ALL += $(EXAMPLE_DIRS_C)          \
+										$(EXAMPLE_DIRS_ZIG)        \
+									 	$(EXAMPLE_DIRS_ZIG_RAYLIB) \
+									 	$(EXAMPLE_DIRS_SDL)        \
+									 	$(EXAMPLE_DIRS_WASM)       \
+									 	$(EXAMPLE_DIRS_WIN32)
 
 .PHONY: test clean gen cc zig raylib sdl fmt win32 cleanall update copylibs cjk
 
-all: zig cc sdl win32 # raylib
+all: zig cc sdl wasm win32 # raylib
 
 cc:
 	$(foreach exdir,$(EXAMPLE_DIRS_C), $(call def_make,$(exdir)))
@@ -55,6 +62,8 @@ raylib:
 
 sdl:
 	$(foreach exdir,$(EXAMPLE_DIRS_SDL), $(call def_make,$(exdir)))
+wasm:
+	$(foreach exdir,$(EXAMPLE_DIRS_WASM), $(call def_make,$(exdir)))
 
 win32:
 	$(foreach exdir,$(EXAMPLE_DIRS_WIN32), $(call def_make,$(exdir)))

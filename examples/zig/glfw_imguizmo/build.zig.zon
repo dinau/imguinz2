@@ -1,0 +1,14 @@
+.{
+    .name = .app_imguizmo,
+    .version = "0.0.1",
+    .fingerprint = 0x7eb24500d71ddacd, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.15.1",
+    .dependencies = .{
+        .imguinz = .{ .path = "../../../" },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}

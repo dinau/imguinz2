@@ -1,0 +1,14 @@
+.{
+    .name = .zig_wgpu,
+    .version = "0.0.1",
+    .fingerprint = 0x5d0e853ab8eae941, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.15.1",
+    .dependencies = .{
+        .imguinz = .{ .path = "../../../" },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}
