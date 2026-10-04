@@ -33,6 +33,9 @@ clean:
 cleanall: clean
 
 run: all
+	emrun zig-out/web
+
+server:
 	(cd zig-out && python -m http.server 8000)
 
 #app: license

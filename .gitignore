@@ -51,7 +51,7 @@ libs/glfw/glfw-3.3.9.bin.WIN32/*.md
 libs/glfw/glfw-3.3.9.bin.WIN64/docs
 libs/glfw/glfw-3.3.9.bin.WIN64/*.md
 #*.html
-*.js
+#*.js
 # Prerequisites
 *.d
 

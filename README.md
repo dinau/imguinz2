@@ -48,7 +48,7 @@ and one can use many other libaries and examples with less external dependencies
 
 ---
 
-Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/glfw_opengl3_wasm_base.html)  
+Click link for live demo: [Click here](https://dinau.github.io/imguinz2/examples/wasm/demo/web)  
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/wasm_demo_small.gif)
 
 See [zig_webgl](#zig_webgl) / [zig_wgpu](#zig_wgpu) examples
@@ -73,10 +73,10 @@ See [zig_webgl](#zig_webgl) / [zig_wgpu](#zig_wgpu) examples
 ---
 
 - Zig Compiler 
-    - [x] 0.17.0-dev.2307  [^except_raylib] (2026/09/25) or later
-    - [x] zig-0.16.0 for Raylib examples  
-       Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)  
-       Linux:   [  zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
+    - [x] [zig-0.17.0: Windows](https://ziglang.org/download/0.17.0/zig-x86_64-windows-0.17.0.zip)  [^except_raylib] (2026/10/01)
+    - [x] [zig-x86_64-linux-0.17.0.tar.xz](https://ziglang.org/download/0.17.0/zig-x86_64-linux-0.17.0.tar.xz)
+    - [x] [zig-0.18.0-dev.1+a6c6412a8: Windows](https://ziglang.org/builds/zig-x86_64-windows-0.18.0-dev.1+a6c6412a8.zip)
+    - [x] zig-0.16.0 for Raylib examples
 
 - Windows11  
    - Install MSys2/MinGW basic commands (make, rm, cp ...)
@@ -333,7 +333,6 @@ Click link for live demo: [Click here](https://dinau.github.io/cimgui_zoomable_i
     
     See ./Makefile
 
-1. Open your brwoser at [http://localhost:8000](http://localhost:8000) and click **web** folder
 1. You can build native application too
 
     ```sh
@@ -369,7 +368,7 @@ This example can't build native applicaton.
 
 ---
 
-Use zig-0.16.0
+Use zig-0.17.0
 
 1. Zig fetch `imguinz2`
 
@@ -400,7 +399,7 @@ Please insert the following lines above `b.installArtifact(exe);`.
        });
        exe.root_module.addImport(dep_name, dep.module(dep_name));
    }
-   //exe.subsystem = .Windows; // Hide console window
+   //exe.subsystem = .windows; // Hide console window
    ```
 
    You can set `dependencies` (additional libraries), see [imguinz2/build.zig.zon](https://github.com/dinau/imguinz2/blob/main/build.zig.zon)
@@ -485,7 +484,7 @@ Open `build.zig` in each example folder and **enable** the option line as follow
 
   ```zig
   ... snip ...
-  exe.subsystem = .Windows;  // Hide console window
+  exe.subsystem = .windows;  // Hide console window
   ... snip ...
   ```
 

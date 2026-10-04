@@ -34,7 +34,7 @@ cleanall: clean
 
 
 run: all
-	(cd zig-out && python -m http.server 8000)
+	emrun zig-out/web
 
 app:
 	zig build $(OPT)

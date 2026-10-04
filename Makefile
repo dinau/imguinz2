@@ -8,6 +8,7 @@ EXAMPLE_DIRS_C =                                     \
 
 EXAMPLE_DIRS_ZIG =                                   \
 							examples/zig/glfw_iconfontviewer       \
+							examples/zig/glfw_image_load           \
 							examples/zig/glfw_imcolortextedit      \
 							examples/zig/glfw_imfileopendialog     \
 							examples/zig/glfw_imgui_zoomable_image \
@@ -16,11 +17,10 @@ EXAMPLE_DIRS_ZIG =                                   \
 							examples/zig/glfw_imnodes              \
 							examples/zig/glfw_implot               \
 							examples/zig/glfw_implot3d             \
+              examples/zig/glfw_imPlotDemo           \
 							examples/zig/glfw_imspinner            \
 							examples/zig/glfw_imtoggle             \
-							examples/zig/glfw_opengl3              \
-							examples/zig/glfw_opengl3_image_load   \
-              examples/zig/glfw_imPlotDemo
+							examples/zig/glfw_opengl3
 EXAMPLE_DIRS_WASM =                                  \
 							examples/wasm/zig_webgl                \
 							examples/wasm/zig_wgpu
@@ -47,11 +47,11 @@ EXAMPLE_DIRS_ALL += $(EXAMPLE_DIRS_C)          \
 									 	$(EXAMPLE_DIRS_WASM)       \
 									 	$(EXAMPLE_DIRS_WIN32)
 
-.PHONY: test clean gen cc zig raylib sdl fmt win32 cleanall update copylibs cjk
+.PHONY: test clean gen czig zig raylib sdl fmt win32 cleanall update copylibs cjk
 
-all: zig cc sdl wasm win32 # raylib
+all: zig czig sdl wasm win32 # raylib
 
-cc:
+czig:
 	$(foreach exdir,$(EXAMPLE_DIRS_C), $(call def_make,$(exdir)))
 
 zig:

@@ -5,7 +5,7 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const exe_name = "zig_glfw_opengl3_image_load";
+    const exe_name = "glfw_image_load";
 
     const main_mod = b.createModule(.{
         .root_source_file = b.path("src/main.zig"),

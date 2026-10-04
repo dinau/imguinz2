@@ -5,7 +5,7 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const exe_name = "zig_imspinner";
+    const exe_name = "glfw_imspinner";
 
     const main_mod = b.createModule(.{
         .root_source_file = b.path("src/main.zig"),
