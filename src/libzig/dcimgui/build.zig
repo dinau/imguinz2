@@ -1,4 +1,5 @@
 const std = @import("std");
+const Translator = @import("translate_c").Translator;
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -8,7 +9,7 @@ pub fn build(b: *std.Build) void {
     const mod_name = "dcimgui";
     var mod: *std.Build.Module = undefined;
 
-    const gen_option = b.option(bool, "gen", "Generate I/O definition file from C header") orelse false;
+    const gen_option = b.option(bool, "gen", "Generate I/O definition file from C header") orelse true;
 
     // -------
     // module
@@ -20,15 +21,22 @@ pub fn build(b: *std.Build) void {
             .optimize = optimize,
         });
     } else {
-        const step = b.addTranslateC(.{
-            .root_source_file = b.path("src/impl_dcimgui.h"),
+        const translate_c = b.dependency("translate_c", .{});
+        const t: Translator = .init(translate_c, .{
+            .c_source_file = b.path("src/impl_dcimgui.h"),
             .target = target,
             .optimize = optimize,
         });
-        step.addIncludePath(b.path("../../libc/imgui"));
-        step.addIncludePath(b.path("../../libc/dcimgui/imgui/backends"));
-        step.addIncludePath(b.path("../../libc/dcimgui"));
-        mod = step.addModule(mod_name);
+        if (emscripten_sysroot) |es| {
+            t.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+        }
+        t.addIncludePath(b.path("../../libc/imgui"));
+        t.addIncludePath(b.path("../../libc/dcimgui/imgui/backends"));
+        t.addIncludePath(b.path("../../libc/dcimgui"));
+
+        // Pubic module
+        mod = t.mod;
+        b.modules.put(b.allocator, b.dupe(mod_name), mod) catch @panic("OOM");
     }
     mod.link_libcpp = true;
     mod.addIncludePath(b.path("../../libc/imgui"));
@@ -48,6 +56,7 @@ pub fn build(b: *std.Build) void {
     }
     mod.addCMacro("CIMGUI_API", "extern \"C\"  ");
     mod.addCSourceFiles(.{
+        .root = b.path("."),
         .files = &.{
             // dcimgui
             "../../libc/dcimgui/dcimgui.cpp",

@@ -118,7 +118,7 @@ CIMGUI_IMPL_API void cimgui::cImGui_ImplSDLGPU3_PrepareDrawData(cimgui::ImDrawDa
 
 CIMGUI_IMPL_API void cimgui::cImGui_ImplSDLGPU3_RenderDrawData(cimgui::ImDrawData* draw_data, SDL_GPUCommandBuffer* command_buffer, SDL_GPURenderPass* render_pass)
 {
-    ::ImGui_ImplSDLGPU3_RenderDrawData(reinterpret_cast<::ImDrawData*>(draw_data), command_buffer, render_pass);
+    ::ImGui_ImplSDLGPU3_RenderDrawData(reinterpret_cast<::ImDrawData*>(draw_data), command_buffer, render_pass, nullptr);
 }
 
 CIMGUI_IMPL_API void cimgui::cImGui_ImplSDLGPU3_RenderDrawDataEx(cimgui::ImDrawData* draw_data, SDL_GPUCommandBuffer* command_buffer, SDL_GPURenderPass* render_pass, SDL_GPUGraphicsPipeline* pipeline)
@@ -139,6 +139,11 @@ CIMGUI_IMPL_API void cimgui::cImGui_ImplSDLGPU3_DestroyDeviceObjects(void)
 CIMGUI_IMPL_API void cimgui::cImGui_ImplSDLGPU3_UpdateTexture(cimgui::ImTextureData* tex)
 {
     ::ImGui_ImplSDLGPU3_UpdateTexture(reinterpret_cast<::ImTextureData*>(tex));
+}
+
+CIMGUI_IMPL_API cimgui::ImGui_ImplSDLGPU3_RenderState* cimgui::cImGui_ImplSDLGPU3_GetRenderState(void)
+{
+    return reinterpret_cast<::cimgui::ImGui_ImplSDLGPU3_RenderState*>(::ImGui_ImplSDLGPU3_GetRenderState());
 }
 
 #endif // #ifndef IMGUI_DISABLE

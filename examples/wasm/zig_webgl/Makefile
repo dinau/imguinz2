@@ -41,6 +41,8 @@ app:
 	(cd zig-out/bin && ./$(TARGET))
 	cp zig-out/bin/*.ini .
 
+server:
+	(cd zig-out && python -m http.server 8000)
 
 fmt:
 	zig fmt .

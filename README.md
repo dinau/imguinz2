@@ -41,8 +41,8 @@
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) examples with **C** and **Zig** using [Dear_Bindings](https://github.com/dearimgui/dear_bindings) as first step  
 and one can use many other libaries and examples with less external dependencies (except Raylib library).
 
-[DearBindings](https://github.com/dearimgui/dear_bindings): v1.92.9b-docking  
-[Dear ImGui](https://github.com/ocornut/imgui): 1.92.9b dock (2026/08)
+[DearBindings](https://github.com/dearimgui/dear_bindings): v1.93.0-docking  
+[Dear ImGui](https://github.com/ocornut/imgui): 1.93.0 dock (2026/10)
 
 #### Try Wasm demo in your browser
 
@@ -52,7 +52,6 @@ Click link for live demo: [Click here](https://dinau.github.io/imguinz2/examples
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/wasm_demo_small.gif)
 
 See [zig_webgl](#zig_webgl) / [zig_wgpu](#zig_wgpu) examples
-
 
 #### Frontends and Backends  
 
@@ -67,7 +66,6 @@ See [zig_webgl](#zig_webgl) / [zig_wgpu](#zig_wgpu) examples
 [^except_raylib]: Except Raylib examples
 [^wip]: WIP
 
-
 #### Prerequisites
 
 ---
@@ -75,8 +73,7 @@ See [zig_webgl](#zig_webgl) / [zig_wgpu](#zig_wgpu) examples
 - Zig Compiler 
     - [x] [zig-0.17.0: Windows](https://ziglang.org/download/0.17.0/zig-x86_64-windows-0.17.0.zip)  [^except_raylib] (2026/10/01)
     - [x] [zig-x86_64-linux-0.17.0.tar.xz](https://ziglang.org/download/0.17.0/zig-x86_64-linux-0.17.0.tar.xz)
-    - [x] [zig-0.18.0-dev.1+a6c6412a8: Windows](https://ziglang.org/builds/zig-x86_64-windows-0.18.0-dev.1+a6c6412a8.zip)
-    - [x] zig-0.16.0 for Raylib examples
+    - [x] Raylib examples : WIP
 
 - Windows11  
    - Install MSys2/MinGW basic commands (make, rm, cp ...)

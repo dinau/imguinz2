@@ -97,7 +97,7 @@ static inline ::ImColor ConvertToCPP_ImColor(const cimgui::ImColor& src)
 
 CIMGUI_IMPL_API bool cimgui::cImGui_ImplOpenGL3_Init(void)
 {
-    return ::ImGui_ImplOpenGL3_Init();
+    return ::ImGui_ImplOpenGL3_Init(nullptr);
 }
 
 CIMGUI_IMPL_API bool cimgui::cImGui_ImplOpenGL3_InitEx(const char* glsl_version)
@@ -133,6 +133,11 @@ CIMGUI_IMPL_API void cimgui::cImGui_ImplOpenGL3_DestroyDeviceObjects(void)
 CIMGUI_IMPL_API void cimgui::cImGui_ImplOpenGL3_UpdateTexture(cimgui::ImTextureData* tex)
 {
     ::ImGui_ImplOpenGL3_UpdateTexture(reinterpret_cast<::ImTextureData*>(tex));
+}
+
+CIMGUI_IMPL_API void cimgui::cImGui_ImplOpenGL3_SetClipOrigin(unsigned int gl_clip_origin)
+{
+    ::ImGui_ImplOpenGL3_SetClipOrigin(gl_clip_origin);
 }
 
 CIMGUI_IMPL_API cimgui::ImGui_ImplOpenGL3_RenderState* cimgui::cImGui_ImplOpenGL3_GetRenderState(void)

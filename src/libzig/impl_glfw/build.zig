@@ -1,4 +1,6 @@
 const std = @import("std");
+const Translator = @import("translate_c").Translator;
+
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
@@ -11,29 +13,32 @@ pub fn build(b: *std.Build) void {
     // -------
     // module
     // -------
-    const step = b.addTranslateC(.{
-        .root_source_file = b.path("src/impl_glfw.h"),
+    const translate_c = b.dependency("translate_c", .{});
+    const t: Translator = .init(translate_c, .{
+        .c_source_file = b.path("src/impl_glfw.h"),
         .target = target,
         .optimize = optimize,
     });
     if (emscripten_sysroot) |es| {
-        step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+        t.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
     }
     if (contrib_glfw3_include) |cgi| {
-        step.addIncludePath(.{ .cwd_relative = cgi });
+        t.addIncludePath(.{ .cwd_relative = cgi });
     }
-    step.defineCMacro("IMGUI_DISABLE_SSE", "");
-    step.addIncludePath(b.path("../../libc/imgui"));
-    step.addIncludePath(b.path("../../libc/dcimgui"));
-    step.addIncludePath(b.path("../../libc/dcimgui/backends"));
+    t.defineCMacro("IMGUI_DISABLE_SSE", "");
+    t.addIncludePath(b.path("../../libc/imgui"));
+    t.addIncludePath(b.path("../../libc/dcimgui"));
+    t.addIncludePath(b.path("../../libc/dcimgui/backends"));
 
-    const mod = step.addModule(mod_name);
+    const mod = t.mod;
+    b.modules.put(b.allocator, b.dupe(mod_name), mod) catch @panic("OOM");
+
     switch (target.result.os.tag) {
         .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw.bin.WIN64/include")),
         .linux => mod.addIncludePath(.{ .cwd_relative = "/usr/include" }),
-        .emscripten => {
-            if (contrib_glfw3_include) |cgi| mod.addSystemIncludePath(.{ .cwd_relative = cgi });
-        },
+        //.emscripten => {
+        //    if (contrib_glfw3_include) |cgi| mod.addSystemIncludePath(.{ .cwd_relative = cgi });
+        //},
         else => {},
     }
     mod.link_libcpp = true;
@@ -52,6 +57,7 @@ pub fn build(b: *std.Build) void {
         else => {},
     }
     mod.addCSourceFiles(.{
+        .root = b.path("."),
         .files = &.{
             "../../libc/dcimgui/backends/dcimgui_impl_glfw.cpp",
             "../../libc/imgui/backends/imgui_impl_glfw.cpp",

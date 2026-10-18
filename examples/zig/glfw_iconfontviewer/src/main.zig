@@ -147,7 +147,7 @@ pub fn gui_main(window: *app.Window) !void {
                 var filter: ig.ImGuiTextFilter = undefined;
             };
             ig.ImGuiTextFilter_Clear(&st.filter);
-            _ = ig.ImGuiTextFilter_Draw(&st.filter, "Filter", 0.0);
+            _ = ig.ImGuiTextFilter_Draw(&st.filter, "Filter");
             const tbl = ift.iconFontsTbl;
             for (tbl, 0..) |pstr, i| {
                 if (ig.ImGuiTextFilter_PassFilter(&st.filter, pstr, null)) {
