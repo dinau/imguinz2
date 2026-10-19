@@ -21,12 +21,12 @@ namespace cimgui
 // Dear Bindings version retrieval functionality
 CIMGUI_API const char* cimgui::DearBindings_GetVersion()
 {
-    return "0.25";
+    return "0.26";
 }
 
 CIMGUI_API int cimgui::DearBindings_GetVersionNumber()
 {
-    return 25;
+    return 26;
 }
 
 // Manual helpers
@@ -1249,12 +1249,12 @@ CIMGUI_API bool cimgui::ImGui_ComboEx(const char* label, int* current_item, cons
     return ::ImGui::Combo(label, current_item, items_separated_by_zeros, popup_max_height_in_items);
 }
 
-CIMGUI_API bool cimgui::ImGui_ComboObsolete(const char* label, int* current_item, const char* (*getter)(void* user_data, int idx), void* user_data, int items_count)
+CIMGUI_API bool cimgui::ImGui_ComboCallback(const char* label, int* current_item, const char* (*getter)(void* user_data, int idx), void* user_data, int items_count)
 {
     return ::ImGui::Combo(label, current_item, getter, user_data, items_count, -1);
 }
 
-CIMGUI_API bool cimgui::ImGui_ComboObsoleteEx(const char* label, int* current_item, const char* (*getter)(void* user_data, int idx), void* user_data, int items_count, int popup_max_height_in_items)
+CIMGUI_API bool cimgui::ImGui_ComboCallbackEx(const char* label, int* current_item, const char* (*getter)(void* user_data, int idx), void* user_data, int items_count, int popup_max_height_in_items)
 {
     return ::ImGui::Combo(label, current_item, getter, user_data, items_count, popup_max_height_in_items);
 }
@@ -1865,12 +1865,12 @@ CIMGUI_API bool cimgui::ImGui_ListBox(const char* label, int* current_item, cons
     return ::ImGui::ListBox(label, current_item, items, items_count, height_in_items);
 }
 
-CIMGUI_API bool cimgui::ImGui_ListBoxObsolete(const char* label, int* current_item, const char* (*getter)(void* user_data, int idx), void* user_data, int items_count)
+CIMGUI_API bool cimgui::ImGui_ListBoxCallback(const char* label, int* current_item, const char* (*getter)(void* user_data, int idx), void* user_data, int items_count)
 {
     return ::ImGui::ListBox(label, current_item, getter, user_data, items_count, -1);
 }
 
-CIMGUI_API bool cimgui::ImGui_ListBoxObsoleteEx(const char* label, int* current_item, const char* (*getter)(void* user_data, int idx), void* user_data, int items_count, int height_in_items)
+CIMGUI_API bool cimgui::ImGui_ListBoxCallbackEx(const char* label, int* current_item, const char* (*getter)(void* user_data, int idx), void* user_data, int items_count, int height_in_items)
 {
     return ::ImGui::ListBox(label, current_item, getter, user_data, items_count, height_in_items);
 }

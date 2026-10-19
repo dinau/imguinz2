@@ -4,12 +4,12 @@
 
 // Dear Bindings version as a string
 #ifndef DEAR_BINDINGS_VERSION
-#define DEAR_BINDINGS_VERSION "0.25"
+#define DEAR_BINDINGS_VERSION "0.26"
 #endif
 
 // Dear Bindings version as an integer
 #ifndef DEAR_BINDINGS_VERSION_NUMBER
-#define DEAR_BINDINGS_VERSION_NUMBER 25
+#define DEAR_BINDINGS_VERSION_NUMBER 26
 #endif
 
 // dear imgui, v1.93.0
@@ -722,7 +722,7 @@ CIMGUI_API bool ImGui_BeginCombo(const char* label, const char* preview_value, I
 CIMGUI_API void ImGui_EndCombo(void);                                                                                                                        // only call EndCombo() if BeginCombo() returns true!
 CIMGUI_API bool ImGui_ComboChar(const char* label, int* current_item, const char*const items[], int items_count, int popup_max_height_in_items /* = -1 */);
 CIMGUI_API bool ImGui_Combo(const char* label, int* current_item, const char* items_separated_by_zeros, int popup_max_height_in_items /* = -1 */);           // Separate items with \0 within a string, end item-list with \0\0. e.g. "One\0Two\0Three\0"
-CIMGUI_API bool ImGui_ComboObsolete(const char* label, int* current_item, const char* (*getter)(void* user_data, int idx), void* user_data, int items_count, int popup_max_height_in_items /* = -1 */);
+CIMGUI_API bool ImGui_ComboCallback(const char* label, int* current_item, const char* (*getter)(void* user_data, int idx), void* user_data, int items_count, int popup_max_height_in_items /* = -1 */);
 
 // Widgets: Drag Sliders
 // - Ctrl+Click on any drag box to turn them into an input box. Manually input values aren't clamped by default and can go off-bounds. Use ImGuiSliderFlags_AlwaysClamp to always clamp.
@@ -851,7 +851,7 @@ CIMGUI_API bool                ImGui_IsItemToggledSelection(void);  // Was the l
 CIMGUI_API bool ImGui_BeginListBox(const char* label, ImVec2 size /* = ImVec2(0, 0) */);                                                         // open a framed scrolling region
 CIMGUI_API void ImGui_EndListBox(void);                                                                                                          // only call EndListBox() if BeginListBox() returned true!
 CIMGUI_API bool ImGui_ListBox(const char* label, int* current_item, const char*const items[], int items_count, int height_in_items /* = -1 */);
-CIMGUI_API bool ImGui_ListBoxObsolete(const char* label, int* current_item, const char* (*getter)(void* user_data, int idx), void* user_data, int items_count, int height_in_items /* = -1 */);
+CIMGUI_API bool ImGui_ListBoxCallback(const char* label, int* current_item, const char* (*getter)(void* user_data, int idx), void* user_data, int items_count, int height_in_items /* = -1 */);
 
 // Widgets: Data Plotting
 // - Consider using ImPlot (https://github.com/epezent/implot) which is much better!

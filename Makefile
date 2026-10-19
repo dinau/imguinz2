@@ -88,7 +88,7 @@ cleanall:
 	@-$(MAKE) -C src/libzig clean
 
 # Example specify the version of DearBindings_v0.24_ImGui_v1.93.0-docking.zip
-DEAR_BINDING_VER   = 0.25
+DEAR_BINDING_VER   = 0.26
 # Same as above
 IMGUI_VER          = 1.93.0
 # Specify woking directory

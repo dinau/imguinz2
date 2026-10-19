@@ -24,7 +24,21 @@ extern "C"
 #include "dcimgui_nodefaultargfunctions_internal.h"
 }
 }
-#undef DEAR_BINDINGS_INTERNAL_GLUE_CODE// By-value struct conversions
+#undef DEAR_BINDINGS_INTERNAL_GLUE_CODE
+
+#if defined(IMGUI_HAS_IMSTR)
+
+// Internal helper to convert char* directly to C++-style ImStrv
+static inline ::ImStrv MarshalToCPP_ImStrv_FromCharStr(const char* b)
+{
+    ::ImStrv str;
+    str.Begin = b;
+    str.End = b ? b + strlen(b) : NULL;
+    return str;
+}
+
+#endif // defined(IMGUI_HAS_IMSTR)
+// By-value struct conversions
 
 static inline cimgui::ImVec2 ConvertFromCPP_ImVec2(const ::ImVec2& src)
 {

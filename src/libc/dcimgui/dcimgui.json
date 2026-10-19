@@ -38970,7 +38970,7 @@
             }
         },
         {
-            "name": "ImGui_ComboObsolete",
+            "name": "ImGui_ComboCallback",
             "original_fully_qualified_name": "ImGui::Combo",
             "return_type": {
                 "declaration": "bool",
@@ -39158,7 +39158,7 @@
             }
         },
         {
-            "name": "ImGui_ComboObsoleteEx",
+            "name": "ImGui_ComboCallbackEx",
             "original_fully_qualified_name": "ImGui::Combo",
             "return_type": {
                 "declaration": "bool",
@@ -50140,7 +50140,7 @@
             }
         },
         {
-            "name": "ImGui_ListBoxObsolete",
+            "name": "ImGui_ListBoxCallback",
             "original_fully_qualified_name": "ImGui::ListBox",
             "return_type": {
                 "declaration": "bool",
@@ -50328,7 +50328,7 @@
             }
         },
         {
-            "name": "ImGui_ListBoxObsoleteEx",
+            "name": "ImGui_ListBoxCallbackEx",
             "original_fully_qualified_name": "ImGui::ListBox",
             "return_type": {
                 "declaration": "bool",
