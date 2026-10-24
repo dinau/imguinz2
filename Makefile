@@ -55,7 +55,7 @@ EXAMPLE_DIRS_CHECK += \
 
 .PHONY: test clean gen czig zig raylib sdl fmt win32 cleanall update copylibs cjk
 
-all: zig czig sdl wasm win32 # raylib
+all: zig czig sdl wasm win32 raylib
 
 check:
 	$(foreach exdir,$(EXAMPLE_DIRS_CHECK), $(call def_make,$(exdir),all ))
@@ -71,6 +71,7 @@ raylib:
 
 sdl:
 	$(foreach exdir,$(EXAMPLE_DIRS_SDL), $(call def_make,$(exdir)))
+
 wasm:
 	$(foreach exdir,$(EXAMPLE_DIRS_WASM), $(call def_make,$(exdir)))
 
@@ -87,18 +88,16 @@ cleanall:
 	@-$(foreach exdir,$(EXAMPLE_DIRS_ALL), $(call def_make,$(exdir),$@ ))
 	@-$(MAKE) -C src/libzig clean
 
-# Example specify the version of DearBindings_v0.24_ImGui_v1.93.0-docking.zip
-DEAR_BINDING_VER   = 0.26
-# Same as above
+# Specify the version of DearBindings_v0.24_ImGui_v1.93.0-docking.zip
+DEAR_BINDINGS_VER  = 0.26
 IMGUI_VER          = 1.93.0
 # Specify woking directory
 WORK_DIR           = 00work
 IMGUI_EXT_DIR      = $(WORK_DIR)/imgui
-#DB_DIR             = $(WORK_DIR)/dear_bindings
 DCIMGUI_DIR        = src/libc/dcimgui
 IMGUI_DIR          = src/libc/imgui
 LIBC_DIR           = src/libc
-ZIP_NAME_DB        = DearBindings_v$(DEAR_BINDING_VER)_ImGui_v$(IMGUI_VER)-docking
+ZIP_NAME_DB        = DearBindings_v$(DEAR_BINDINGS_VER)_ImGui_v$(IMGUI_VER)-docking
 ZIP_NAME_IMGUI     = v$(IMGUI_VER)-docking
 
 update: # Update Dear ImGui and Dear Bingings

@@ -1,4 +1,5 @@
 const std = @import("std");
+const Translator = @import("translate_c").Translator;
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -8,7 +9,8 @@ pub fn build(b: *std.Build) void {
     const mod_name = "impl_opengl3";
     var mod: *std.Build.Module = undefined;
 
-    const gen_option = b.option(bool, "gen", "Generate I/O definition file from C header") orelse (target.result.os.tag == .emscripten);
+    //const gen_option = b.option(bool, "gen", "Generate I/O definition file from C header") orelse (target.result.os.tag == .emscripten);
+    const gen_option = true;
 
     // -------
     // module
@@ -21,29 +23,31 @@ pub fn build(b: *std.Build) void {
             .link_libc = true,
         });
     } else {
-        const step = b.addTranslateC(.{
-            .root_source_file = b.path("src/impl_opengl3.h"),
+        const translate_c = b.dependency("translate_c", .{});
+        const t: Translator = .init(translate_c, .{
+            .c_source_file = b.path("src/impl_opengl3.h"),
             .target = target,
             .optimize = optimize,
             .link_libc = true,
         });
 
-        step.defineCMacro("IMGUI_DISABLE_SSE", "");
+        t.defineCMacro("IMGUI_DISABLE_SSE", "");
 
-        step.addIncludePath(b.path("../../libc/imgui"));
-        step.addIncludePath(b.path("../../libc/imgui/backends"));
-        step.addIncludePath(b.path("../../libc/dcimgui"));
-        step.addIncludePath(b.path("../../libc/dcimgui/backends"));
+        t.addIncludePath(b.path("../../libc/imgui"));
+        t.addIncludePath(b.path("../../libc/imgui/backends"));
+        t.addIncludePath(b.path("../../libc/dcimgui"));
+        t.addIncludePath(b.path("../../libc/dcimgui/backends"));
         if (emscripten_sysroot) |es| {
-            step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+            t.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
         }
 
         switch (target.result.os.tag) {
-            .emscripten => step.defineCMacro("IMGUI_IMPL_OPENGL_ES3", ""),
+            .emscripten => t.defineCMacro("IMGUI_IMPL_OPENGL_ES3", ""),
             else => {},
         }
 
-        mod = step.addModule(mod_name);
+        mod = t.mod;
+        b.modules.put(b.allocator, b.dupe(mod_name), mod) catch @panic("OOM");
     }
     switch (target.result.os.tag) {
         .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw.bin.WIN64/include")),
@@ -67,6 +71,7 @@ pub fn build(b: *std.Build) void {
         else => {},
     }
     mod.addCSourceFiles(.{
+        .root = b.path("."),
         .files = &.{
             "../../libc/dcimgui/backends/dcimgui_impl_opengl3.cpp",
             "../../libc/imgui/backends/imgui_impl_opengl3.cpp",

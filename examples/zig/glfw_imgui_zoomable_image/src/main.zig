@@ -17,7 +17,7 @@ pub fn gui_main(win: *app.Window) void {
 
     _ = app.utils.LoadTextureFromFile(imageName, &textureId, &textureWidth, &textureHeight);
 
-    const textureRef: zmi.ImTextureRef = .{ ._TexID = textureId };
+    const textureRef: zmi.ImTextureRef = .{ ._TexData = null, ._TexID = textureId };
 
     const pio = ig.ImGui_GetIO();
 

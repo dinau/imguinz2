@@ -1,4 +1,5 @@
 const std = @import("std");
+const Translator = @import("translate_c").Translator;
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -7,7 +8,8 @@ pub fn build(b: *std.Build) void {
     const mod_name = "impl_dx11";
 
     var mod: *std.Build.Module = undefined;
-    const gen_option = b.option(bool, "gen", "Generate I/O definition file from C header") orelse false;
+    //const gen_option = b.option(bool, "gen", "Generate I/O definition file from C header") orelse false;
+    const gen_option = true;
 
     // -------
     // module
@@ -19,18 +21,20 @@ pub fn build(b: *std.Build) void {
             .optimize = optimize,
         });
     } else { // Generate original_temp_zig in zig-out
-        const step = b.addTranslateC(.{
-            .root_source_file = b.path("src/impl_dx11.h"),
+    const translate_c = b.dependency("translate_c", .{});
+    const t: Translator = .init(translate_c, .{
+            .c_source_file = b.path("src/impl_dx11.h"),
             .target = target,
             .optimize = optimize,
         });
-        step.defineCMacro("__INTRIN_H_", null);
-        step.addIncludePath(b.path("../../libc/dcimgui"));
-        step.addIncludePath(b.path("../../libc/dcimgui/backends"));
-        step.addIncludePath(b.path("../../libc/imgui"));
-        step.addIncludePath(b.path("../../libc/imgui/backends"));
+        t.defineCMacro("__INTRIN_H_", null);
+        t.addIncludePath(b.path("../../libc/dcimgui"));
+        t.addIncludePath(b.path("../../libc/dcimgui/backends"));
+        t.addIncludePath(b.path("../../libc/imgui"));
+        t.addIncludePath(b.path("../../libc/imgui/backends"));
 
-        mod = step.addModule(mod_name);
+        mod = t.mod;
+        b.modules.put(b.allocator, b.dupe(mod_name), mod) catch @panic("OOM");
     }
 
     mod.link_libcpp = true;
@@ -45,6 +49,7 @@ pub fn build(b: *std.Build) void {
         else => {},
     }
     mod.addCSourceFiles(.{
+        .root = b.path("."),
         .files = &.{
             "../../libc/dcimgui/backends/dcimgui_impl_dx11.cpp",
             "../../libc/imgui/backends/imgui_impl_dx11.cpp",

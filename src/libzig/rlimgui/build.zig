@@ -1,5 +1,5 @@
 const std = @import("std");
-const builtin = @import("builtin");
+const Translator = @import("translate_c").Translator;
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -10,24 +10,28 @@ pub fn build(b: *std.Build) void {
     // -------
     // module
     // -------
-    const step = b.addTranslateC(.{
-        .root_source_file = b.path("src/impl_rlimgui.h"),
+    const translate_c = b.dependency("translate_c", .{});
+    const t: Translator = .init(translate_c, .{
+        .c_source_file = b.path("src/impl_rlimgui.h"),
         .target = target,
         .optimize = optimize,
         .link_libc = true,
     });
-    step.addIncludePath(b.path("../../libc/rlimgui"));
-    step.addIncludePath(b.path("../../libc/raylib/windows/include"));
-    step.addIncludePath(b.path("../../libc/imgui"));
-    step.defineCMacro("NO_FONT_AWESOME", "");
+    t.addIncludePath(b.path("../../libc/rlimgui"));
+    t.addIncludePath(b.path("../../libc/raylib/windows/include"));
+    t.addIncludePath(b.path("../../libc/imgui"));
+    t.defineCMacro("NO_FONT_AWESOME", "");
 
-    const mod = step.addModule(mod_name);
+    const mod = t.mod;
+    b.modules.put(b.allocator, b.dupe(mod_name), mod) catch @panic("OOM");
+
     mod.addIncludePath(b.path("../../libc/rlimgui"));
     mod.addIncludePath(b.path("../../libc/raylib/windows/include"));
     mod.addIncludePath(b.path("../../libc/imgui"));
     mod.addCMacro("ImDrawIdx", "unsigned int"); // [[[[[[ Very important definition ]]]]]]
     mod.addCMacro("NO_FONT_AWESOME", "");
     mod.addCSourceFiles(.{
+        .root = b.path("."),
         .files = &.{
             "../../libc/rlimgui/rlImGui.cpp",
         },

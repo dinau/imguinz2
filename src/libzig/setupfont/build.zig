@@ -1,4 +1,5 @@
 const std = @import("std");
+const Translator = @import("translate_c").Translator;
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -9,28 +10,32 @@ pub fn build(b: *std.Build) void {
     // -------
     // module
     // -------
-    const step = b.addTranslateC(.{
-        .root_source_file = b.path("src/impl_setupfonts.h"),
+    const translate_c = b.dependency("translate_c", .{});
+    const t: Translator = .init(translate_c, .{
+        .c_source_file = b.path("src/impl_setupfonts.h"),
         .target = target,
         .optimize = optimize,
     });
 
     const emscripten_sysroot = b.option([]const u8, "emscripten_sysroot", "Path to <emsdk>/upstream/emscripten");
     if (emscripten_sysroot) |es| {
-        step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+        t.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
     }
 
-    step.addIncludePath(b.path("../../libc/dcimgui"));
-    step.addIncludePath(b.path("../../libc/imgui"));
-    step.addIncludePath(b.path("../../libc/fonticon"));
+    t.addIncludePath(b.path("../../libc/dcimgui"));
+    t.addIncludePath(b.path("../../libc/imgui"));
+    t.addIncludePath(b.path("../../libc/fonticon"));
 
-    const mod = step.addModule(mod_name);
+    const mod = t.mod;
+    b.modules.put(b.allocator, b.dupe(mod_name), mod) catch @panic("OOM");
+
     mod.addIncludePath(b.path("../../libc/imgui"));
     mod.addIncludePath(b.path("../../libc/fonticon"));
     if (emscripten_sysroot) |es| {
         mod.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
     }
     mod.addCSourceFiles(.{
+        .root = b.path("."),
         .files = &.{
             "src/setupFonts.cpp",
         },

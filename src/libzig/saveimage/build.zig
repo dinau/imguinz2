@@ -1,4 +1,5 @@
 const std = @import("std");
+const Translator = @import("translate_c").Translator;
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -9,8 +10,9 @@ pub fn build(b: *std.Build) void {
     // -------
     // module
     // -------
-    const step = b.addTranslateC(.{
-        .root_source_file = b.path("src/saveImage.h"),
+    const translate_c = b.dependency("translate_c", .{});
+    const t: Translator = .init(translate_c, .{
+        .c_source_file = b.path("src/saveImage.h"),
         .target = target,
         .optimize = optimize,
         .link_libc = true,
@@ -18,10 +20,12 @@ pub fn build(b: *std.Build) void {
 
     const emscripten_sysroot = b.option([]const u8, "emscripten_sysroot", "Path to <emsdk>/upstream/emscripten");
     if (emscripten_sysroot) |es| {
-        step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+        t.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
     }
 
-    const mod = step.addModule(mod_name);
+    const mod = t.mod;
+    b.modules.put(b.allocator, b.dupe(mod_name), mod) catch @panic("OOM");
+
     mod.addIncludePath(b.path("../../libc/stb"));
     if (emscripten_sysroot) |es| {
         mod.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
@@ -34,6 +38,7 @@ pub fn build(b: *std.Build) void {
     }
 
     mod.addCSourceFiles(.{
+        .root = b.path("."),
         .files = &.{
             "src/saveImage.c",
         },

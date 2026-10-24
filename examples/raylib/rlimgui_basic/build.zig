@@ -87,7 +87,7 @@ pub fn build(b: *std.Build) void {
     // Copy DLL to bin/ folder
     if (target.result.os.tag == .windows) {
         const dllPath = "../../../src/libc/raylib/windows/lib/raylib.dll";
-        const basename = std.fs.path.basename(b.path(dllPath).getPath(b));
+        const basename = std.fs.path.basename(dllPath);
         const resDll = b.addInstallFile(b.path(dllPath), b.pathJoin(&.{ "bin", basename }));
         b.getInstallStep().dependOn(&resDll.step);
     } else if (target.result.os.tag == .linux) {}

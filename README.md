@@ -39,7 +39,7 @@
 ### ImGuinz2
 
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) examples with **C** and **Zig** using [Dear_Bindings](https://github.com/dearimgui/dear_bindings) as first step  
-and one can use many other libaries and examples with less external dependencies (except Raylib library).
+and one can use many other libaries and examples with less external dependencies.
 
 [DearBindings](https://github.com/dearimgui/dear_bindings): v1.93.0-docking  
 [Dear ImGui](https://github.com/ocornut/imgui): 1.93.0 dock (2026/10)
@@ -62,18 +62,14 @@ See [zig_webgl](#zig_webgl) / [zig_wgpu](#zig_wgpu) examples
 | GLFW3     | OpenGL3 / Wasm(WebGL / WebGPU) |
 | SDL3      |        OpenGL3, SDL3GPU        |
 | Win32     |        DirectX 11(D3D11)       |
-  
-[^except_raylib]: Except Raylib examples
-[^wip]: WIP
 
 #### Prerequisites
 
 ---
 
 - Zig Compiler 
-    - [x] [zig-0.17.0: Windows](https://ziglang.org/download/0.17.0/zig-x86_64-windows-0.17.0.zip)  [^except_raylib] (2026/10/01)
+    - [x] [zig-0.17.0: Windows](https://ziglang.org/download/0.17.0/zig-x86_64-windows-0.17.0.zip) (2026/10/01)
     - [x] [zig-x86_64-linux-0.17.0.tar.xz](https://ziglang.org/download/0.17.0/zig-x86_64-linux-0.17.0.tar.xz)
-    - [x] Raylib examples : WIP
 
 - Windows11  
    - Install MSys2/MinGW basic commands (make, rm, cp ...)
@@ -160,8 +156,6 @@ See [Start your project](#start-your-project)
 ##### Raylib example 
 
 ---
-
-Use zig-0.16.0 
 
 First fetch raylib,
 

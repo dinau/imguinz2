@@ -1,4 +1,5 @@
 const std = @import("std");
+const Translator = @import("translate_c").Translator;
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -11,26 +12,28 @@ pub fn build(b: *std.Build) void {
     // -------
     // module
     // -------
-    const step = b.addTranslateC(.{
-        .root_source_file = b.path("src/impl_sdlgpu3.h"),
+        const translate_c = b.dependency("translate_c", .{});
+        const t: Translator = .init(translate_c, .{
+        .c_source_file = b.path("src/impl_sdlgpu3.h"),
         .target = target,
         .optimize = optimize,
         .link_libc = true,
     });
-    step.addIncludePath(b.path("../../libc/dcimgui"));
-    step.addIncludePath(b.path("../../libc/imgui"));
-    step.addIncludePath(b.path("../../libc/imgui/backends"));
+    t.addIncludePath(b.path("../../libc/dcimgui"));
+    t.addIncludePath(b.path("../../libc/imgui"));
+    t.addIncludePath(b.path("../../libc/imgui/backends"));
 
     switch (target.result.os.tag) {
         .windows => {
-            step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include/SDL3" })));
-            step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include" })));
+            t.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include/SDL3" })));
+            t.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include" })));
         },
-        .linux => step.addIncludePath(.{ .cwd_relative = "/usr/include/SDL3" }),
+        .linux => t.addIncludePath(.{ .cwd_relative = "/usr/include/SDL3" }),
         else => {},
     }
 
-    const mod = step.addModule(mod_name);
+    const mod = t.mod;
+    b.modules.put(b.allocator, b.dupe(mod_name), mod) catch @panic("OOM");
     switch (target.result.os.tag) {
         .windows => {
             mod.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include/SDL3" })));
@@ -50,6 +53,7 @@ pub fn build(b: *std.Build) void {
         else => {},
     }
     mod.addCSourceFiles(.{
+        .root = b.path("."),
         .files = &.{
             "../../libc/dcimgui/backends/dcimgui_impl_sdlgpu3.cpp",
             "../../libc/imgui/backends/imgui_impl_sdlgpu3.cpp",

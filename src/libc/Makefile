@@ -29,15 +29,15 @@ imgui:
 	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@
 	@-mkdir -p $(TARGET_DIR)/c$@/$@
 	@-mkdir -p $(TARGET_DIR)/c$@/$@/backends
-	@cp -f $(EXT_LIB_DIR)/c$@/{LICENSE,*.cpp,*.h,README.md}        $(TARGET_DIR)/c$@/
-	@cp -f $(EXT_LIB_DIR)/c$@/$@/{LICENSE.txt,*.cpp,*.h,docs/README.md} $(TARGET_DIR)/c$@/$@/
-	@cp -f $(EXT_LIB_DIR)/c$@/$@/backends/{*.cpp,*.h}      	       $(TARGET_DIR)/c$@/$@/backends/
+	@cp -f $(EXT_LIB_DIR)/c$@/{LICENSE,*.cpp,*.h,README.md}                     $(TARGET_DIR)/c$@/
+	@cp -f $(EXT_LIB_DIR)/c$@/$@/{LICENSE.txt,*.cpp,*.h,docs/README.md}         $(TARGET_DIR)/c$@/$@/
+	@cp -f $(EXT_LIB_DIR)/c$@/$@/backends/{*.cpp,*.h}      	                    $(TARGET_DIR)/c$@/$@/backends/
 
 imgui_toggle:
 	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@
 	@-mkdir -p $(TARGET_DIR)/c$@/$@
-	@cp -f $(EXT_LIB_DIR)/c$@/{LICENSE,*.cpp,*.h,README.md}         $(TARGET_DIR)/c$@/
-	@cp -f $(EXT_LIB_DIR)/c$@/libs/$@/{LICENSE,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/$@/
+	@cp -f $(EXT_LIB_DIR)/c$@/{LICENSE,*.cpp,*.h,README.md}                     $(TARGET_DIR)/c$@/
+	@cp -f $(EXT_LIB_DIR)/c$@/libs/$@/{LICENSE,*.cpp,*.h,README.md}             $(TARGET_DIR)/c$@/$@/
 
 ImGuiFileDialog:
 	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@
@@ -51,33 +51,33 @@ ImGuiFileDialog:
 imguizmo:
 	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@
 	@-mkdir -p $(TARGET_DIR)/c$@/ImGuizmo/src
-	@cp -f $(EXT_LIB_DIR)/c$@/{LICENSE,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/
-	@cp -f $(EXT_LIB_DIR)/c$@/ImGuizmo/{LICENSE,README.md}  $(TARGET_DIR)/c$@/ImGuizmo/
-	@cp -f $(EXT_LIB_DIR)/c$@/ImGuizmo/src/{*.cpp,*.h}      $(TARGET_DIR)/c$@/ImGuizmo/src
+	@cp -f $(EXT_LIB_DIR)/c$@/{LICENSE,*.cpp,*.h,README.md}       $(TARGET_DIR)/c$@/
+	@cp -f $(EXT_LIB_DIR)/c$@/ImGuizmo/{LICENSE,README.md}        $(TARGET_DIR)/c$@/ImGuizmo/
+	@cp -f $(EXT_LIB_DIR)/c$@/ImGuizmo/src/{*.cpp,*.h}            $(TARGET_DIR)/c$@/ImGuizmo/src
 
 imnodes:
 	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@
 	@-mkdir -p $(TARGET_DIR)/c$@/$@
-	@cp -f $(EXT_LIB_DIR)/c$@/{README.md,*.cpp,*.h}               $(TARGET_DIR)/c$@/
-	@cp -f $(EXT_LIB_DIR)/c$@/$@/{LICENSE.md,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/$@/
+	@cp -f $(EXT_LIB_DIR)/c$@/{README.md,*.cpp,*.h}                $(TARGET_DIR)/c$@/
+	@cp -f $(EXT_LIB_DIR)/c$@/$@/{LICENSE.md,*.cpp,*.h,README.md}  $(TARGET_DIR)/c$@/$@/
 
 implot:
 	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@
 	@-mkdir -p $(TARGET_DIR)/c$@/$@
-	@cp -f $(EXT_LIB_DIR)/c$@/{LICENSE,*.cpp,*.h,README.md}    $(TARGET_DIR)/c$@/
-	@cp -f $(EXT_LIB_DIR)/c$@/$@/{LICENSE,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/$@/
+	@cp -f $(EXT_LIB_DIR)/c$@/{LICENSE,*.cpp,*.h,README.md}        $(TARGET_DIR)/c$@/
+	@cp -f $(EXT_LIB_DIR)/c$@/$@/{LICENSE,*.cpp,*.h,README.md}     $(TARGET_DIR)/c$@/$@/
 
 implot3d:
 	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@
 	@-mkdir -p $(TARGET_DIR)/c$@/$@
-	@cp -f $(EXT_LIB_DIR)/c$@/{*.cpp,*.h,README.md}            $(TARGET_DIR)/c$@/
-	@cp -f $(EXT_LIB_DIR)/c$@/$@/{LICENSE,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/$@/
+	@cp -f $(EXT_LIB_DIR)/c$@/{*.cpp,*.h,README.md}                $(TARGET_DIR)/c$@/
+	@cp -f $(EXT_LIB_DIR)/c$@/$@/{LICENSE,*.cpp,*.h,README.md}     $(TARGET_DIR)/c$@/$@/
 
 copy_imspinner:
 	@echo copying [ $(EXT_LIB_DIR)/imspinner] to $(TARGET_DIR)/imspinner
 	@-mkdir -p $(TARGET_DIR)/imspinner/cimspinner
 	@cp -f $(EXT_LIB_DIR)/imspinner/{*.h,LICENSE.txt,*.md}         $(TARGET_DIR)/imspinner
-	@cp -f $(EXT_LIB_DIR)/imspinner/cimspinner/{*.cpp,*.h,*.md}           $(TARGET_DIR)/imspinner/cimspinner
+	@cp -f $(EXT_LIB_DIR)/imspinner/cimspinner/{*.cpp,*.h,*.md}    $(TARGET_DIR)/imspinner/cimspinner
 
 imgui-knobs:
 	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@

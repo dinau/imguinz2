@@ -1,4 +1,6 @@
 const std = @import("std");
+const Translator = @import("translate_c").Translator;
+
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
@@ -19,18 +21,20 @@ pub fn build(b: *std.Build) void {
     // ------------
     // glfw module
     // ------------
-    const step = b.addTranslateC(.{
-        .root_source_file = glfw3_h_path,
+    const translate_c = b.dependency("translate_c", .{});
+    const t: Translator = .init(translate_c, .{
+        .c_source_file = glfw3_h_path,
         .target = target,
         .optimize = optimize,
     });
     if (emscripten_sysroot) |es| {
-        step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+        t.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
     }
     if (contrib_glfw3_include) |cgi| {
-        step.addIncludePath(.{ .cwd_relative = cgi });
+        t.addIncludePath(.{ .cwd_relative = cgi });
     }
-    const mod = step.addModule(mod_name);
+    const mod = t.mod;
+    b.modules.put(b.allocator, b.dupe(mod_name), mod) catch @panic("OOM");
     const lib = b.addLibrary(.{
         .linkage = .static,
         .name = mod_name,

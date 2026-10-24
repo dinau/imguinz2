@@ -9,7 +9,8 @@ pub fn build(b: *std.Build) void {
     const mod_name = "dcimgui";
     var mod: *std.Build.Module = undefined;
 
-    const gen_option = b.option(bool, "gen", "Generate I/O definition file from C header") orelse true;
+    //const gen_option = b.option(bool, "gen", "Generate I/O definition file from C header") orelse true;
+    const gen_option = true;
 
     // -------
     // module

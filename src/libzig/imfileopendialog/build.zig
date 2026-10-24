@@ -1,5 +1,5 @@
 const std = @import("std");
-const builtin = @import("builtin");
+const Translator = @import("translate_c").Translator;
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -10,17 +10,19 @@ pub fn build(b: *std.Build) void {
     // -------
     // module
     // -------
-    const step = b.addTranslateC(.{
-        .root_source_file = b.path("src/filedialog.h"),
+    const translate_c = b.dependency("translate_c", .{});
+    const t: Translator = .init(translate_c, .{
+        .c_source_file = b.path("src/filedialog.h"),
         .target = target,
         .optimize = optimize,
     });
 
-    step.addIncludePath(b.path("../../libc/dcimgui"));
-    step.addIncludePath(b.path("../../libc/imgui"));
-    step.addIncludePath(b.path("../../libc/CImGuiFileDialog/libs/ImGuiFileDialog"));
+    t.addIncludePath(b.path("../../libc/dcimgui"));
+    t.addIncludePath(b.path("../../libc/imgui"));
+    t.addIncludePath(b.path("../../libc/CImGuiFileDialog/libs/ImGuiFileDialog"));
 
-    const mod = step.addModule(mod_name);
+    const mod = t.mod;
+    b.modules.put(b.allocator, b.dupe(mod_name), mod) catch @panic("OOM");
     mod.addIncludePath(b.path("../../libc/imgui/imgui"));
     mod.addIncludePath(b.path("../../libc/imgui"));
     mod.addIncludePath(b.path("../../libc/CImGuiFileDialog"));
@@ -32,6 +34,7 @@ pub fn build(b: *std.Build) void {
     mod.addCMacro("CUSTOM_IMGUIFILEDIALOG_CONFIG", "\"customIconFont.h\"");
     mod.link_libcpp = true;
     mod.addCSourceFiles(.{
+        .root = b.path("."),
         .files = &.{
             "../../libc/CImGuiFileDialog/libs/ImGuiFileDialog/ImGuiFileDialog.cpp",
         },

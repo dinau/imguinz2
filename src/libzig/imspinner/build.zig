@@ -1,5 +1,5 @@
 const std = @import("std");
-const builtin = @import("builtin");
+const Translator = @import("translate_c").Translator;
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -11,19 +11,22 @@ pub fn build(b: *std.Build) void {
     // -------
     // module
     // -------
-    const step = b.addTranslateC(.{
-        .root_source_file = b.path("src/impl_imspinner.h"),
+    const translate_c = b.dependency("translate_c", .{});
+    const t: Translator = .init(translate_c, .{
+        .c_source_file = b.path("src/impl_imspinner.h"),
         .target = target,
         .optimize = optimize,
     });
-    step.addIncludePath(b.path("../../libc/dcimgui"));
-    step.addIncludePath(b.path("../../libc/imgui"));
-    step.addIncludePath(b.path("../../libc/imspinner"));
-    step.addIncludePath(b.path("../../libc/imspinner/cimspinner"));
+    t.addIncludePath(b.path("../../libc/dcimgui"));
+    t.addIncludePath(b.path("../../libc/imgui"));
+    t.addIncludePath(b.path("../../libc/imspinner"));
+    t.addIncludePath(b.path("../../libc/imspinner/cimspinner"));
     if (emscripten_sysroot) |es| {
-        step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+        t.addSystemIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
     }
-    const mod = step.addModule(mod_name);
+    const mod = t.mod;
+    b.modules.put(b.allocator, b.dupe(mod_name), mod) catch @panic("OOM");
+
     mod.link_libcpp = true;
     mod.addIncludePath(b.path("../../libc/imgui"));
     mod.addIncludePath(b.path("../../libc/dcimgui"));
@@ -170,6 +173,7 @@ pub fn build(b: *std.Build) void {
     mod.addCMacro("SPINNER_SPLINEANG", "");
 
     mod.addCSourceFiles(.{
+        .root = b.path("."),
         .files = &.{
             "../../libc/imspinner/cimspinner/cimspinner.cpp",
             "../../libc/imspinner/cimspinner/cimspinner_bars.cpp",

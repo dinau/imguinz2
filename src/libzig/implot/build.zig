@@ -1,5 +1,5 @@
 const std = @import("std");
-const builtin = @import("builtin");
+const Translator = @import("translate_c").Translator;
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -11,25 +11,26 @@ pub fn build(b: *std.Build) void {
     // -------
     // module
     // -------
-    const step = b.addTranslateC(.{
-        .root_source_file = b.path("src/impl_implot.h"),
+    const translate_c = b.dependency("translate_c", .{});
+    const t: Translator = .init(translate_c, .{
+        .c_source_file = b.path("src/impl_implot.h"),
         .target = target,
         .optimize = optimize,
     });
 
-    step.defineCMacro("IMGUI_DISABLE_SSE", "");
-    step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
+    t.defineCMacro("IMGUI_DISABLE_SSE", "");
 
-    step.addIncludePath(b.path("./src"));
-    step.addIncludePath(b.path("../../libc/dcimgui"));
-    step.addIncludePath(b.path("../../libc/imgui"));
-    step.addIncludePath(b.path("../../libc/cimgui"));
-    step.addIncludePath(b.path("../../libc/cimplot"));
+    t.addIncludePath(b.path("./src"));
+    t.addIncludePath(b.path("../../libc/dcimgui"));
+    t.addIncludePath(b.path("../../libc/imgui"));
+    t.addIncludePath(b.path("../../libc/cimgui"));
+    t.addIncludePath(b.path("../../libc/cimplot"));
     if (emscripten_sysroot) |es| {
-        step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+        t.addSystemIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
     }
 
-    const mod = step.addModule(mod_name);
+    const mod = t.mod;
+    b.modules.put(b.allocator, b.dupe(mod_name), mod) catch @panic("OOM");
     mod.addIncludePath(b.path("../../libc/dcimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/dcimgui"));
     mod.addIncludePath(b.path("../../libc/imgui"));
@@ -45,6 +46,7 @@ pub fn build(b: *std.Build) void {
     mod.addCMacro("ImDrawIdx", "unsigned int");
     //
     mod.addCSourceFiles(.{
+        .root = b.path("."),
         .files = &.{
             "../../libc/cimplot/cimplot.cpp",
             "../../libc/cimplot/implot/implot.cpp",

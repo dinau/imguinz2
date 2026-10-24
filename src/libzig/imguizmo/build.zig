@@ -1,5 +1,5 @@
 const std = @import("std");
-const builtin = @import("builtin");
+const Translator = @import("translate_c").Translator;
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -10,20 +10,21 @@ pub fn build(b: *std.Build) void {
     // -------
     // module
     // -------
-    const step = b.addTranslateC(.{
-        .root_source_file = b.path("src/impl_guizmo.h"),
+    const translate_c = b.dependency("translate_c", .{});
+    const t: Translator = .init(translate_c, .{
+        .c_source_file = b.path("src/impl_guizmo.h"),
         .target = target,
         .optimize = optimize,
     });
 
-    step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
-    step.addIncludePath(b.path("src"));
-    step.addIncludePath(b.path("../../libc/dcimgui"));
-    step.addIncludePath(b.path("../../libc/imgui"));
-    step.addIncludePath(b.path("../../libc/cimguizmo"));
-    step.addIncludePath(b.path("../../libc/cimgui"));
+    t.addIncludePath(b.path("src"));
+    t.addIncludePath(b.path("../../libc/dcimgui"));
+    t.addIncludePath(b.path("../../libc/imgui"));
+    t.addIncludePath(b.path("../../libc/cimguizmo"));
+    t.addIncludePath(b.path("../../libc/cimgui"));
 
-    const mod = step.addModule(mod_name);
+    const mod = t.mod;
+    b.modules.put(b.allocator, b.dupe(mod_name), mod) catch @panic("OOM");
     // Macro
     mod.addCMacro("CIMGUI_API", "extern \"C\"  ");
     mod.addCMacro("imguizmo_NAMESPACE", "imguizmo"); // for imguizmo
@@ -34,6 +35,7 @@ pub fn build(b: *std.Build) void {
     mod.addIncludePath(b.path("../../libc/cimgui"));
     mod.addIncludePath(b.path("../../libc/cimguizmo/imguizmo"));
     mod.addCSourceFiles(.{
+        .root = b.path("."),
         .files = &.{
             "../../libc/cimguizmo/cimguizmo.cpp",
             "../../libc/cimguizmo/ImGuizmo/src/GraphEditor.cpp",
